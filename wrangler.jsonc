@@ -1,0 +1,17 @@
+// Cloudflare deployment config. The site is fully static: `npm run build`
+// prerenders every page into dist/, and `wrangler deploy` uploads that folder
+// as-is. Without this file Wrangler auto-configures the project, adding the
+// Cloudflare Vite plugin, which breaks the prerender step of the build.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Must match the Worker's name in the Cloudflare dashboard.
+  "name": "metmech-analytical",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    // Prerendered pages live at <route>/index.html.
+    "html_handling": "auto-trailing-slash",
+    // Unknown URLs get the prerendered dist/404.html with a 404 status.
+    "not_found_handling": "404-page"
+  }
+}
