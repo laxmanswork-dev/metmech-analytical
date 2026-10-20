@@ -1,0 +1,43 @@
+.hero {
+  --color-focus: var(--color-text-inverse);
+
+  padding-block: clamp(2rem, 1.25rem + 3.5vw, 4rem);
+  color: var(--color-text-inverse-muted);
+  background: var(--color-surface-inverse);
+}
+
+.title {
+  margin-top: var(--space-3);
+  color: var(--color-text-inverse);
+}
+
+.lead {
+  max-width: var(--container-narrow);
+  margin-top: var(--space-4);
+  font-size: var(--text-lg);
+}
+
+.image {
+  position: relative;
+  width: 100%;
+  max-width: 26rem;
+}
+
+.image > img {
+  display: block;
+  width: 100%;
+  border-radius: var(--radius-md);
+}
+
+.withImage {
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+@media (min-width: 64rem) {
+  .withImage {
+    grid-template-columns: 1fr auto;
+    gap: var(--space-8);
+  }
+}

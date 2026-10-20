@@ -1,0 +1,22 @@
+.section {
+  padding-block: var(--section-padding);
+}
+
+/* Read by SectionHeading for the space below it. */
+.compact {
+  --heading-gap: var(--space-5);
+
+  padding-block: var(--section-padding-compact);
+}
+
+.default {
+  background: var(--color-surface);
+}
+
+.muted {
+  background: var(--color-surface-muted);
+}
+
+.tint {
+  background: var(--color-surface-tint);
+}

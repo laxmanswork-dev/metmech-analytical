@@ -1,0 +1,20 @@
+.heading {
+  max-width: var(--container-narrow);
+  margin-bottom: var(--heading-gap, var(--space-6));
+}
+
+.heading h2::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 3px;
+  margin-top: var(--space-3);
+  background: var(--color-accent);
+  border-radius: 2px;
+}
+
+.lead {
+  margin-top: var(--space-3);
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+}

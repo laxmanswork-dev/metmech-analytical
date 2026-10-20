@@ -1,0 +1,159 @@
+.hero {
+  --color-focus: var(--color-text-inverse);
+
+  position: relative;
+  overflow: hidden;
+
+  padding-block: clamp(2.5rem, 1.5rem + 5vw, 5.5rem);
+  color: var(--color-text-inverse-muted);
+  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 100%);
+}
+
+/* ---- Background video ----
+   Three layers fill the hero: the poster frame, the video over it, and an
+   overlay on top. */
+.poster,
+.video,
+.overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.poster {
+  background-position: center;
+  background-size: cover;
+}
+
+.video {
+  object-fit: cover;
+  transition: opacity 500ms linear;
+}
+
+/* The last moments of the clip: fade out to the poster frame beneath, which is
+   the clip's first frame. See HomeHero.jsx. */
+.videoEnding {
+  opacity: 0;
+}
+
+/* One flat, even navy over the whole hero, edge to edge and at every screen
+   size, so the blue never looks patchy behind the text or the animation.
+
+   62% is the measured minimum for this footage, which has pure white window
+   light behind the text in places. Sampled every half second through the clip:
+     - the heading keeps 3:1 contrast from 50%
+     - white body text over pure white needs 61% for 4.5:1; 62% leaves a small
+       margin. At 55% up to 12% of the pixels behind the paragraph fall short,
+       at 50% up to 30%
+   Small cyan text cannot reach 4.5:1 on footage this bright below 74%, so
+   the eyebrow and the animation's caption title carry their own navy backing
+   instead (as the animation's labels do).
+   Re-measure before lowering this, or after changing the video. */
+.overlay {
+  background: rgb(10 31 61 / 0.62);
+}
+
+/* Reduced motion: no moving footage; the still poster frame shows instead. */
+@media (prefers-reduced-motion: reduce) {
+  .video {
+    display: none;
+  }
+}
+
+.inner {
+  position: relative;
+  display: grid;
+  gap: var(--space-6);
+  align-items: center;
+}
+
+/* Lets long words wrap instead of widening the column. */
+.inner > * {
+  min-width: 0;
+}
+
+/* ---- Left column: eyebrow, heading, description, actions ----
+   Spacing steps up down the group (18, 24, 32px) so the heading stays tied to
+   its eyebrow and the actions read as the conclusion. */
+
+/* A small tag: the navy backing keeps its cyan text readable over bright
+   footage. The negative margin lines the text, not the tag, up with the heading. */
+.eyebrow {
+  display: inline-block;
+  margin-bottom: 1.125rem;
+  margin-left: -0.625rem;
+  padding: 0.25rem 0.625rem;
+  background: rgb(10 31 61 / 0.78);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: var(--weight-semibold);
+  line-height: 1.5;
+  letter-spacing: 0.14em;
+  color: var(--color-accent-on-dark);
+  text-transform: uppercase;
+}
+
+/* Tamil has no capitals and reads poorly when letter-spaced. */
+html:lang(ta) .eyebrow {
+  letter-spacing: 0.02em;
+}
+
+/* Narrow enough to set the English heading on three lines on desktop. */
+.title {
+  max-width: 13em;
+  color: var(--color-text-inverse);
+}
+
+/* A faint navy edge keeps letter shapes crisp where the footage behind them
+   is busy. It is too soft to read as a drop shadow. */
+.title,
+.text {
+  text-shadow: 0 1px 2px rgb(10 31 61 / 0.35);
+}
+
+.text {
+  max-width: 36.25rem;
+  margin-top: var(--space-5);
+  font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  line-height: 1.7;
+  /* Pure white: over footage, softened text would need a heavier overlay. */
+  color: var(--color-text-inverse);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.visual {
+  display: flex;
+  justify-content: center;
+}
+
+@media (min-width: 64rem) {
+  /* The hero fills the first screen: the viewport height minus the site
+     header above it, with the content centred in that space. The cap stops it
+     becoming a mostly empty band on very tall monitors. */
+  .hero {
+    display: flex;
+    align-items: center;
+    min-height: min(calc(100vh - var(--header-height)), 64rem);
+    min-height: min(calc(100svh - var(--header-height)), 64rem);
+    padding-block: 2.5rem;
+  }
+
+  .inner {
+    /* Text takes about 53% of the content width; the rest is the orbit. */
+    grid-template-columns: minmax(0, 14fr) minmax(0, 11fr);
+    gap: var(--space-8);
+  }
+
+  /* The right column is the circle plus a caption beneath it. This padding is
+     the caption's height, so the text centres on the circle itself. */
+  .content {
+    padding-bottom: 4.5rem;
+  }
+}

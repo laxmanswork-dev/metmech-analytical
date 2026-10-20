@@ -1,0 +1,530 @@
+/*
+ * Geometry is sized in container units (cqw), so the whole composition scales
+ * with the width it is given rather than with the viewport.
+ *
+ * Angles: 90deg is the bottom of the circle, which is the highlighted
+ * position. Category i starts at (90 - 60i)deg and the ring turns clockwise,
+ * so categories reach the bottom in order, one every sixth of a revolution.
+ */
+.orbit {
+  --duration: 30s;
+  --radius: 45cqw;
+  --thumb: clamp(3.25rem, 32cqw, 7.25rem);
+  --line: rgb(255 255 255 / 0.2);
+
+  container-type: inline-size;
+  display: grid;
+  gap: var(--space-2);
+  width: 100%;
+  /* The one size control: everything inside scales with this width. */
+  max-width: 21.75rem;
+  color: var(--color-text-inverse);
+}
+
+.stage {
+  position: relative;
+  aspect-ratio: 1;
+  /* Room for the thumbnails, which are centred on the circle and so reach
+     past it, and for the ring around the highlighted one. */
+  margin-block: 13cqw;
+}
+
+/* ---- Fixed guides ---- */
+
+.track,
+.activeArc {
+  position: absolute;
+  inset: calc(50% - var(--radius));
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.track {
+  border: 1px solid var(--line);
+}
+
+/* Marks the highlighted position at the bottom of the circle. */
+.activeArc {
+  border: 2px solid transparent;
+  border-bottom-color: var(--color-accent-on-dark);
+  opacity: 0.85;
+}
+
+/* ---- Central instrument: never moves ---- */
+
+.centre {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 34cqw;
+  transform: translate(-50%, -50%);
+}
+
+.centre::before {
+  content: '';
+  position: absolute;
+  inset: -22%;
+  background: radial-gradient(circle, rgb(111 208 238 / 0.26) 0%, rgb(111 208 238 / 0) 68%);
+  border-radius: 50%;
+}
+
+.centre img {
+  position: relative;
+  width: 100%;
+  filter: drop-shadow(0 0 0.5rem rgb(111 208 238 / 0.35));
+}
+
+/* ---- Rotating ring ---- */
+
+/* A zero-size pivot at the centre of the stage. Having no area of its own, it
+   cannot extend past the circle or intercept the pointer as it turns; only the
+   thumbnails inside it are interactive. */
+.ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  animation: spin var(--duration) linear infinite;
+  will-change: transform;
+}
+
+.list {
+  position: absolute;
+  inset: 0;
+}
+
+.spoke {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--radius);
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 41%,
+    var(--line) 46%,
+    var(--line) 62%,
+    transparent 66%
+  );
+  transform: rotate(calc(90deg - var(--i) * 60deg));
+  transform-origin: 0 50%;
+}
+
+/* A zero-size point on the circle for category i. */
+.arm {
+  --delay: calc(var(--i) * var(--duration) / 6 - var(--duration));
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  transform: rotate(calc(90deg - var(--i) * 60deg)) translateX(var(--radius));
+}
+
+/* Undo the arm's own angle, then undo the ring's turn, so content stays upright. */
+.upright {
+  transform: rotate(calc(var(--i) * 60deg - 90deg));
+}
+
+.counter {
+  animation: spin var(--duration) linear infinite reverse;
+  will-change: transform;
+}
+
+/* ---- One category ---- */
+
+/* The button is exactly the thumbnail, centred on the orbit point. Its name
+   is set inside the circle. */
+.item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--thumb);
+  height: var(--thumb);
+  padding: 0;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  pointer-events: auto;
+  transform: translate(-50%, -50%);
+}
+
+.item:focus-visible {
+  outline: none;
+}
+
+.item:focus-visible .media {
+  outline: 3px solid var(--color-text-inverse);
+  outline-offset: 3px;
+}
+
+.media {
+  position: relative;
+  display: block;
+  width: var(--thumb);
+  height: var(--thumb);
+  background: var(--color-surface);
+  border: 2px solid rgb(255 255 255 / 0.9);
+  border-radius: 50%;
+  box-shadow: 0 4px 14px rgb(0 0 0 / 0.35);
+  /* Grows towards the centre, so the highlight never pushes outwards. */
+  transform-origin: 50% 100%;
+  animation: emphasis var(--duration) linear infinite;
+  animation-delay: var(--delay);
+}
+
+/* The watermark sits on the circle's bottom-right diagonal, wholly inside it:
+   the edge is 14.6% in from the corner of the box along that diagonal.
+   Shown only on phones: wider screens set the name in the lower half of the
+   circle, and the watermark would sit on its text. */
+.media {
+  --watermark-size: 17%;
+  --watermark-inset: 17%;
+  --watermark-pad: 1px;
+}
+
+.media .watermark {
+  display: none;
+}
+
+.media > img,
+.icon {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.media > img {
+  object-fit: cover;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary);
+}
+
+/* Sits in the upper part of the circle, clear of the name below it. */
+.icon {
+  align-items: flex-start;
+  padding-top: 10%;
+}
+
+.icon svg {
+  width: 38%;
+  height: 38%;
+}
+
+/* The Tamil name runs to three lines, leaving less room above it. */
+html:lang(ta) .icon svg {
+  width: 30%;
+  height: 30%;
+}
+
+/* Cyan ring that fades in at the highlighted position. */
+.media::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 2px solid var(--color-accent-on-dark);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgb(111 208 238 / 0.55);
+  opacity: 0;
+  animation: glow var(--duration) linear infinite;
+  animation-delay: var(--delay);
+}
+
+/* The name, inside the lower part of the circle. It is part of the thumbnail,
+   so it grows with it.
+
+   The dark fade behind it is only as tall as the text: it starts just above
+   the first line, so the rest of the photograph keeps its own colours.
+   clip-path trims it to the circle inside the border.
+
+   Lines never wrap on their own: the dictionary gives each name its lines.
+   The text stops short of the bottom edge because the circle narrows there. */
+.label {
+  --inner: calc(var(--thumb) / 2 - 2px);
+
+  position: absolute;
+  inset: auto 0 0;
+  padding: 1.5em 0 14%;
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  text-align: center;
+  text-shadow: 0 1px 2px rgb(4 10 20 / 0.7);
+  background: linear-gradient(
+    rgb(4 10 20 / 0),
+    rgb(4 10 20 / 0.3) 0.8em,
+    rgb(4 10 20 / 0.66) 1.8em,
+    rgb(4 10 20 / 0.78) 3em
+  );
+  clip-path: circle(var(--inner) at 50% calc(100% - var(--inner)));
+  pointer-events: none;
+}
+
+/* A name whose last line is too wide for the bottom of the circle sits
+   higher, where the circle is wider. The dictionary lists these. */
+.label[data-raised] {
+  padding-bottom: 29%;
+}
+
+.labelLine {
+  display: block;
+}
+
+/* Tamil lines run wider, so they are set smaller. It is not letter-spaced
+   and needs taller lines for its marks. */
+html:lang(ta) .label {
+  font-size: 0.65625rem;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+/* ---- Playback control ---- */
+
+/* Sits beside the caption, below the lowest thumbnail, so nothing in the orbit
+   ever passes over it. The offset is the stage's bottom margin plus the gap
+   to the caption. */
+.toggle {
+  position: absolute;
+  right: -2.5rem;
+  bottom: calc(-13cqw - var(--space-2) - 2.5rem);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  color: var(--color-text-inverse);
+  background: rgb(10 31 61 / 0.6);
+  border: 1px solid rgb(255 255 255 / 0.35);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color var(--transition);
+}
+
+.toggle:hover {
+  border-color: var(--color-text-inverse);
+}
+
+/* ---- Captions: all six share one cell, so the height never changes ---- */
+
+/* Wider than the circle, so a description fits on two lines. Side padding
+   keeps the centred text clear of the playback control. */
+.captions {
+  display: grid;
+  min-height: 4rem;
+  margin-inline: -2.5rem;
+  padding-inline: 2.75rem;
+  text-align: center;
+}
+
+.caption {
+  --delay: calc(var(--i) * var(--duration) / 6 - var(--duration));
+
+  grid-area: 1 / 1;
+  display: grid;
+  gap: 0.125rem;
+  align-content: start;
+  justify-items: center;
+  font-size: 0.875rem;
+  line-height: 1.45;
+  opacity: 0;
+  animation: caption var(--duration) linear infinite;
+  animation-delay: var(--delay);
+}
+
+.caption p {
+  max-width: 26rem;
+}
+
+/* Backed like the labels around the circle, so its cyan stays readable over
+   a bright hero video. */
+.captionTitle {
+  padding: 0.15em 0.6em;
+  background: rgb(10 31 61 / 0.78);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-accent-on-dark);
+  text-transform: uppercase;
+}
+
+/* ---- Keyframes. 0% and 100% are the moment a category is at the bottom. ---- */
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes emphasis {
+  0%,
+  100% {
+    scale: 1.12;
+  }
+
+  9%,
+  91% {
+    scale: 1;
+  }
+}
+
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  8%,
+  92% {
+    opacity: 0;
+  }
+}
+
+/* Each caption owns a sixth of the cycle (8.33% either side of its peak). It
+   fades out fully just before the hand-over and the next fades in just after,
+   so two captions are never legible on top of each other. */
+@keyframes caption {
+  0%,
+  6.4% {
+    opacity: 1;
+  }
+
+  8.1%,
+  91.9% {
+    opacity: 0;
+  }
+
+  93.6%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ---- Paused: every animation stops together, so they stay in step ---- */
+
+.orbit[data-paused] .ring,
+.orbit[data-paused] .counter,
+.orbit[data-paused] .media,
+.orbit[data-paused] .media::after,
+.orbit[data-paused] .caption {
+  animation-play-state: paused;
+}
+
+/* ---- A category is hovered, focused or pinned ----
+   !important is required here: it is the only way a declaration can take
+   precedence over a running animation without removing the animation, which
+   would lose its place in the cycle. */
+
+.orbit[data-override] .media {
+  scale: 1 !important;
+}
+
+.orbit[data-override] .media::after {
+  opacity: 0 !important;
+}
+
+.orbit[data-override] .caption {
+  opacity: 0 !important;
+}
+
+.orbit[data-override] .item[data-active] .media {
+  scale: 1.1 !important;
+  /* Grow evenly: the category may be anywhere on the circle. */
+  transform-origin: 50% 50%;
+}
+
+.orbit[data-override] .item[data-active] .media::after,
+.orbit[data-override] .caption[data-active] {
+  opacity: 1 !important;
+}
+
+/* ---- Phones: the circle spans the screen, so the thumbnails are too small
+   to carry a readable name. The caption below carries it and the thumbnails
+   are the touch targets ---- */
+
+@media (max-width: 40rem) {
+  /* The instrument is wider here, so the thumbnails are a little smaller to
+     keep the highlighted one clear of it. */
+  .orbit {
+    --radius: 41cqw;
+    --thumb: 22cqw;
+  }
+
+  /* Only the thumbnails' own overhang past the circle to clear. */
+  .stage {
+    margin-block: 3cqw;
+  }
+
+  /* No labels here, so the control returns to the stage's free corner. */
+  .toggle {
+    top: -3cqw;
+    right: 0;
+    bottom: auto;
+  }
+
+  .captions {
+    margin-inline: 0;
+    padding-inline: 0;
+  }
+
+  .label {
+    display: none;
+  }
+
+  .media .watermark {
+    display: block;
+  }
+
+  .icon {
+    align-items: center;
+    padding-top: 0;
+  }
+
+  .icon svg {
+    width: 46%;
+    height: 46%;
+  }
+
+  .centre {
+    width: 38cqw;
+  }
+}
+
+/* ---- Reduced motion: a still composition with the first category
+   highlighted. Categories can still be selected. ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .ring,
+  .counter,
+  .media,
+  .media::after,
+  .caption {
+    animation: none;
+  }
+
+  .item[data-first] .media {
+    scale: 1.12;
+  }
+
+  .item[data-first] .media::after,
+  .caption[data-first] {
+    opacity: 1;
+  }
+
+  .toggle {
+    display: none;
+  }
+}

@@ -1,0 +1,29 @@
+.band {
+  --color-focus: var(--color-text-inverse);
+
+  padding-block: clamp(2.5rem, 2rem + 3vw, 4rem);
+  color: var(--color-text-inverse-muted);
+  background: var(--navy-800);
+}
+
+.inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5) var(--space-7);
+}
+
+.inner > div {
+  flex: 1 1 24rem;
+  max-width: var(--container-narrow);
+}
+
+.heading {
+  color: var(--color-text-inverse);
+}
+
+.text {
+  margin-top: var(--space-3);
+  font-size: var(--text-lg);
+}

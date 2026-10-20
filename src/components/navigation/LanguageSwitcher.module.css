@@ -1,0 +1,44 @@
+.list {
+  display: flex;
+  background: var(--switcher-surface, var(--color-surface));
+  border: var(--switcher-border, 1px solid var(--color-border));
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Defaults suit touch; a parent can set these to make the control compact. */
+  min-width: var(--switcher-size, var(--target-size));
+  min-height: var(--switcher-size, var(--target-size));
+  padding-inline: var(--switcher-pad, var(--space-3));
+  font-size: var(--switcher-font, var(--text-sm));
+  font-weight: var(--weight-medium);
+  line-height: 1.2;
+  color: var(--color-heading);
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background-color var(--transition),
+    color var(--transition);
+}
+
+.link:hover {
+  background: var(--color-surface-tint);
+  color: var(--color-heading);
+}
+
+.link[aria-current='true'] {
+  background: var(--switcher-active-surface, var(--color-surface-inverse));
+  color: var(--switcher-active-text, var(--color-text-inverse));
+}
+
+.link:focus-visible {
+  outline-offset: -3px;
+}
+
+.link[aria-current='true']:focus-visible {
+  outline-color: var(--switcher-active-text, var(--color-text-inverse));
+}

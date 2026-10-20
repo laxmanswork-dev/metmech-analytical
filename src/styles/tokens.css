@@ -1,0 +1,116 @@
+/*
+ * Design tokens. Components consume the semantic tokens (text, surface, border,
+ * primary), not the raw palette, so the palette can be tuned to the client's
+ * brand assets in one place.
+ *
+ * Breakpoints (custom properties cannot be used in media queries):
+ *   36rem (576px)  two-column specification tables
+ *   64rem (1024px) two-column page layouts
+ *   75rem (1200px) full single-row header with the navigation on the bar
+ */
+:root {
+  /* Palette */
+  --navy-900: #0a1f3d;
+  --navy-800: #12305a;
+  --blue-700: #154c91;
+  --blue-600: #1a5fb4;
+  --blue-50: #eef4fb;
+  --cyan-300: #6fd0ee;
+  --cyan-600: #0b7fa6;
+  --cyan-700: #097094;
+  --white: #ffffff;
+  --grey-50: #f6f8fa;
+  --grey-200: #d9dee5;
+  --grey-400: #8a94a3;
+  --grey-600: #515c6b;
+  --grey-900: #1b2430;
+
+  /* Semantic colours */
+  --color-text: var(--grey-900);
+  --color-text-muted: var(--grey-600);
+  --color-heading: var(--navy-900);
+  --color-surface: var(--white);
+  --color-surface-muted: var(--grey-50);
+  --color-surface-tint: var(--blue-50);
+  --color-surface-inverse: var(--navy-900);
+  --color-text-inverse: var(--white);
+  --color-text-inverse-muted: #c5d0e0;
+  --color-border: var(--grey-200);
+  --color-primary: var(--blue-600);
+  --color-primary-hover: var(--blue-700);
+  --color-focus: var(--blue-600);
+  --color-accent: var(--cyan-600);
+  --color-accent-on-dark: var(--cyan-300);
+  --color-error: #b3261e;
+  --color-error-surface: #fdecea;
+  --color-success: #17663a;
+  --color-success-surface: #e7f5ec;
+
+  /* Form controls */
+  --control-height: 3rem;
+  --control-border: var(--grey-400);
+
+  /* Typography */
+  --font-sans:
+    'Inter Variable', 'Noto Sans Tamil Variable', system-ui, -apple-system, 'Segoe UI',
+    'Nirmala UI', sans-serif;
+  --text-sm: 0.875rem;
+  --text-nav: 0.9375rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: clamp(1.25rem, 1.15rem + 0.5vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-3xl: clamp(2rem, 1.5rem + 2.2vw, 3.25rem);
+  --leading-body: 1.65;
+  --leading-heading: 1.2;
+  --tracking-heading: -0.015em;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --section-padding: clamp(3rem, 2rem + 5vw, 6rem);
+  --section-padding-compact: clamp(2.5rem, 1.75rem + 2.5vw, 4rem);
+
+  /* Layout */
+  --container-max: 75rem;
+  --container-narrow: 46rem;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2rem);
+  --target-size: 2.75rem;
+  /* Total height of the site header, kept in step with Header.module.css. */
+  --header-height: 3.8125rem;
+
+  /* Shape and elevation */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --shadow-sm: 0 1px 2px rgb(10 31 61 / 0.06), 0 1px 3px rgb(10 31 61 / 0.08);
+  --shadow-md: 0 4px 12px rgb(10 31 61 / 0.1);
+
+  --transition: 150ms ease;
+}
+
+/* The header is taller on large screens: 79px + 1px border. */
+@media (min-width: 75rem) {
+  :root {
+    --header-height: 5rem;
+  }
+}
+
+/* Tamil glyphs are taller and carry marks above and below the baseline, so they
+   need more line height and no negative tracking. */
+html:lang(ta) {
+  --leading-body: 1.85;
+  --leading-heading: 1.45;
+  --tracking-heading: 0;
+  /* Tamil labels run longer; this keeps the desktop navigation on one row. */
+  --text-nav: 0.875rem;
+  --text-3xl: clamp(1.5rem, 1.1rem + 2.2vw, 2.75rem);
+}

@@ -1,0 +1,5 @@
+.content {
+  display: grid;
+  justify-items: start;
+  gap: var(--space-5);
+}

@@ -1,0 +1,16 @@
+.header {
+  max-width: var(--container-narrow);
+  margin-bottom: var(--space-6);
+}
+
+.summary {
+  margin-top: var(--space-2);
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  gap: var(--space-6) var(--space-7);
+}

@@ -1,0 +1,39 @@
+.table {
+  margin: 0;
+  font-size: 0.9375rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* Label above value on small screens; side by side when there is room. */
+.row {
+  display: grid;
+  gap: var(--space-1);
+  padding: var(--space-3) var(--space-4);
+}
+
+.row:nth-child(odd) {
+  background: var(--color-surface-muted);
+}
+
+.row dt {
+  font-weight: var(--weight-semibold);
+  color: var(--color-heading);
+}
+
+.row dd {
+  margin: 0;
+}
+
+.pending {
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 36rem) {
+  .row {
+    grid-template-columns: minmax(10rem, 2fr) 3fr;
+    gap: var(--space-4);
+  }
+}

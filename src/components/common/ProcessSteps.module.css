@@ -1,0 +1,44 @@
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
+  gap: var(--space-5);
+}
+
+.step {
+  display: flex;
+  gap: var(--space-4);
+}
+
+.number {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--color-text-inverse);
+  background: var(--color-surface-inverse);
+  border-radius: 50%;
+}
+
+.title {
+  font-size: var(--text-base);
+  line-height: 1.4;
+  letter-spacing: 0;
+}
+
+.text {
+  margin-top: var(--space-1);
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+}
+
+@media (min-width: 64rem) {
+  .step {
+    flex-direction: column;
+  }
+}

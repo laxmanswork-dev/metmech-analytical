@@ -1,0 +1,86 @@
+/* Layout helpers shared by the content pages: vertical rhythm for body copy
+   and sub-sections, and a main-plus-aside split. */
+
+.stack {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.block {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+}
+
+.block h2 {
+  font-size: var(--text-xl);
+}
+
+.block h3 {
+  font-size: var(--text-base);
+  letter-spacing: 0;
+}
+
+.lead {
+  font-size: var(--text-lg);
+}
+
+.note {
+  padding: var(--space-3) var(--space-4);
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  background: var(--color-surface-tint);
+  border-left: 3px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+}
+
+/* Main content beside a narrower aside on wide screens. */
+.split {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.split > * {
+  min-width: 0;
+}
+
+.aside {
+  display: grid;
+  gap: var(--space-6);
+  align-content: start;
+}
+
+@media (min-width: 64rem) {
+  .split {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    gap: var(--space-8);
+  }
+}
+
+.linkList {
+  display: grid;
+  gap: var(--space-1);
+}
+
+.linkList a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2rem;
+  font-weight: var(--weight-medium);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.moreLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--target-size);
+  margin-top: var(--space-5);
+  font-weight: var(--weight-semibold);
+}

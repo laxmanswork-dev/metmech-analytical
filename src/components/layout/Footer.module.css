@@ -1,0 +1,75 @@
+.footer {
+  --color-focus: var(--color-text-inverse);
+
+  padding-block: var(--space-8) var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--color-text-inverse-muted);
+  background: var(--color-surface-inverse);
+}
+
+.columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  gap: var(--space-7) var(--space-6);
+}
+
+.name {
+  font-size: var(--text-base);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--color-text-inverse);
+}
+
+.descriptor {
+  font-weight: var(--weight-medium);
+  color: var(--color-accent-on-dark);
+}
+
+.summary {
+  margin-top: var(--space-4);
+}
+
+.heading {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-base);
+  color: var(--color-text-inverse);
+  letter-spacing: 0;
+}
+
+.list {
+  display: grid;
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.25rem;
+  color: var(--color-text-inverse-muted);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+}
+
+.link:hover {
+  color: var(--color-text-inverse);
+  text-decoration: underline;
+}
+
+.address {
+  display: grid;
+  margin-top: var(--space-3);
+  font-style: normal;
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  margin-top: var(--space-7);
+  padding-top: var(--space-5);
+  border-top: 1px solid rgb(255 255 255 / 0.16);
+}
+
+.bottom p {
+  flex: 1 1 16rem;
+}

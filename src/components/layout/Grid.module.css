@@ -1,0 +1,23 @@
+.grid {
+  --grid-min: 16rem;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--grid-min)), 1fr));
+  gap: var(--space-5);
+}
+
+.grid > * {
+  min-width: 0;
+}
+
+.sm {
+  --grid-min: 13rem;
+}
+
+.md {
+  --grid-min: 16rem;
+}
+
+.lg {
+  --grid-min: 20rem;
+}

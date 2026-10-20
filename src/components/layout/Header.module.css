@@ -1,0 +1,338 @@
+/*
+ * A single sticky row. Its height must match --header-height in
+ * src/styles/tokens.css, which the full-screen home hero subtracts from the
+ * viewport: 60px + 1px border below 75rem, 79px + 1px border from 75rem.
+ *
+ * What sits on the bar, by width:
+ *   below 48rem   brand · menu button
+ *   from 48rem    brand · [language | Start a Request] · menu button
+ *   from 75rem    brand · four links · [language | Start a Request]
+ * Whatever is not on the bar is in the menu.
+ */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  /* A very light cool white, so the bar reads as separate from white page
+     sections without competing with the navy hero. */
+  background: var(--color-surface-muted);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 3.75rem;
+}
+
+/* ---- Left: logo lockup ---- */
+
+.brand {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+  /* A full-height tap area, taller than the lockup itself. */
+  min-height: var(--target-size);
+  color: var(--color-heading);
+  text-decoration: none;
+}
+
+.brand:hover {
+  color: var(--color-heading);
+}
+
+.logo {
+  flex: none;
+  width: auto;
+  height: 2.125rem;
+}
+
+.wordmark {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.brandName {
+  font-size: 0.875rem;
+  font-weight: var(--weight-semibold);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
+
+.brandTag {
+  font-size: 0.75rem;
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  /* A shade deeper than the usual accent: small text on the bar's cool-white
+     background needs it to reach 4.5:1 contrast. */
+  color: var(--cyan-700);
+}
+
+/* ---- Right: the utility group and the menu button ---- */
+
+.actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Language selection and the request action share one outlined container. */
+.utility {
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0.25rem 0.25rem 0.25rem 0.75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+}
+
+.barUtility {
+  display: none;
+}
+
+.language {
+  /* The switch sits inside the group's outline, so it has no border of its
+     own, and marks the current language with a tint rather than a solid fill. */
+  --switcher-size: 2rem;
+  --switcher-font: 0.8125rem;
+  --switcher-pad: 0.5rem;
+  --switcher-border: 0;
+  --switcher-surface: transparent;
+  --switcher-active-surface: var(--color-surface-tint);
+  --switcher-active-text: var(--color-heading);
+
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.globe {
+  flex: none;
+  width: 1.0625rem;
+  height: 1.0625rem;
+  color: var(--color-text-muted);
+}
+
+.request a {
+  min-height: 2.5rem;
+  padding: 0 1.125rem;
+  font-size: 0.875rem;
+  font-weight: var(--weight-semibold);
+  white-space: nowrap;
+  border-radius: 0.5rem;
+}
+
+.menuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--target-size);
+  height: var(--target-size);
+  padding: 0;
+  color: var(--color-heading);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: background-color var(--transition);
+}
+
+.menuButton:hover {
+  background: var(--color-surface-tint);
+}
+
+/* ---- Centre: the links. Below 75rem this is a panel under the bar. ---- */
+
+.menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  display: none;
+  gap: var(--space-4);
+  max-height: calc(100vh - var(--header-height));
+  /* Side padding matches the centred container, so the links line up under
+     the logo at any screen width. */
+  padding: var(--space-2) max(var(--gutter), calc((100% - var(--container-max)) / 2 + var(--gutter)))
+    var(--space-5);
+  overflow-y: auto;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+}
+
+.menuOpen {
+  display: grid;
+}
+
+.navList {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Shared by the plain links and the dropdown's button. */
+.navLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: var(--target-size);
+  font-size: var(--text-base);
+  font-weight: var(--weight-medium);
+  line-height: 1.4;
+  color: var(--color-heading);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--transition);
+}
+
+.navLink:hover,
+.navLink[aria-current='page'],
+.navLink[data-current],
+.navLink[aria-expanded='true'] {
+  color: var(--color-primary);
+}
+
+/* In the menu the group stacks: language on its own line, then the action. */
+.menuUtility {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4) 0 0;
+  border: 0;
+  border-top: 1px solid var(--color-border);
+  border-radius: 0;
+}
+
+.menuUtility .request {
+  display: grid;
+}
+
+.menuUtility .request a {
+  min-height: var(--target-size);
+}
+
+.menuUtility .language {
+  --switcher-size: var(--target-size);
+  --switcher-font: var(--text-sm);
+  --switcher-pad: var(--space-3);
+}
+
+/* ---- From 48rem: the utility group fits on the bar ---- */
+
+@media (min-width: 48rem) {
+  .barUtility {
+    display: flex;
+  }
+
+  .menuUtility {
+    display: none;
+  }
+}
+
+/* ---- From 75rem: everything on one row ----
+   75rem is where the centred container reaches its full width, and the
+   narrowest at which the longer Tamil labels still have room. */
+
+@media (min-width: 75rem) {
+  .bar {
+    gap: var(--space-6);
+    min-height: 4.9375rem;
+  }
+
+  .brand {
+    flex: none;
+    gap: 0.75rem;
+  }
+
+  .logo {
+    height: 2.625rem;
+  }
+
+  /* The name stacks over two lines, which keeps the brand block compact. */
+  .brandName {
+    max-width: 12.5em;
+    font-size: 1rem;
+    line-height: 1.15;
+    letter-spacing: 0.015em;
+  }
+
+  .brandTag {
+    margin-top: 0.125rem;
+  }
+
+  /* The links take the space between the brand and the actions and sit
+     centred in it. */
+  .menu {
+    position: static;
+    display: flex;
+    flex: 1 1 auto;
+    justify-content: center;
+    min-width: 0;
+    max-height: none;
+    padding: 0;
+    overflow: visible;
+    background: none;
+    border: 0;
+    box-shadow: none;
+  }
+
+  .menuButton {
+    display: none;
+  }
+
+  .navList {
+    /* The dropdown floats below the bar as a panel here. */
+    --dropdown-position: absolute;
+    --dropdown-min-width: 14rem;
+    --dropdown-padding: 0.375rem;
+    --dropdown-surface: var(--color-surface);
+    --dropdown-border: 1px solid var(--color-border);
+    --dropdown-shadow: 0 10px 24px rgb(10 31 61 / 0.1);
+    --dropdown-link-pad: 0.75rem;
+    --dropdown-font: 0.9375rem;
+    --dropdown-hover: var(--color-surface-tint);
+
+    flex-direction: row;
+    gap: 0 2rem;
+  }
+
+  /* Tamil labels are longer, so its links and action sit a little closer. */
+  html:lang(ta) .navList {
+    gap: 0 1.5rem;
+  }
+
+  html:lang(ta) .request a {
+    padding-inline: 0.875rem;
+  }
+
+  /* Links fill the bar's height, so the underline sits on its lower edge. */
+  .navLink {
+    min-height: 4.9375rem;
+    font-size: var(--text-nav);
+  }
+
+  /* A thin underline grows from the left on hover and stays for the current page. */
+  .navLink::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 2px;
+    background: var(--color-primary);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 200ms ease;
+  }
+
+  .navLink:hover::after,
+  .navLink[aria-current='page']::after,
+  .navLink[data-current]::after,
+  .navLink[aria-expanded='true']::after {
+    transform: scaleX(1);
+  }
+}

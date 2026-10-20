@@ -1,0 +1,125 @@
+export default {
+  meta: {
+    description:
+      'Metmech Analytical Engineers is a Chennai research lab offering mechanical testing, hardness testing, SEM with EDS, thermal analysis, and surface and corrosion testing.',
+  },
+  hero: {
+    // Shown in uppercase above the heading.
+    eyebrow: 'Material Testing · Analytical Research',
+    title: 'Understanding Materials for a Better Tomorrow',
+    text: 'We test metals, polymers and composites to support industrial and research needs.',
+  },
+  // The rotating display of testing categories in the hero.
+  orbit: {
+    label: 'Testing capabilities',
+    centreAlt: 'Scanning electron microscope with operator workstation',
+    pause: 'Pause animation',
+    play: 'Play animation',
+    // The lines each name is set on inside its circle, which is about 110px
+    // wide: keep lines short. Each entry must spell the service title.
+    labelLines: {
+      'mechanical-testing': ['Mechanical', 'Testing'],
+      'hardness-testing': ['Hardness', 'Testing'],
+      'material-characterization': ['Material', 'Characterization'],
+      'thermal-analysis': ['Thermal', 'Analysis'],
+      'surface-corrosion-testing': ['Surface &', 'Corrosion', 'Testing'],
+      'welding-processing': ['Welding &', 'Processing'],
+    },
+    // Names whose last line is too wide for the bottom of the circle; they are
+    // set a little higher.
+    labelRaised: ['material-characterization'],
+    items: {
+      'mechanical-testing': 'Tensile strength, compression, impact and flexural behaviour.',
+      'hardness-testing': 'Material resistance to indentation and deformation.',
+      'material-characterization': 'Microstructure, composition and material properties.',
+      'thermal-analysis': 'Thermal behaviour and temperature-dependent properties.',
+      'surface-corrosion-testing':
+        'Surface condition, coating performance and corrosion behaviour.',
+      'welding-processing': 'Weld quality, process evaluation and material integrity.',
+    },
+  },
+  capabilities: {
+    heading: 'What We Offer',
+    items: [
+      {
+        title: 'Accurate Testing',
+        text: 'Tests are carried out on suitable instruments, following the method agreed for your sample.',
+      },
+      {
+        title: 'Advanced Instruments',
+        text: 'Mechanical, hardness, microscopy, thermal and surface instruments under one roof.',
+      },
+      {
+        title: 'Industrial & Research Support',
+        text: 'We work with manufacturers, engineers, students and researchers on routine and project testing.',
+      },
+      {
+        title: 'Technical Consultation',
+        text: 'Not sure which test fits your need? We discuss your objective before any work begins.',
+      },
+    ],
+  },
+  testing: {
+    heading: 'Our Testing Capabilities',
+    lead: 'Explore our services by material and testing requirement.',
+  },
+  instruments: {
+    heading: 'Featured Instruments',
+    lead: 'Some of the instruments used for our testing and analysis work.',
+  },
+  industries: {
+    heading: 'Industries We Support',
+    lead: 'Material questions come up in every engineering sector. These are the areas we work with most often.',
+  },
+  why: {
+    heading: 'Why Choose Us?',
+    items: [
+      {
+        title: 'Range of testing services',
+        text: 'Mechanical, hardness, microstructure, thermal, surface and corrosion tests are available from one laboratory.',
+      },
+      {
+        title: 'Analytical instrumentation',
+        text: 'Access to SEM with EDS, XRD, thermal analysis and metallurgical microscopy for deeper investigation.',
+      },
+      {
+        title: 'Metals, polymers and composites',
+        text: 'We test metallic materials as well as polymers and fibre-reinforced composites.',
+      },
+      {
+        title: 'Clear technical communication',
+        text: 'Results are shared with the context needed to understand them, and we are available to discuss them.',
+      },
+      {
+        title: 'Help choosing the right test',
+        text: 'Describe the problem you are trying to solve and we will help identify a suitable testing approach.',
+      },
+    ],
+  },
+  process: {
+    heading: 'How an Enquiry Works',
+    lead: 'A typical testing enquiry follows these steps.',
+    steps: [
+      {
+        title: 'Share your requirement',
+        text: 'Tell us about your material, sample and what you need to find out.',
+      },
+      {
+        title: 'Discuss the testing need',
+        text: 'We talk through the objective, the applicable standard and any constraints.',
+      },
+      {
+        title: 'Confirm the suitable test',
+        text: 'The test method, number of samples and specimen details are agreed.',
+      },
+      {
+        title: 'Coordinate sample submission',
+        text: 'You send or deliver the samples to our laboratory in Chennai.',
+      },
+      {
+        title: 'Receive results',
+        text: 'We share the results and remain available for technical discussion.',
+      },
+    ],
+  },
+}
