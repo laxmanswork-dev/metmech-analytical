@@ -5,7 +5,6 @@ import PageHero from '../components/common/PageHero.jsx'
 import Seo from '../components/common/Seo.jsx'
 import Section from '../components/layout/Section.jsx'
 import LocalizedLink from '../components/navigation/LocalizedLink.jsx'
-import { PAGE_BACKGROUNDS, SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { INDUSTRIES } from '../data/industries.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { ROUTES, servicePath } from '../routes/pages.js'
@@ -24,7 +23,6 @@ export default function IndustriesPage() {
         path={ROUTES.industries}
       />
       <PageHero
-        background={PAGE_BACKGROUNDS.industries}
         title={t('industries.hero.title')}
         lead={t('industries.hero.lead')}
         breadcrumbs={[
@@ -33,7 +31,7 @@ export default function IndustriesPage() {
         ]}
       />
 
-      {INDUSTRIES.map(({ key, services }) => {
+      {INDUSTRIES.map(({ key, services }, index) => {
         const item = tm(`industries.items.${key}`)
         const headingId = `${key}-heading`
 
@@ -42,8 +40,7 @@ export default function IndustriesPage() {
           <Section
             key={key}
             id={key}
-            background={SECTION_BACKGROUNDS[key]}
-            panel
+            tone={index % 2 === 0 ? 'default' : 'muted'}
             labelledBy={headingId}
           >
             <div className={styles.header}>

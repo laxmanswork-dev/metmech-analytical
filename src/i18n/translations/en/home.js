@@ -44,36 +44,19 @@ export default {
     items: [
       {
         title: 'Accurate Testing',
-        points: [
-          'Suitable instruments for each test',
-          'Testing methods agreed for your sample',
-          'Reliable results through consistent testing procedures',
-        ],
+        text: 'We match each test to a suitable instrument and agree the testing method for your sample, so consistent procedures give you reliable results.',
       },
       {
         title: 'Advanced Instruments',
-        points: [
-          'Mechanical and hardness testing',
-          'Microscopy and material analysis',
-          'Thermal and surface testing',
-        ],
+        text: 'Our laboratory is equipped for mechanical and hardness testing, microscopy and material analysis, and thermal and surface testing.',
       },
       {
         title: 'Industrial & Research Support',
-        points: [
-          'Support for manufacturers and engineers',
-          'Testing for students and researchers',
-          // U+2011 non-breaking hyphen: keeps "project-based" whole on one line.
-          'Routine and project‑based testing',
-        ],
+        text: 'We support manufacturers and engineers as well as students and researchers, with both routine and project‑based testing.',
       },
       {
         title: 'Technical Consultation',
-        points: [
-          'Understand your testing requirements',
-          'Identify suitable testing methods',
-          'Discuss objectives before testing begins',
-        ],
+        text: 'We take time to understand your testing requirements, identify suitable methods and discuss your objectives before testing begins.',
       },
     ],
   },

@@ -1,16 +1,14 @@
-/* The --section-* colours are set by a Section on a background photograph
-   (Section.module.css); elsewhere the usual colours apply. */
 .heading {
   max-width: var(--container-narrow);
   margin-bottom: var(--heading-gap, var(--space-6));
 }
 
 .heading h2 {
-  color: var(--section-heading-color, var(--color-heading));
+  color: var(--color-heading);
 }
 
 .lead {
   margin-top: var(--space-3);
   font-size: var(--text-lg);
-  color: var(--section-lead-color, var(--color-text-muted));
+  color: var(--color-text-muted);
 }

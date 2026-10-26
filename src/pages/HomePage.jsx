@@ -10,7 +10,6 @@ import ServiceCard from '../components/common/ServiceCard.jsx'
 import Grid from '../components/layout/Grid.jsx'
 import Section from '../components/layout/Section.jsx'
 import LocalizedLink from '../components/navigation/LocalizedLink.jsx'
-import { SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { INDUSTRIES } from '../data/industries.js'
 import { FEATURED_INSTRUMENTS } from '../data/instruments.js'
 import { HOME_SERVICES } from '../data/services.js'
@@ -34,7 +33,7 @@ export default function HomePage() {
 
       <WhatWeOffer />
 
-      <Section background={SECTION_BACKGROUNDS.homeServices} labelledBy="testing-heading">
+      <Section tone="muted" labelledBy="testing-heading">
         <SectionHeading
           id="testing-heading"
           title={t('home.testing.heading')}
@@ -51,7 +50,7 @@ export default function HomePage() {
         </LocalizedLink>
       </Section>
 
-      <Section background={SECTION_BACKGROUNDS.homeInstruments} labelledBy="instruments-heading">
+      <Section labelledBy="instruments-heading">
         <SectionHeading
           id="instruments-heading"
           title={t('home.instruments.heading')}
@@ -68,7 +67,7 @@ export default function HomePage() {
         </LocalizedLink>
       </Section>
 
-      <Section background={SECTION_BACKGROUNDS.homeIndustries} labelledBy="industries-heading">
+      <Section tone="muted" labelledBy="industries-heading">
         <SectionHeading
           id="industries-heading"
           title={t('home.industries.heading')}
@@ -101,9 +100,9 @@ export default function HomePage() {
         </LocalizedLink>
       </Section>
 
-      <WhyChoose background={SECTION_BACKGROUNDS.homeWhy} />
+      <WhyChoose />
 
-      <Section background={SECTION_BACKGROUNDS.homeProcess} panel labelledBy="process-heading">
+      <Section tone="tint" labelledBy="process-heading">
         <SectionHeading
           id="process-heading"
           title={t('home.process.heading')}

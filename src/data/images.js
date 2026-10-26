@@ -11,6 +11,7 @@ import electrochemicalWorkstation from '../assets/images/instruments/electrochem
 import impactTestingMachine from '../assets/images/instruments/impact-testing-machine.webp'
 import metallurgicalMicroscope from '../assets/images/instruments/metallurgical-microscope.webp'
 import microVickers from '../assets/images/instruments/micro-vickers-hardness-tester.webp'
+import mechanicalTesting from '../assets/images/services/mechanical-testing.webp'
 import samplePreparation from '../assets/images/services/sample-preparation.webp'
 import semEds from '../assets/images/instruments/sem-eds.webp'
 import shoreD from '../assets/images/instruments/shore-d-hardness-tester.webp'
@@ -39,6 +40,7 @@ export const INSTRUMENT_IMAGES = {
 // Photographs for services with no instrument photograph of their own, keyed by
 // service slug. Their alt text is `services.items.<slug>.imageAlt`.
 export const SERVICE_IMAGES = {
+  'mechanical-testing': { src: mechanicalTesting, width: 960, height: 640 },
   'sample-preparation': { src: samplePreparation, width: 960, height: 640 },
 }
 

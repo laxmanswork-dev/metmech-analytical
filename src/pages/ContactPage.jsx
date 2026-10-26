@@ -4,7 +4,6 @@ import PageHero from '../components/common/PageHero.jsx'
 import Seo from '../components/common/Seo.jsx'
 import EnquiryForm from '../components/forms/EnquiryForm.jsx'
 import Section from '../components/layout/Section.jsx'
-import { PAGE_BACKGROUNDS, SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { EMAILS, MAPS_URL, PHONES } from '../data/site.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { ROUTES } from '../routes/pages.js'
@@ -25,7 +24,6 @@ export default function ContactPage() {
       />
       <JsonLd data={organizationSchema()} />
       <PageHero
-        background={PAGE_BACKGROUNDS.contact}
         title={t('contact.hero.title')}
         lead={t('contact.hero.lead')}
         breadcrumbs={[
@@ -34,7 +32,7 @@ export default function ContactPage() {
         ]}
       />
 
-      <Section background={SECTION_BACKGROUNDS.contact} panel>
+      <Section>
         <div className={styles.layout}>
           <section aria-labelledby="location-heading" className={styles.info}>
             <h2 id="location-heading">{t('contact.info.heading')}</h2>

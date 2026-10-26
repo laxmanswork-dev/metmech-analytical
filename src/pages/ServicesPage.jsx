@@ -5,7 +5,6 @@ import Seo from '../components/common/Seo.jsx'
 import ServiceCard from '../components/common/ServiceCard.jsx'
 import Grid from '../components/layout/Grid.jsx'
 import Section from '../components/layout/Section.jsx'
-import { PAGE_BACKGROUNDS, SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { FOCUS_SERVICE, SERVICE_CATEGORIES } from '../data/services.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { ROUTES } from '../routes/pages.js'
@@ -21,7 +20,6 @@ export default function ServicesPage() {
         path={ROUTES.services}
       />
       <PageHero
-        background={PAGE_BACKGROUNDS.services}
         title={t('services.hero.title')}
         lead={t('services.hero.lead')}
         breadcrumbs={[
@@ -30,7 +28,7 @@ export default function ServicesPage() {
         ]}
       />
 
-      <Section background={SECTION_BACKGROUNDS.servicesCategories} labelledBy="categories-heading">
+      <Section labelledBy="categories-heading">
         <SectionHeading
           id="categories-heading"
           title={t('services.overview.heading')}
@@ -43,7 +41,7 @@ export default function ServicesPage() {
         </Grid>
       </Section>
 
-      <Section background={SECTION_BACKGROUNDS.servicesFocus} labelledBy="focus-heading">
+      <Section tone="muted" labelledBy="focus-heading">
         <SectionHeading
           id="focus-heading"
           title={t('services.focus.heading')}

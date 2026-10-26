@@ -6,20 +6,6 @@
   background: var(--color-surface-inverse);
 }
 
-/* ---- With a background photograph (PhotoBackdrop) ----
-   The lead and breadcrumbs turn white, which keeps over 4.5:1 against the
-   brightest part of every title-band photograph under its veil (99th-
-   percentile pixel, measured); the hero's usual blue-grey would need a
-   darker veil that hides the lab. */
-.photo {
-  position: relative;
-  isolation: isolate;
-  overflow: hidden;
-  color: var(--color-text-inverse);
-  /* Keeps letter shapes crisp over the brighter parts of a photograph. */
-  text-shadow: 0 1px 2px rgb(10 31 61 / 0.35);
-}
-
 .title {
   margin-top: var(--space-3);
   color: var(--color-text-inverse);

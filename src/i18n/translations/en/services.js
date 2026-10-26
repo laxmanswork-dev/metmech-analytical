@@ -36,6 +36,8 @@ export default {
   items: {
     'mechanical-testing': {
       title: 'Mechanical Testing',
+      imageAlt:
+        'Universal testing machine holding a tensile specimen between its grips, with the load–extension curve shown on the computer beside it',
       summary:
         'Tensile, compression, flexural, shear and impact tests that show how a material behaves under load.',
       intro:

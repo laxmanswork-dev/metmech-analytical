@@ -8,7 +8,7 @@
 export const SERVICES = [
   {
     slug: 'mechanical-testing',
-    image: 'universal-testing-machine',
+    image: null,
     instruments: ['universal-testing-machine', 'impact-testing-machine'],
     related: ['hardness-testing', 'sample-preparation', 'material-characterization'],
   },

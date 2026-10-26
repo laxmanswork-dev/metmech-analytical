@@ -4,13 +4,11 @@ import Button from '../components/common/Button.jsx'
 import CheckList from '../components/common/CheckList.jsx'
 import CtaBand from '../components/common/CtaBand.jsx'
 import MediaFrame from '../components/common/MediaFrame.jsx'
-import Numeral from '../components/common/Numeral.jsx'
 import PageHero from '../components/common/PageHero.jsx'
 import Seo from '../components/common/Seo.jsx'
 import SpecTable from '../components/common/SpecTable.jsx'
 import Section from '../components/layout/Section.jsx'
 import LocalizedLink from '../components/navigation/LocalizedLink.jsx'
-import { SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { INSTRUMENT_IMAGES } from '../data/images.js'
 import { getInstrument } from '../data/instruments.js'
 import { useLanguage } from '../hooks/useLanguage.js'
@@ -49,30 +47,21 @@ export default function InstrumentDetailPage() {
         ]}
       />
 
-      <Section background={SECTION_BACKGROUNDS.instrumentBody} panel>
+      <Section>
         <div className={content.split}>
           <div className={content.stack}>
             <div className={content.block}>
-              <h2>
-                <Numeral value={1} />
-                {labels.overview}
-              </h2>
+              <h2>{labels.overview}</h2>
               <p>{item.overview}</p>
             </div>
 
             <div className={content.block}>
-              <h2>
-                <Numeral value={2} />
-                {labels.applications}
-              </h2>
+              <h2>{labels.applications}</h2>
               <CheckList items={item.applications} />
             </div>
 
             <div className={content.block}>
-              <h2>
-                <Numeral value={3} />
-                {labels.specifications}
-              </h2>
+              <h2>{labels.specifications}</h2>
               {instrument.specs.length > 0 ? (
                 <>
                   <SpecTable specs={instrument.specs} />

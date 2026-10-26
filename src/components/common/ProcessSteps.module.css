@@ -1,133 +1,53 @@
+/* A single column on phones, two on tablets, then one row of stages on
+   desktop. Tamil runs longer, so it keeps two columns until 75rem. Each stage
+   sits under a hairline rule, which separates the stages without numbering
+   them. */
 .steps {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr));
-  gap: var(--space-5);
+  gap: var(--space-6);
+}
+
+@media (min-width: 40rem) {
+  .steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-6) var(--space-7);
+  }
+}
+
+@media (min-width: 64rem) {
+  html:not(:lang(ta)) .steps {
+    grid-template-columns: none;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    gap: var(--space-6);
+  }
+}
+
+@media (min-width: 75rem) {
+  html:lang(ta) .steps {
+    grid-template-columns: none;
+    grid-auto-columns: minmax(0, 1fr);
+    grid-auto-flow: column;
+    gap: var(--space-6);
+  }
 }
 
 .step {
-  display: flex;
-  gap: var(--space-4);
-}
-
-.number {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  line-height: 1;
-  letter-spacing: 0.04em;
-  color: var(--color-text-inverse);
-  background: var(--color-surface-inverse);
-  border-radius: 50%;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
 }
 
 .title {
   font-size: var(--text-base);
   line-height: 1.4;
   letter-spacing: 0;
+  text-wrap: balance;
 }
 
 .text {
-  margin-top: var(--space-1);
+  max-width: 34rem;
+  margin-top: var(--space-2);
   font-size: 0.9375rem;
   color: var(--color-text-muted);
-}
-
-@media (min-width: 64rem) {
-  .step {
-    flex-direction: column;
-  }
-}
-
-/* ---- Connected: a single column joined by a vertical line, then on desktop
-   a single row joined by a horizontal one. Tamil runs longer, so it keeps
-   the column until 75rem. The line is decorative; the ordered list already
-   conveys the sequence. ---- */
-
-.connected {
-  --line-gap: var(--space-2);
-  --number-size: 2.5rem;
-
-  grid-template-columns: minmax(0, 1fr);
-  gap: 0;
-}
-
-.connected .step {
-  position: relative;
-  padding-bottom: var(--space-5);
-}
-
-.connected .step:last-child {
-  padding-bottom: 0;
-}
-
-.connected .step:not(:last-child)::before {
-  content: '';
-  position: absolute;
-  top: calc(var(--number-size) + var(--line-gap));
-  bottom: var(--line-gap);
-  left: calc(var(--number-size) / 2 - 0.5px);
-  width: 1px;
-  background: var(--grey-400);
-}
-
-.connected .text {
-  max-width: 34rem;
-}
-
-html:lang(ta) .connected .step {
-  flex-direction: row;
-}
-
-@media (min-width: 64rem) {
-  html:not(:lang(ta)) .connected {
-    --column-gap: var(--space-5);
-
-    grid-template-columns: none;
-    grid-auto-columns: minmax(0, 1fr);
-    grid-auto-flow: column;
-    column-gap: var(--column-gap);
-  }
-
-  html:not(:lang(ta)) .connected .step {
-    padding-bottom: 0;
-  }
-
-  html:not(:lang(ta)) .connected .step:not(:last-child)::before {
-    top: calc(var(--number-size) / 2 - 0.5px);
-    right: calc(var(--line-gap) - var(--column-gap));
-    bottom: auto;
-    left: calc(var(--number-size) + var(--line-gap));
-    width: auto;
-    height: 1px;
-  }
-}
-
-@media (min-width: 75rem) {
-  html:lang(ta) .connected {
-    --column-gap: var(--space-5);
-
-    grid-template-columns: none;
-    grid-auto-columns: minmax(0, 1fr);
-    grid-auto-flow: column;
-    column-gap: var(--column-gap);
-  }
-
-  html:lang(ta) .connected .step {
-    flex-direction: column;
-    padding-bottom: 0;
-  }
-
-  html:lang(ta) .connected .step:not(:last-child)::before {
-    top: calc(var(--number-size) / 2 - 0.5px);
-    right: calc(var(--line-gap) - var(--column-gap));
-    bottom: auto;
-    left: calc(var(--number-size) + var(--line-gap));
-    width: auto;
-    height: 1px;
-  }
+  text-wrap: pretty;
 }

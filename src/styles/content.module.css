@@ -83,10 +83,4 @@
   min-height: var(--target-size);
   margin-top: var(--space-5);
   font-weight: var(--weight-semibold);
-  /* Light when the link sits on a background photograph (Section.module.css). */
-  color: var(--more-link-color, var(--color-primary));
-}
-
-.moreLink:hover {
-  color: var(--more-link-hover-color, var(--color-primary-hover));
 }

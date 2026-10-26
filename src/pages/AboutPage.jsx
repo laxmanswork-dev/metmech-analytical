@@ -5,7 +5,6 @@ import ProcessSteps from '../components/common/ProcessSteps.jsx'
 import SectionHeading from '../components/common/SectionHeading.jsx'
 import Seo from '../components/common/Seo.jsx'
 import Section from '../components/layout/Section.jsx'
-import { PAGE_BACKGROUNDS, SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { ABOUT_IMAGE } from '../data/images.js'
 import { OWNER } from '../data/owner.js'
 import { useLanguage } from '../hooks/useLanguage.js'
@@ -25,7 +24,6 @@ export default function AboutPage() {
         path={ROUTES.about}
       />
       <PageHero
-        background={PAGE_BACKGROUNDS.about}
         title={t('about.hero.title')}
         lead={t('about.hero.lead')}
         breadcrumbs={[
@@ -36,7 +34,7 @@ export default function AboutPage() {
         imageAlt={t('about.hero.imageAlt')}
       />
 
-      <Section background={SECTION_BACKGROUNDS.aboutIntro} panel labelledBy="intro-heading">
+      <Section labelledBy="intro-heading">
         <div className={styles.intro}>
           <div>
             <SectionHeading id="intro-heading" title={t('about.intro.heading')} />
@@ -50,12 +48,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section
-        background={SECTION_BACKGROUNDS.aboutVision}
-        panel
-        spacing="compact"
-        labelledBy="vision-heading"
-      >
+      <Section tone="muted" spacing="compact" labelledBy="vision-heading">
         <h2 id="vision-heading" className="visually-hidden">
           {t('about.vision.heading')} / {t('about.mission.heading')}
         </h2>
@@ -71,15 +64,15 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <WhyChoose background={SECTION_BACKGROUNDS.aboutWhy} />
+      <WhyChoose />
 
-      <Section background={SECTION_BACKGROUNDS.aboutApproach} panel labelledBy="approach-heading">
+      <Section tone="tint" labelledBy="approach-heading">
         <SectionHeading
           id="approach-heading"
           title={t('about.approach.heading')}
           lead={t('about.approach.lead')}
         />
-        <ProcessSteps steps={tm('about.approach.steps')} connected />
+        <ProcessSteps steps={tm('about.approach.steps')} />
       </Section>
 
       <CtaBand />

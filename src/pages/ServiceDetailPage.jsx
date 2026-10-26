@@ -5,7 +5,6 @@ import CheckList from '../components/common/CheckList.jsx'
 import CtaBand from '../components/common/CtaBand.jsx'
 import FaqList from '../components/common/FaqList.jsx'
 import MediaFrame from '../components/common/MediaFrame.jsx'
-import Numeral from '../components/common/Numeral.jsx'
 import PageHero from '../components/common/PageHero.jsx'
 import SectionHeading from '../components/common/SectionHeading.jsx'
 import Seo from '../components/common/Seo.jsx'
@@ -13,7 +12,6 @@ import ServiceCard from '../components/common/ServiceCard.jsx'
 import Grid from '../components/layout/Grid.jsx'
 import Section from '../components/layout/Section.jsx'
 import LocalizedLink from '../components/navigation/LocalizedLink.jsx'
-import { SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { getServiceImage } from '../data/images.js'
 import { getService } from '../data/services.js'
 import { useLanguage } from '../hooks/useLanguage.js'
@@ -52,40 +50,28 @@ export default function ServiceDetailPage() {
         ]}
       />
 
-      <Section background={SECTION_BACKGROUNDS.serviceBody} panel>
+      <Section>
         <div className={content.split}>
           <div className={content.stack}>
             <p className={content.lead}>{item.intro}</p>
 
             <div className={content.block}>
-              <h2>
-                <Numeral value={1} />
-                {labels.evaluates}
-              </h2>
+              <h2>{labels.evaluates}</h2>
               <CheckList items={item.evaluates} />
             </div>
 
             <div className={content.block}>
-              <h2>
-                <Numeral value={2} />
-                {labels.why}
-              </h2>
+              <h2>{labels.why}</h2>
               <p>{item.why}</p>
             </div>
 
             <div className={content.block}>
-              <h2>
-                <Numeral value={3} />
-                {labels.applications}
-              </h2>
+              <h2>{labels.applications}</h2>
               <CheckList items={item.applications} />
             </div>
 
             <div className={content.block}>
-              <h2>
-                <Numeral value={4} />
-                {labels.methods}
-              </h2>
+              <h2>{labels.methods}</h2>
               <CheckList items={item.methods} />
               {item.methodsNote && <p className={content.note}>{item.methodsNote}</p>}
             </div>
@@ -117,12 +103,12 @@ export default function ServiceDetailPage() {
         </div>
       </Section>
 
-      <Section background={SECTION_BACKGROUNDS.serviceFaq} panel narrow labelledBy="faq-heading">
+      <Section tone="muted" narrow labelledBy="faq-heading">
         <SectionHeading id="faq-heading" title={labels.faq} />
         <FaqList items={item.faq} />
       </Section>
 
-      <Section background={SECTION_BACKGROUNDS.serviceRelated} labelledBy="related-heading">
+      <Section labelledBy="related-heading">
         <SectionHeading id="related-heading" title={labels.related} />
         <Grid min="lg">
           {service.related.map((related) => (
