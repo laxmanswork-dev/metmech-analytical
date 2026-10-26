@@ -1,6 +1,5 @@
 import { ArrowRight } from 'lucide-react'
 import cardStyles from '../components/common/Card.module.css'
-import CtaBand from '../components/common/CtaBand.jsx'
 import InstrumentCard from '../components/common/InstrumentCard.jsx'
 import JsonLd from '../components/common/JsonLd.jsx'
 import ProcessSteps from '../components/common/ProcessSteps.jsx'
@@ -15,6 +14,8 @@ import { FEATURED_INSTRUMENTS } from '../data/instruments.js'
 import { HOME_SERVICES } from '../data/services.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { ROUTES } from '../routes/pages.js'
+import AboutSection from '../sections/AboutSection.jsx'
+import ContactSection from '../sections/ContactSection.jsx'
 import HomeHero from '../sections/HomeHero.jsx'
 import WhatWeOffer from '../sections/WhatWeOffer.jsx'
 import WhyChoose from '../sections/WhyChoose.jsx'
@@ -102,6 +103,8 @@ export default function HomePage() {
 
       <WhyChoose />
 
+      <AboutSection tone="muted" />
+
       <Section tone="tint" labelledBy="process-heading">
         <SectionHeading
           id="process-heading"
@@ -111,7 +114,7 @@ export default function HomePage() {
         <ProcessSteps steps={tm('home.process.steps')} />
       </Section>
 
-      <CtaBand />
+      <ContactSection />
     </>
   )
 }

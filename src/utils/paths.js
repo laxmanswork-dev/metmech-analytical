@@ -22,9 +22,12 @@ export function stripLanguage(pathname) {
   return normalizePath(path.slice(language.length + 1))
 }
 
-// ("/about", "ta") -> "/ta/about", ("/", "ta") -> "/ta", ("/about", "en") -> "/about"
+// ("/equipment", "ta") -> "/ta/equipment", ("/", "ta") -> "/ta",
+// ("/#about", "ta") -> "/ta#about", ("/equipment", "en") -> "/equipment"
 export function localizePath(path, language) {
-  const normalized = normalizePath(path)
-  if (language === DEFAULT_LANGUAGE) return normalized
-  return normalized === '/' ? `/${language}` : `/${language}${normalized}`
+  const hashIndex = path.indexOf('#')
+  const hash = hashIndex === -1 ? '' : path.slice(hashIndex)
+  const normalized = normalizePath(hashIndex === -1 ? path : path.slice(0, hashIndex))
+  if (language === DEFAULT_LANGUAGE) return normalized + hash
+  return (normalized === '/' ? `/${language}` : `/${language}${normalized}`) + hash
 }

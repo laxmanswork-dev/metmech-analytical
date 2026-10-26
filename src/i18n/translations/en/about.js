@@ -13,9 +13,22 @@ export default {
   intro: {
     heading: 'Who We Are',
     paragraphs: [
-      'Metmech Analytical Engineers is an engineering firm based in Ekkattuthangal, Chennai. We specialise in material testing, mechanical analysis and analytical services.',
-      'Every engineered product depends on the materials it is made from. Testing shows how a material behaves under load, heat, wear and corrosive conditions, and analysis explains why. That information helps engineers select materials, check quality, investigate failures and support research findings.',
-      'We serve a range of sectors, including automotive, aerospace, manufacturing, energy, and research and development. Our aim is to provide reliable, accurate and cost-effective results, explained clearly enough to act on.',
+      'Metmech Analytical Engineers is a Chennai-based materials testing and analytical engineering firm dedicated to quality assurance, technical problem-solving, and materials research.',
+    ],
+    // Subsections under the introduction, each a heading over a paragraph.
+    sections: [
+      {
+        heading: 'Leadership & Experience',
+        text: 'The organization is led by P. R. Parthasarathy, a retired scientist from CVRD, Avadi, with nearly 45 years of professional experience. His background in metallurgy and extensive scientific experience provide a strong foundation for the organization’s technical approach.',
+      },
+      {
+        heading: 'Our Expertise',
+        text: 'Our team brings together engineering knowledge, research capabilities, and materials science expertise. With engineers, including Anna University rank holders, and individuals specializing in metallurgy and materials science, we focus on understanding material behavior and addressing practical engineering challenges.',
+      },
+      {
+        heading: 'Our Purpose',
+        text: 'We aim to support quality assurance and solve technical problems encountered in the automotive industry and other engineering sectors. By combining scientific analysis, materials testing, and practical engineering knowledge, we help clients better understand material performance and make informed technical decisions.',
+      },
     ],
   },
   vision: {

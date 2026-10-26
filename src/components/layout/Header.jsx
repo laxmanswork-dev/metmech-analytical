@@ -1,10 +1,12 @@
 import { Globe, Menu, X } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { NavLink } from 'react-router'
+import { useLocation } from 'react-router'
 import { LOGO_EMBLEM } from '../../data/brand.js'
 import { OFFICIAL_NAME } from '../../data/site.js'
+import { useHomeSection } from '../../hooks/useHomeSection.js'
 import { useLanguage } from '../../hooks/useLanguage.js'
-import { ENQUIRY_PATH, HEADER_NAV, ROUTES } from '../../routes/pages.js'
+import { ENQUIRY_PATH, HEADER_NAV, HOME_SECTIONS, ROUTES } from '../../routes/pages.js'
+import { stripLanguage } from '../../utils/paths.js'
 import Button from '../common/Button.jsx'
 import LanguageSwitcher from '../navigation/LanguageSwitcher.jsx'
 import LocalizedLink from '../navigation/LocalizedLink.jsx'
@@ -13,6 +15,9 @@ import Container from './Container.jsx'
 import styles from './Header.module.css'
 
 const MENU_ID = 'site-menu'
+
+// Ids of the home-page sections the navigation links to, in page order.
+const SECTION_IDS = Object.values(HOME_SECTIONS).map((path) => path.split('#')[1])
 
 // The name is set on two lines, "METMECH ANALYTICAL" over "ENGINEERS", so it
 // is split at the last word rather than left to wrap wherever it runs out of room.
@@ -23,6 +28,9 @@ const NAME_SECOND_LINE = OFFICIAL_NAME.slice(NAME_BREAK + 1)
 // One row, three groups:
 //   left    logo, company name and descriptor
 //   centre  Home · Our Services (a dropdown) · About Us · Contact
+//           Home, About Us and Contact are all on the home page: About Us and
+//           Contact scroll to their sections, and while the home page is
+//           showing, the current item follows the section being read.
 //   right   one outlined group: language selection and "Start a Test"
 //
 // On large screens all three sit on the bar. On smaller screens the centre
@@ -32,7 +40,10 @@ const NAME_SECOND_LINE = OFFICIAL_NAME.slice(NAME_BREAK + 1)
 // Phone and email are deliberately not here; they live in the footer and on
 // the contact page.
 export default function Header() {
-  const { t, localize } = useLanguage()
+  const { t } = useLanguage()
+  const { pathname } = useLocation()
+  const isHome = stripLanguage(pathname) === ROUTES.home
+  const section = useHomeSection(SECTION_IDS, isHome)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const menuRef = useRef(null)
   const menuButtonRef = useRef(null)
@@ -107,14 +118,12 @@ export default function Header() {
                       onNavigate={closeMenu}
                     />
                   ) : (
-                    <NavLink
-                      to={localize(path)}
-                      end={path === ROUTES.home}
-                      className={styles.navLink}
+                    <NavItem
+                      path={path}
+                      label={t(`nav.${key}`)}
+                      isCurrent={isHome && (path.split('#')[1] ?? null) === section}
                       onClick={closeMenu}
-                    >
-                      {t(`nav.${key}`)}
-                    </NavLink>
+                    />
                   )}
                 </li>
               ))}
@@ -141,5 +150,25 @@ export default function Header() {
         </div>
       </Container>
     </header>
+  )
+}
+
+// A link to the home page or one of its sections. The current one is marked
+// for assistive technology as well as styled.
+function NavItem({ path, label, isCurrent, onClick }) {
+  const isSection = path.includes('#')
+  let current
+  if (isCurrent) current = isSection ? 'location' : 'page'
+
+  return (
+    <LocalizedLink
+      to={path}
+      className={styles.navLink}
+      aria-current={current}
+      data-current={isCurrent ? '' : undefined}
+      onClick={onClick}
+    >
+      {label}
+    </LocalizedLink>
   )
 }

@@ -1,4 +1,4 @@
-/* "Who We Are": the copy at reading width, the owner's portrait beside it on
+/* The introduction at reading width, the owner's portrait beside it on
    desktop and below it on smaller screens. */
 .intro {
   display: grid;
@@ -11,7 +11,7 @@
 
 @media (min-width: 64rem) {
   .intro {
-    grid-template-columns: minmax(0, var(--container-narrow)) minmax(14rem, 17rem);
+    grid-template-columns: minmax(0, var(--container-narrow)) minmax(18rem, 22rem);
     justify-content: space-between;
     align-items: start;
     gap: var(--space-8);
@@ -23,10 +23,28 @@
   }
 }
 
-/* Vision and mission: two statements, side by side once both fit. */
+/* The opening statement, then each subsection as a heading over a paragraph. */
+.copy {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.topic {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.topic h3 {
+  font-size: var(--text-lg);
+  letter-spacing: 0;
+}
+
+/* Vision and mission: two statements below the introduction, side by side
+   once both fit. */
 .purpose {
   display: grid;
   gap: var(--space-5);
+  margin-top: var(--space-8);
 }
 
 @media (min-width: 48rem) {

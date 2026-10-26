@@ -17,7 +17,7 @@ const HTML_SLOT = '<!--app-html-->'
 // React writes <title>, <meta> and <link> tags at the very start of its output.
 const LEADING_HEAD_TAGS = /^(?:<title>[^<]*<\/title>|<meta [^>]*\/>|<link [^>]*\/>)+/
 
-const { render, pages, siteUrl, defaultLanguage } = await import(
+const { render, pages, redirects, siteUrl, defaultLanguage } = await import(
   pathToFileURL(path.join(serverDir, 'entry-server.js')).href
 )
 const template = await readFile(path.join(distDir, 'index.html'), 'utf8')
@@ -45,6 +45,25 @@ async function writePage(urlPath) {
   const file = path.join(distDir, urlPath, 'index.html')
   await mkdir(path.dirname(file), { recursive: true })
   await writeFile(file, buildDocument(urlPath))
+}
+
+// A page that only forwards the visitor, for an old address whose content now
+// lives in a section of the home page. Works on any static host and without
+// the app's JavaScript; kept out of search results and the sitemap.
+function buildRedirect(to) {
+  const target = siteUrl ? `${siteUrl}${to}` : to
+  return [
+    '<!doctype html>',
+    '<html lang="en">',
+    '<meta charset="utf-8" />',
+    '<meta name="robots" content="noindex" />',
+    `<link rel="canonical" href="${target}" />`,
+    `<meta http-equiv="refresh" content="0; url=${to}" />`,
+    '<title>Redirecting…</title>',
+    `<script>location.replace(${JSON.stringify(to)})</script>`,
+    `<p><a href="${to}">Continue</a></p>`,
+    '',
+  ].join('\n')
 }
 
 function buildSitemap() {
@@ -84,7 +103,12 @@ await writeFile(path.join(distDir, '404.html'), buildDocument('/404'))
 for (const urlPath of paths) {
   await writePage(urlPath)
 }
-console.log(`Prerendered ${paths.length} pages and 404.html`)
+for (const { from, to } of redirects) {
+  const file = path.join(distDir, from, 'index.html')
+  await mkdir(path.dirname(file), { recursive: true })
+  await writeFile(file, buildRedirect(to))
+}
+console.log(`Prerendered ${paths.length} pages, 404.html and ${redirects.length} redirects`)
 
 if (siteUrl) {
   await writeFile(path.join(distDir, 'sitemap.xml'), buildSitemap())

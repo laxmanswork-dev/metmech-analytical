@@ -80,6 +80,3 @@ export const HERO_POSTER = Object.values(heroPosters)[0] ?? null
 
 // The lab photograph used for link previews.
 export const HERO_IMAGE = INSTRUMENT_IMAGES['metallurgical-microscope']
-
-// The about hero: a technician at the Micro Vickers hardness tester.
-export const ABOUT_IMAGE = INSTRUMENT_IMAGES['micro-vickers-hardness-tester']

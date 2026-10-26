@@ -9,7 +9,7 @@
   align-content: start;
 }
 
-.info h3 {
+.info h4 {
   margin-bottom: var(--space-1);
   font-size: var(--text-base);
   letter-spacing: 0;
