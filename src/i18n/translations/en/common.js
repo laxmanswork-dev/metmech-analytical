@@ -27,8 +27,7 @@ export default {
     privacy: 'Privacy Policy',
   },
   actions: {
-    requestTest: 'Request a Test',
-    startRequest: 'Start a Request',
+    requestTest: 'Start a Test',
     exploreServices: 'Explore Testing Services',
     viewDetails: 'View Details',
     viewSpecifications: 'View Specifications',
@@ -41,7 +40,6 @@ export default {
     phone: 'Phone',
     email: 'Email',
     address: 'Address',
-    photoPending: 'Photograph to be added',
   },
   // Shared enquiry call to action shown near the end of most pages.
   cta: {

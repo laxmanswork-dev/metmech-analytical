@@ -1,7 +1,6 @@
 import { ArrowRight } from 'lucide-react'
 import cardStyles from '../components/common/Card.module.css'
 import CtaBand from '../components/common/CtaBand.jsx'
-import FeatureList from '../components/common/FeatureList.jsx'
 import InstrumentCard from '../components/common/InstrumentCard.jsx'
 import JsonLd from '../components/common/JsonLd.jsx'
 import ProcessSteps from '../components/common/ProcessSteps.jsx'
@@ -11,12 +10,14 @@ import ServiceCard from '../components/common/ServiceCard.jsx'
 import Grid from '../components/layout/Grid.jsx'
 import Section from '../components/layout/Section.jsx'
 import LocalizedLink from '../components/navigation/LocalizedLink.jsx'
+import { SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { INDUSTRIES } from '../data/industries.js'
 import { FEATURED_INSTRUMENTS } from '../data/instruments.js'
 import { HOME_SERVICES } from '../data/services.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { ROUTES } from '../routes/pages.js'
 import HomeHero from '../sections/HomeHero.jsx'
+import WhatWeOffer from '../sections/WhatWeOffer.jsx'
 import WhyChoose from '../sections/WhyChoose.jsx'
 import content from '../styles/content.module.css'
 import { organizationSchema } from '../utils/structuredData.js'
@@ -31,12 +32,9 @@ export default function HomePage() {
 
       <HomeHero />
 
-      <Section spacing="compact" labelledBy="capabilities-heading">
-        <SectionHeading id="capabilities-heading" title={t('home.capabilities.heading')} />
-        <FeatureList items={tm('home.capabilities.items')} />
-      </Section>
+      <WhatWeOffer />
 
-      <Section tone="muted" labelledBy="testing-heading">
+      <Section background={SECTION_BACKGROUNDS.homeServices} labelledBy="testing-heading">
         <SectionHeading
           id="testing-heading"
           title={t('home.testing.heading')}
@@ -53,13 +51,13 @@ export default function HomePage() {
         </LocalizedLink>
       </Section>
 
-      <Section labelledBy="instruments-heading">
+      <Section background={SECTION_BACKGROUNDS.homeInstruments} labelledBy="instruments-heading">
         <SectionHeading
           id="instruments-heading"
           title={t('home.instruments.heading')}
           lead={t('home.instruments.lead')}
         />
-        <Grid min="sm">
+        <Grid min="lg">
           {FEATURED_INSTRUMENTS.map((slug) => (
             <InstrumentCard key={slug} slug={slug} />
           ))}
@@ -70,7 +68,7 @@ export default function HomePage() {
         </LocalizedLink>
       </Section>
 
-      <Section tone="muted" labelledBy="industries-heading">
+      <Section background={SECTION_BACKGROUNDS.homeIndustries} labelledBy="industries-heading">
         <SectionHeading
           id="industries-heading"
           title={t('home.industries.heading')}
@@ -103,9 +101,9 @@ export default function HomePage() {
         </LocalizedLink>
       </Section>
 
-      <WhyChoose />
+      <WhyChoose background={SECTION_BACKGROUNDS.homeWhy} />
 
-      <Section tone="tint" labelledBy="process-heading">
+      <Section background={SECTION_BACKGROUNDS.homeProcess} panel labelledBy="process-heading">
         <SectionHeading
           id="process-heading"
           title={t('home.process.heading')}

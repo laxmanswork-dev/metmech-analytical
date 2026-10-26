@@ -8,6 +8,7 @@ import SectionHeading from '../components/common/SectionHeading.jsx'
 import Seo from '../components/common/Seo.jsx'
 import Grid from '../components/layout/Grid.jsx'
 import Section from '../components/layout/Section.jsx'
+import { PAGE_BACKGROUNDS, SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { INSTRUMENT_CATEGORIES, INSTRUMENTS } from '../data/instruments.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { ROUTES } from '../routes/pages.js'
@@ -41,6 +42,7 @@ export default function EquipmentPage() {
         path={ROUTES.equipment}
       />
       <PageHero
+        background={PAGE_BACKGROUNDS.equipment}
         title={t('equipment.hero.title')}
         lead={t('equipment.hero.lead')}
         breadcrumbs={[
@@ -49,7 +51,11 @@ export default function EquipmentPage() {
         ]}
       />
 
-      <Section labelledBy="catalogue-heading">
+      <Section
+        background={SECTION_BACKGROUNDS.equipmentCatalogue}
+        panel
+        labelledBy="catalogue-heading"
+      >
         <SectionHeading id="catalogue-heading" title={t('equipment.catalogue.heading')} />
 
         <div className={styles.controls}>

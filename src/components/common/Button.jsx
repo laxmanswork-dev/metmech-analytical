@@ -2,9 +2,11 @@ import LocalizedLink from '../navigation/LocalizedLink.jsx'
 import styles from './Button.module.css'
 
 // Renders an internal link when `to` is given, otherwise a <button>.
-// `variant` is "primary", "secondary" or "inverse" (for dark backgrounds).
-export default function Button({ to, variant = 'primary', children, ...props }) {
-  const className = `${styles.button} ${styles[variant]}`
+// `variant` is "primary", "secondary", "inverse" (for dark backgrounds) or
+// "ghost" (translucent, for footage and imagery). `shape="cylinder"` gives the
+// machined-rod form used by the site's main calls to action.
+export default function Button({ to, variant = 'primary', shape, children, ...props }) {
+  const className = `${styles.button} ${styles[variant]} ${shape ? styles[shape] : ''}`
 
   if (to) {
     return (

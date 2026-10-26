@@ -1,0 +1,24 @@
+/* Sits directly under the heading, on its left edge, at its drawn size: it
+   never stretches with the container. */
+.accent {
+  display: block;
+  flex: none;
+  width: 2.2875rem;
+  height: 0.625rem;
+  margin-top: var(--space-3);
+  pointer-events: none;
+}
+
+/* --section-accent* are set by a Section on a background photograph. */
+.primary {
+  fill: var(--section-accent, var(--color-accent));
+}
+
+.secondary {
+  fill: var(--section-accent-secondary, var(--heading-accent-secondary, var(--navy-800)));
+}
+
+.faint {
+  fill: var(--section-accent, var(--color-accent));
+  opacity: 0.55;
+}

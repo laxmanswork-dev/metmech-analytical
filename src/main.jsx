@@ -1,5 +1,6 @@
 import '@fontsource-variable/inter/wght.css'
 import '@fontsource-variable/noto-sans-tamil/wght.css'
+import '@fontsource/barlow-semi-condensed/latin-600.css'
 import './styles/tokens.css'
 import './styles/base.css'
 

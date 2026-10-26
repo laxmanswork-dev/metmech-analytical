@@ -4,7 +4,12 @@
   position: relative;
   overflow: hidden;
 
-  padding-block: clamp(2.5rem, 1.5rem + 5vw, 5.5rem);
+  /* The hero's background runs up behind the sticky header, so the footage
+     shows through the header's frosted glass. Its content does not move: the
+     extra top padding is exactly the header's height. */
+  margin-top: calc(-1 * var(--header-height));
+  padding-block: calc(clamp(2.5rem, 1.5rem + 5vw, 5.5rem) + var(--header-height))
+    clamp(2.5rem, 1.5rem + 5vw, 5.5rem);
   color: var(--color-text-inverse-muted);
   background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-800) 100%);
 }
@@ -40,18 +45,43 @@
 /* One flat, even navy over the whole hero, edge to edge and at every screen
    size, so the blue never looks patchy behind the text or the animation.
 
-   62% is the measured minimum for this footage, which has pure white window
-   light behind the text in places. Sampled every half second through the clip:
-     - the heading keeps 3:1 contrast from 50%
-     - white body text over pure white needs 61% for 4.5:1; 62% leaves a small
-       margin. At 55% up to 12% of the pixels behind the paragraph fall short,
-       at 50% up to 30%
-   Small cyan text cannot reach 4.5:1 on footage this bright below 74%, so
-   the eyebrow and the animation's caption title carry their own navy backing
-   instead (as the animation's labels do).
-   Re-measure before lowering this, or after changing the video. */
+   52% is the lightest this footage allows, with the graded layer below doing
+   the extra work behind the text. Measured over 16 frames through the clip at
+   1440, 1024, 768 and 390px (99th-percentile brightest pixel behind each
+   block), white text keeps at least: heading 5.1:1, paragraph 5.2:1, eyebrow
+   5.1:1, orbit caption 4.76:1 (tablet, the tightest). At 45% the heading,
+   paragraph and caption drop to 4.0-4.4:1, under the 4.5:1 small text needs.
+   Small cyan text cannot reach 4.5:1 on footage this bright, so the eyebrow
+   and the animation's caption title are set in white.
+   Re-measure before lowering this, or after changing the video.
+
+   A second, graded layer adds up to a further third of navy behind the text
+   only, where the testing machine's white column runs behind the heading. It
+   fades out before the orbit, so the equipment on that side keeps the flat
+   52%. Text sits above the orbit on smaller screens, so there it runs from the
+   top down instead. */
 .overlay {
-  background: rgb(10 31 61 / 0.62);
+  background:
+    linear-gradient(
+      180deg,
+      rgb(10 31 61 / 0.34) 0%,
+      rgb(10 31 61 / 0.26) 40%,
+      rgb(10 31 61 / 0) 62%
+    ),
+    rgb(10 31 61 / 0.52);
+}
+
+@media (min-width: 64rem) {
+  .overlay {
+    background:
+      linear-gradient(
+        90deg,
+        rgb(10 31 61 / 0.36) 0%,
+        rgb(10 31 61 / 0.3) 38%,
+        rgb(10 31 61 / 0) 60%
+      ),
+      rgb(10 31 61 / 0.52);
+  }
 }
 
 /* Reduced motion: no moving footage; the still poster frame shows instead. */
@@ -74,24 +104,25 @@
 }
 
 /* ---- Left column: eyebrow, heading, description, actions ----
-   Spacing steps up down the group (18, 24, 32px) so the heading stays tied to
+   Spacing steps up down the group (24, 32, 40px) so the heading stays tied to
    its eyebrow and the actions read as the conclusion. */
 
-/* A small tag: the navy backing keeps its cyan text readable over bright
-   footage. The negative margin lines the text, not the tag, up with the heading. */
+/* Spaced white capitals with no backing. White rather than cyan: over the
+   brightest frames white keeps 4.75:1 on its own, where small cyan text would
+   need a navy box behind it. The vertical padding is what the old badge had,
+   so the heading below stays where it was. On phones it wraps; balancing
+   splits it at the middle dot rather than leaving one word on its own. */
 .eyebrow {
-  display: inline-block;
-  margin-bottom: 1.125rem;
-  margin-left: -0.625rem;
-  padding: 0.25rem 0.625rem;
-  background: rgb(10 31 61 / 0.78);
-  border-radius: var(--radius-sm);
+  margin-bottom: var(--space-5);
+  text-wrap: balance;
+  padding-block: 0.25rem;
   font-size: 0.8125rem;
   font-weight: var(--weight-semibold);
   line-height: 1.5;
-  letter-spacing: 0.14em;
-  color: var(--color-accent-on-dark);
+  letter-spacing: 0.16em;
+  color: var(--color-text-inverse);
   text-transform: uppercase;
+  text-shadow: 0 1px 2px rgb(10 31 61 / 0.35);
 }
 
 /* Tamil has no capitals and reads poorly when letter-spaced. */
@@ -99,10 +130,34 @@ html:lang(ta) .eyebrow {
   letter-spacing: 0.02em;
 }
 
-/* Narrow enough to set the English heading on three lines on desktop. */
+/* Capitals set tight: three short lines of a statement rather than a
+   sentence. The dictionary gives the lines; each one only wraps if the
+   screen is too narrow for it. Semibold, the weight of every other heading
+   on the site: at this size it carries the statement without the slab-like
+   mass of bold. */
 .title {
-  max-width: 13em;
+  /* The 8.8vw cap only applies on the narrowest phones (under about 390px),
+     where it keeps "THROUGH SCIENCE." on one line. */
+  font-size: min(clamp(2.125rem, 1.45rem + 2.5vw, 3.5rem), 8.8vw);
+  /* Capitals have no descenders, so the lines can sit close; 1 would let
+     the stacked lines touch visually. */
+  line-height: 1.02;
+  letter-spacing: 0;
+  text-wrap: balance;
   color: var(--color-text-inverse);
+  text-transform: uppercase;
+}
+
+.titleLine {
+  display: block;
+}
+
+/* Tamil keeps the shared heading size and line height: its marks need the
+   room, and it is not letter-spaced. */
+html:lang(ta) .title {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-heading);
+  letter-spacing: 0;
 }
 
 /* A faint navy edge keeps letter shapes crisp where the footage behind them
@@ -114,10 +169,12 @@ html:lang(ta) .eyebrow {
 
 .text {
   max-width: 36.25rem;
-  margin-top: var(--space-5);
+  margin-top: var(--space-6);
   font-size: clamp(1rem, 0.95rem + 0.3vw, 1.125rem);
+  font-weight: 450;
   line-height: 1.7;
-  /* Pure white: over footage, softened text would need a heavier overlay. */
+  /* Pure white, like the heading: the description is read over moving
+     footage, so it gets the strongest contrast available. */
   color: var(--color-text-inverse);
 }
 
@@ -125,7 +182,60 @@ html:lang(ta) .eyebrow {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
-  margin-top: var(--space-6);
+  margin-top: 2.5rem;
+}
+
+/* The Tamil labels are too long to sit side by side in the text column, so
+   the two buttons stack, both as wide as the longer one, instead of wrapping
+   to a ragged second row. */
+html:lang(ta) .actions {
+  display: grid;
+  width: fit-content;
+  max-width: 100%;
+}
+
+/* Phones, both languages: a full-width stack, one thumb-sized row each.
+   Slightly less side padding keeps the longer Tamil label on one line. */
+@media (max-width: 39.99rem) {
+  .actions,
+  html:lang(ta) .actions {
+    display: grid;
+    width: auto;
+  }
+
+  .actions a {
+    padding-inline: var(--space-4);
+  }
+}
+
+/* ---- Hero actions ----
+   Plain rounded rectangles from Button.module.css: flat white and flat blue,
+   no end caps, shading or shadow, with the fill easing to its hover shade.
+   Here: a slight darkening while pressed, the primary's arrow nudges
+   forward, and focus gets a white ring, which reads on the blue fill, on the
+   white button and on the footage. */
+.actions a:active {
+  filter: brightness(0.96);
+}
+
+.actions a:focus-visible {
+  outline: 2px solid var(--color-text-inverse);
+}
+
+.actions a svg {
+  transition: translate 200ms ease;
+}
+
+.actions a:hover svg,
+.actions a:focus-visible svg {
+  translate: 3px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .actions a:hover svg,
+  .actions a:focus-visible svg {
+    translate: none;
+  }
 }
 
 .visual {
@@ -134,15 +244,15 @@ html:lang(ta) .eyebrow {
 }
 
 @media (min-width: 64rem) {
-  /* The hero fills the first screen: the viewport height minus the site
-     header above it, with the content centred in that space. The cap stops it
-     becoming a mostly empty band on very tall monitors. */
+  /* The hero fills the first screen, its background reaching up under the
+     header, with the content centred in the space below the header. The cap
+     stops it becoming a mostly empty band on very tall monitors. */
   .hero {
     display: flex;
     align-items: center;
-    min-height: min(calc(100vh - var(--header-height)), 64rem);
-    min-height: min(calc(100svh - var(--header-height)), 64rem);
-    padding-block: 2.5rem;
+    min-height: min(100vh, calc(64rem + var(--header-height)));
+    min-height: min(100svh, calc(64rem + var(--header-height)));
+    padding-block: calc(2.5rem + var(--header-height)) 2.5rem;
   }
 
   .inner {
@@ -155,5 +265,17 @@ html:lang(ta) .eyebrow {
      the caption's height, so the text centres on the circle itself. */
   .content {
     padding-bottom: 4.5rem;
+    /* The text sits a little left of the site's content edge: up to 3.75rem,
+       taken from the space beside the centred container, so it tapers to
+       nothing where the container fills the screen. The orbit stays put. */
+    margin-left: calc(-1 * min(3.75rem, max(0px, (100vw - var(--container-max)) / 2)));
+  }
+
+  /* The orbit sits right of centre in its column, away from the headline:
+     up to 3.75rem, taken from the space beside the centred container. Where
+     the container fills the screen there is no such space, and a 0.375rem
+     minimum just keeps the widened ring as far from the text as before. */
+  .visual {
+    translate: max(0.375rem, min(3.75rem, (100vw - var(--container-max)) / 2)) 0;
   }
 }

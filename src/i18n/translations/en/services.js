@@ -267,6 +267,8 @@ export default {
     },
     'sample-preparation': {
       title: 'Sample Preparation & Processing',
+      imageAlt:
+        'Technician fitting a mounted specimen to an automatic grinding and polishing machine, with polishing discs and suspensions on the bench',
       summary:
         'Cutting, mounting, grinding, polishing and etching to prepare specimens for testing and microscopy.',
       intro:

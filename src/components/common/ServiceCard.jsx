@@ -1,5 +1,5 @@
 import { ArrowRight } from 'lucide-react'
-import { INSTRUMENT_IMAGES } from '../../data/images.js'
+import { getServiceImage } from '../../data/images.js'
 import { getService } from '../../data/services.js'
 import { useLanguage } from '../../hooks/useLanguage.js'
 import { servicePath } from '../../routes/pages.js'
@@ -11,15 +11,12 @@ import MediaFrame from './MediaFrame.jsx'
 // its title link; "View Details" is a visual cue, not a second link.
 export default function ServiceCard({ slug }) {
   const { t } = useLanguage()
-  const { image } = getService(slug)
+  const { image, alt } = getServiceImage(getService(slug), t)
 
   return (
     <article className={`${styles.card} ${styles.linked}`}>
       <div className={styles.media}>
-        <MediaFrame
-          image={image ? INSTRUMENT_IMAGES[image] : null}
-          alt={image ? t(`equipment.items.${image}.imageAlt`) : ''}
-        />
+        <MediaFrame image={image} alt={alt} />
       </div>
       <div className={styles.body}>
         <h3 className={styles.title}>

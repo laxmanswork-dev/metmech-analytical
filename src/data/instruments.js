@@ -187,9 +187,11 @@ export const INSTRUMENTS = [
   },
 ]
 
-// Shown on the home page.
+// Shown on the home page: six, so they fill the same three-by-two grid as
+// the services and industries above and below them.
 export const FEATURED_INSTRUMENTS = [
   'sem-eds',
+  'metallurgical-microscope',
   'ta-sdt-650',
   'micro-vickers-hardness-tester',
   'impact-testing-machine',

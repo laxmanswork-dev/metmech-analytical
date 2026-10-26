@@ -2,8 +2,9 @@
 // `services.items.<slug>`.
 //
 // `image` is the slug of the instrument whose photograph illustrates the
-// service, or null where no suitable client photograph exists yet (a labelled
-// placeholder is shown instead).
+// service, or null. With null, the service's own photograph in SERVICE_IMAGES
+// (src/data/images.js) is used if there is one; otherwise a labelled
+// placeholder is shown.
 export const SERVICES = [
   {
     slug: 'mechanical-testing',

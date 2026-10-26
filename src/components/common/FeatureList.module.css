@@ -39,6 +39,35 @@
   }
 }
 
+/* ---- Large: a step up in size on desktop, using the shared type scale.
+   Titles wrap to different lengths at this size, so the points share two
+   rows (title, text) and every description starts on the same line. ---- */
+
+@media (min-width: 64rem) {
+  .large {
+    grid-template-rows: auto auto;
+    gap: 0 var(--space-7);
+  }
+
+  .large .item {
+    display: grid;
+    grid-row: span 2;
+    grid-template-rows: subgrid;
+    row-gap: var(--space-3);
+    padding-top: var(--space-5);
+  }
+
+  .large .title {
+    font-size: var(--text-xl);
+    text-wrap: balance;
+  }
+
+  .large .text {
+    margin-top: 0;
+    font-size: var(--text-base);
+  }
+}
+
 /* ---- Numbered: on tablets each point is a row of index, title and text;
    once every point fits side by side they become a single row of columns.
    Tamil runs much longer, so it keeps the rows at every width. ---- */

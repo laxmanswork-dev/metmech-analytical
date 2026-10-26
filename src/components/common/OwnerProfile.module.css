@@ -1,0 +1,67 @@
+.profile {
+  width: 100%;
+  max-width: 17rem;
+  margin: 0;
+}
+
+/* Fixed 4:5 so the layout is identical before and after the photograph arrives. */
+.frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  container-type: inline-size;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Empty: the site's pale tint, a hairline mount inset from the edge and the
+   emblem in quiet greyscale, sized from the frame. */
+.empty {
+  background: var(--color-surface-tint);
+}
+
+.empty::after {
+  content: '';
+  position: absolute;
+  inset: var(--space-3);
+  border: 1px solid rgb(10 31 61 / 0.08);
+  border-radius: var(--radius-sm);
+  pointer-events: none;
+}
+
+.emblem {
+  width: clamp(3.5rem, 28cqw, 5.5rem);
+  height: auto;
+  opacity: 0.2;
+  filter: grayscale(1);
+}
+
+.caption {
+  display: grid;
+  gap: var(--space-1);
+  margin-top: var(--space-4);
+  padding-left: var(--space-3);
+  border-left: 3px solid var(--color-accent);
+}
+
+.name {
+  font-size: var(--text-lg);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-heading);
+  color: var(--color-heading);
+}
+
+.designation {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

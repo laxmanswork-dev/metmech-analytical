@@ -8,9 +8,15 @@
  */
 .orbit {
   --duration: 30s;
-  --radius: 45cqw;
+  /* The same circles spread wide, so each reads as its own node and the
+     cluster stays light (about 63px between neighbours at full size). */
+  --radius: 50cqw;
   --thumb: clamp(3.25rem, 32cqw, 7.25rem);
-  --line: rgb(255 255 255 / 0.2);
+  /* Guides stay in the background: faint enough that the photographs lead. */
+  --line: rgb(255 255 255 / 0.08);
+  /* Width of each circle's white edge; the highlight ring and the label's
+     clip are measured from it. */
+  --edge: 1.5px;
 
   container-type: inline-size;
   display: grid;
@@ -26,7 +32,23 @@
   aspect-ratio: 1;
   /* Room for the thumbnails, which are centred on the circle and so reach
      past it, and for the ring around the highlighted one. */
-  margin-block: 13cqw;
+  margin-block: 17cqw;
+}
+
+/* A soft pool of navy behind the orbit, so the moving footage there is calmer
+   than in the rest of the hero and does not compete with the photographs.
+   It fades out well before the edge of the visual column. */
+.stage::before {
+  content: '';
+  position: absolute;
+  inset: -18%;
+  background: radial-gradient(
+    circle closest-side,
+    rgb(10 31 61 / 0.3) 0%,
+    rgb(10 31 61 / 0.18) 55%,
+    rgb(10 31 61 / 0) 100%
+  );
+  pointer-events: none;
 }
 
 /* ---- Fixed guides ---- */
@@ -43,11 +65,11 @@
   border: 1px solid var(--line);
 }
 
-/* Marks the highlighted position at the bottom of the circle. */
+/* Marks the highlighted position at the bottom of the circle, in the same
+   blue as the highlighted category's ring. */
 .activeArc {
   border: 2px solid transparent;
-  border-bottom-color: var(--color-accent-on-dark);
-  opacity: 0.85;
+  border-bottom-color: var(--color-primary);
 }
 
 /* ---- Central instrument: never moves ---- */
@@ -64,14 +86,14 @@
   content: '';
   position: absolute;
   inset: -22%;
-  background: radial-gradient(circle, rgb(111 208 238 / 0.26) 0%, rgb(111 208 238 / 0) 68%);
+  background: radial-gradient(circle, rgb(111 208 238 / 0.14) 0%, rgb(111 208 238 / 0) 64%);
   border-radius: 50%;
 }
 
 .centre img {
   position: relative;
   width: 100%;
-  filter: drop-shadow(0 0 0.5rem rgb(111 208 238 / 0.35));
+  filter: drop-shadow(0 0.25rem 0.75rem rgb(4 10 20 / 0.4));
 }
 
 /* ---- Rotating ring ---- */
@@ -169,9 +191,15 @@
   width: var(--thumb);
   height: var(--thumb);
   background: var(--color-surface);
-  border: 2px solid rgb(255 255 255 / 0.9);
+  /* A fine, slightly translucent edge (the white fill stops inside it), so
+     the circles sit back from the headline. */
+  background-clip: padding-box;
+  border: var(--edge) solid rgb(255 255 255 / 0.72);
   border-radius: 50%;
-  box-shadow: 0 4px 14px rgb(0 0 0 / 0.35);
+  /* Two soft navy layers, a close contact shadow and a wide, faint one. */
+  box-shadow:
+    0 1px 2px rgb(4 10 20 / 0.18),
+    0 6px 16px rgb(4 10 20 / 0.16);
   /* Grows towards the centre, so the highlight never pushes outwards. */
   transform-origin: 50% 100%;
   animation: emphasis var(--duration) linear infinite;
@@ -227,14 +255,17 @@ html:lang(ta) .icon svg {
   height: 30%;
 }
 
-/* Cyan ring that fades in at the highlighted position. */
+/* Brand-blue ring that fades in at the highlighted position. It sits flush
+   against the white edge (inset is measured from inside that edge),
+   so the blue always has white beside it and reads over dark or bright
+   footage alike. A soft shadow instead of a glow. */
 .media::after {
   content: '';
   position: absolute;
-  inset: -5px;
-  border: 2px solid var(--color-accent-on-dark);
+  inset: calc(-1 * (var(--edge) + 3px));
+  border: 3px solid var(--color-primary);
   border-radius: 50%;
-  box-shadow: 0 0 14px rgb(111 208 238 / 0.55);
+  box-shadow: 0 6px 18px rgb(4 10 20 / 0.3);
   opacity: 0;
   animation: glow var(--duration) linear infinite;
   animation-delay: var(--delay);
@@ -250,7 +281,7 @@ html:lang(ta) .icon svg {
    Lines never wrap on their own: the dictionary gives each name its lines.
    The text stops short of the bottom edge because the circle narrows there. */
 .label {
-  --inner: calc(var(--thumb) / 2 - 2px);
+  --inner: calc(var(--thumb) / 2 - var(--edge));
 
   position: absolute;
   inset: auto 0 0;
@@ -261,12 +292,13 @@ html:lang(ta) .icon svg {
   line-height: 1.2;
   letter-spacing: -0.01em;
   text-align: center;
-  text-shadow: 0 1px 2px rgb(4 10 20 / 0.7);
+  /* One crisp shadow: a wide glow softens the letter edges at this size. */
+  text-shadow: 0 1px 2px rgb(4 10 20 / 0.75);
   background: linear-gradient(
     rgb(4 10 20 / 0),
     rgb(4 10 20 / 0.3) 0.8em,
-    rgb(4 10 20 / 0.66) 1.8em,
-    rgb(4 10 20 / 0.78) 3em
+    rgb(4 10 20 / 0.7) 1.8em,
+    rgb(4 10 20 / 0.82) 3em
   );
   clip-path: circle(var(--inner) at 50% calc(100% - var(--inner)));
   pointer-events: none;
@@ -276,6 +308,10 @@ html:lang(ta) .icon svg {
    higher, where the circle is wider. The dictionary lists these. */
 .label[data-raised] {
   padding-bottom: 29%;
+  /* Such a name is close to the circle's full width even there
+     ("Characterization"); slightly tighter tracking keeps it off the edge.
+     Tamil is never tracked (below), so it is unaffected. */
+  letter-spacing: -0.03em;
 }
 
 .labelLine {
@@ -298,7 +334,7 @@ html:lang(ta) .label {
 .toggle {
   position: absolute;
   right: -2.5rem;
-  bottom: calc(-13cqw - var(--space-2) - 2.5rem);
+  bottom: calc(-17cqw - var(--space-2) - 2.5rem);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -323,7 +359,7 @@ html:lang(ta) .label {
    keeps the centred text clear of the playback control. */
 .captions {
   display: grid;
-  min-height: 4rem;
+  min-height: 3.5rem;
   margin-inline: -2.5rem;
   padding-inline: 2.75rem;
   text-align: center;
@@ -334,31 +370,43 @@ html:lang(ta) .label {
 
   grid-area: 1 / 1;
   display: grid;
-  gap: 0.125rem;
+  gap: 0;
   align-content: start;
   justify-items: center;
-  font-size: 0.875rem;
-  line-height: 1.45;
+  /* Small and close-set: a footnote to the orbit, never a rival to the
+     hero paragraph (white for contrast over the footage, but smaller). */
+  font-size: 0.8125rem;
+  line-height: 1.4;
   opacity: 0;
   animation: caption var(--duration) linear infinite;
   animation-delay: var(--delay);
 }
 
+/* Both lines in full white with the same faint navy edge as the hero text,
+   so the description is as clear as its title over busy footage. */
 .caption p {
-  max-width: 26rem;
+  max-width: 24rem;
+  color: var(--color-text-inverse);
+  text-shadow: 0 1px 2px rgb(10 31 61 / 0.35);
 }
 
-/* Backed like the labels around the circle, so its cyan stays readable over
-   a bright hero video. */
+/* Matches the hero eyebrow: spaced white capitals with no backing. White
+   keeps at least 5.9:1 over the brightest frames behind it. The vertical
+   padding is what the old backed title had, so the caption block does not
+   grow. */
 .captionTitle {
-  padding: 0.15em 0.6em;
-  background: rgb(10 31 61 / 0.78);
-  border-radius: var(--radius-sm);
-  font-size: 0.8125rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--color-accent-on-dark);
+  padding-block: 0.1em;
+  font-size: 0.75rem;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.14em;
+  color: var(--color-text-inverse);
   text-transform: uppercase;
+  text-shadow: 0 1px 2px rgb(10 31 61 / 0.35);
+}
+
+/* Tamil has no capitals and reads poorly when letter-spaced. */
+html:lang(ta) .captionTitle {
+  letter-spacing: 0.02em;
 }
 
 /* ---- Keyframes. 0% and 100% are the moment a category is at the bottom. ---- */
@@ -372,7 +420,7 @@ html:lang(ta) .label {
 @keyframes emphasis {
   0%,
   100% {
-    scale: 1.12;
+    scale: 1.07;
   }
 
   9%,
@@ -393,21 +441,23 @@ html:lang(ta) .label {
   }
 }
 
-/* Each caption owns a sixth of the cycle (8.33% either side of its peak). It
-   fades out fully just before the hand-over and the next fades in just after,
-   so two captions are never legible on top of each other. */
+/* Each caption owns a sixth of the cycle (8.33% either side of its peak) and
+   stays at full strength for all of it. At the hand-over it fades out in
+   0.12s and the next fades in over the following 0.12s: a quick swap, so the
+   text never spends long half-faded over the footage, and two captions are
+   never legible on top of each other. (At 30s, 1% is 0.3s.) */
 @keyframes caption {
   0%,
-  6.4% {
+  7.9% {
     opacity: 1;
   }
 
-  8.1%,
-  91.9% {
+  8.3%,
+  91.7% {
     opacity: 0;
   }
 
-  93.6%,
+  92.1%,
   100% {
     opacity: 1;
   }
@@ -441,7 +491,7 @@ html:lang(ta) .label {
 }
 
 .orbit[data-override] .item[data-active] .media {
-  scale: 1.1 !important;
+  scale: 1.07 !important;
   /* Grow evenly: the category may be anywhere on the circle. */
   transform-origin: 50% 50%;
 }
@@ -459,18 +509,18 @@ html:lang(ta) .label {
   /* The instrument is wider here, so the thumbnails are a little smaller to
      keep the highlighted one clear of it. */
   .orbit {
-    --radius: 41cqw;
+    --radius: 43cqw;
     --thumb: 22cqw;
   }
 
   /* Only the thumbnails' own overhang past the circle to clear. */
   .stage {
-    margin-block: 3cqw;
+    margin-block: 5cqw;
   }
 
   /* No labels here, so the control returns to the stage's free corner. */
   .toggle {
-    top: -3cqw;
+    top: -5cqw;
     right: 0;
     bottom: auto;
   }
@@ -516,7 +566,7 @@ html:lang(ta) .label {
   }
 
   .item[data-first] .media {
-    scale: 1.12;
+    scale: 1.07;
   }
 
   .item[data-first] .media::after,

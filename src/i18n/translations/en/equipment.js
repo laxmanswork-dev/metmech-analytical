@@ -133,7 +133,7 @@ export default {
         'Flexural (bend) testing',
         'Shear, lap shear and peel tests',
       ],
-      imageAlt: 'Universal testing machine with a specimen held in the grips',
+      imageAlt: 'Servo-controlled universal testing machine in the laboratory, with tensile grips mounted between its columns',
     },
     'impact-testing-machine': {
       name: 'Impact Testing Machine',
@@ -158,7 +158,7 @@ export default {
         'Hardness surveys across welds and case-hardened layers',
         'Coating and surface-layer hardness',
       ],
-      imageAlt: 'Micro Vickers hardness tester connected to a laptop in the laboratory',
+      imageAlt: 'Technician viewing a sample through the eyepiece of the Micro Vickers hardness tester, with the indentation shown on the monitor',
     },
     'shore-d-hardness-tester': {
       name: 'Shore D Hardness Tester',

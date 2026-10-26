@@ -10,6 +10,7 @@ import Seo from '../components/common/Seo.jsx'
 import SpecTable from '../components/common/SpecTable.jsx'
 import Section from '../components/layout/Section.jsx'
 import LocalizedLink from '../components/navigation/LocalizedLink.jsx'
+import { SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { INSTRUMENT_IMAGES } from '../data/images.js'
 import { getInstrument } from '../data/instruments.js'
 import { useLanguage } from '../hooks/useLanguage.js'
@@ -48,7 +49,7 @@ export default function InstrumentDetailPage() {
         ]}
       />
 
-      <Section>
+      <Section background={SECTION_BACKGROUNDS.instrumentBody} panel>
         <div className={content.split}>
           <div className={content.stack}>
             <div className={content.block}>

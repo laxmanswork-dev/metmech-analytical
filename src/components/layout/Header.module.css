@@ -5,8 +5,8 @@
  *
  * What sits on the bar, by width:
  *   below 48rem   brand · menu button
- *   from 48rem    brand · [language | Start a Request] · menu button
- *   from 75rem    brand · four links · [language | Start a Request]
+ *   from 48rem    brand · [language | Start a Test] · menu button
+ *   from 75rem    brand · four links · [language | Start a Test]
  * Whatever is not on the bar is in the menu.
  */
 
@@ -18,6 +18,37 @@
      sections without competing with the navy hero. */
   background: var(--color-surface-muted);
   border-bottom: 1px solid var(--color-border);
+}
+
+/* Frosted glass where the browser can blur what passes beneath. The home
+   hero's footage runs up behind the bar, so there it reads as a soft, cool
+   tint of the lab rather than a flat white strip; over white sections it is
+   simply white.
+
+   92% is the most transparent the bar can be. Measured over 16 frames of the
+   hero video, the darkest blurred backdrop is about rgb(12 27 49), darker than
+   the navy CTA band and footer it also scrolls over. On that, at 92%, the
+   descriptor's deep cyan (the most demanding text on the bar) keeps 4.5:1,
+   the blue active link 5.1:1 and the navy links 13:1. Re-measure before
+   lowering it.
+
+   A hairline in navy at low opacity separates the bar from white sections
+   and from the footage alike. */
+@supports (backdrop-filter: blur(1px)) {
+  .header {
+    background: rgb(248 250 252 / 0.92);
+    border-bottom-color: rgb(10 31 61 / 0.1);
+    backdrop-filter: blur(14px) saturate(1.1);
+  }
+}
+
+/* Visitors who ask for less transparency, or more contrast, get the solid bar. */
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .header {
+    background: var(--color-surface-muted);
+    border-bottom-color: var(--color-border);
+    backdrop-filter: none;
+  }
 }
 
 .bar {
@@ -48,7 +79,7 @@
 .logo {
   flex: none;
   width: auto;
-  height: 2.125rem;
+  height: 2.75rem;
 }
 
 .wordmark {
@@ -57,17 +88,29 @@
   min-width: 0;
 }
 
+/* The name is set in Barlow Semi Condensed; the descriptor below stays in
+   Inter. A narrower face reads small at the same size, so it is set larger,
+   with a little extra tracking to keep the capitals evenly spaced. */
 .brandName {
-  font-size: 0.875rem;
+  font-family: var(--font-brand);
+  font-size: 1.0625rem;
   font-weight: var(--weight-semibold);
-  line-height: 1.2;
-  letter-spacing: 0.01em;
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+}
+
+/* Two stacked lines on phones and large screens; one line in between, where
+   the bar has room for it. */
+.brandLine {
+  display: block;
 }
 
 .brandTag {
+  margin-top: 0.125rem;
   font-size: 0.75rem;
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-regular);
   line-height: 1.4;
+  letter-spacing: 0.01em;
   /* A shade deeper than the usual accent: small text on the bar's cool-white
      background needs it to reach 4.5:1 contrast. */
   color: var(--cyan-700);
@@ -119,7 +162,13 @@
   color: var(--color-text-muted);
 }
 
+/* The cylinder at its quietest: narrower ends, so the label keeps its room
+   inside the compact button, and fainter rims and shadow than the hero's. */
 .request a {
+  --cap: 0.32em;
+  --cap-rim: rgb(4 10 20 / 0.08);
+  --drop: 0 1px 1px rgb(4 10 20 / 0.12);
+
   min-height: 2.5rem;
   padding: 0 1.125rem;
   font-size: 0.875rem;
@@ -233,6 +282,10 @@
   .menuUtility {
     display: none;
   }
+
+  .brandLine {
+    display: inline;
+  }
 }
 
 /* ---- From 75rem: everything on one row ----
@@ -245,25 +298,43 @@
     min-height: 4.9375rem;
   }
 
+  /* The lockup keeps the width it had in Inter, so the centred links stay
+     where they were now that the name is set in a semi-condensed face. */
   .brand {
     flex: none;
     gap: 0.75rem;
+    min-width: 16.5rem;
+  }
+
+  /* Lines up with the home hero's text, which sits left of the content edge
+     by the same amount (HomeHero.module.css). A translate, so the centred
+     links do not move. */
+  .brand {
+    translate: calc(-1 * min(3.75rem, max(0px, (100vw - var(--container-max)) / 2))) 0;
+  }
+
+  /* The language and request group sits slightly right of the content edge,
+     the same way. */
+  .actions {
+    translate: min(1.5rem, max(0px, (100vw - var(--container-max)) / 2)) 0;
   }
 
   .logo {
-    height: 2.625rem;
+    height: 3.5rem;
   }
 
   /* The name stacks over two lines, which keeps the brand block compact. */
   .brandName {
-    max-width: 12.5em;
-    font-size: 1rem;
-    line-height: 1.15;
-    letter-spacing: 0.015em;
+    font-size: 1.25rem;
+    line-height: 1;
+  }
+
+  .brandLine {
+    display: block;
   }
 
   .brandTag {
-    margin-top: 0.125rem;
+    margin-top: 0.1875rem;
   }
 
   /* The links take the space between the brand and the actions and sit
@@ -317,16 +388,25 @@
     font-size: var(--text-nav);
   }
 
-  /* A thin underline grows from the left on hover and stays for the current page. */
+  /* A thin underline grows from the left on hover and stays for the current
+     page. It sits just below the label (the label's line box ends 0.7em
+     below the centre) and spans the words only, not the dropdown chevron. */
   .navLink::after {
     content: '';
     position: absolute;
-    inset: auto 0 0;
+    top: calc(50% + 0.7em + 0.375rem);
+    right: 0;
+    left: 0;
     height: 2px;
     background: var(--color-primary);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 200ms ease;
+  }
+
+  /* The chevron is 1rem wide with a 0.375rem gap (NavDropdown.module.css). */
+  .navLink:has(svg)::after {
+    right: 1.375rem;
   }
 
   .navLink:hover::after,

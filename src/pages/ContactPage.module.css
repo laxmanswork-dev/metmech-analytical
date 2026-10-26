@@ -1,7 +1,6 @@
 .layout {
   display: grid;
   gap: var(--space-7);
-  padding-block: var(--section-padding);
 }
 
 .info {

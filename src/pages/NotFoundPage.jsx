@@ -2,6 +2,7 @@ import Button from '../components/common/Button.jsx'
 import PageHero from '../components/common/PageHero.jsx'
 import Seo from '../components/common/Seo.jsx'
 import Section from '../components/layout/Section.jsx'
+import { PAGE_BACKGROUNDS, SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { ROUTES } from '../routes/pages.js'
 import content from '../styles/content.module.css'
@@ -14,8 +15,12 @@ export default function NotFoundPage() {
   return (
     <>
       <Seo title={title} description={t('notFound.description')} noindex />
-      <PageHero title={title} lead={t('notFound.description')} />
-      <Section narrow>
+      <PageHero
+        title={title}
+        lead={t('notFound.description')}
+        background={PAGE_BACKGROUNDS.notFound}
+      />
+      <Section background={SECTION_BACKGROUNDS.notFound} panel narrow>
         <div className={content.block}>
           <p>{t('notFound.help')}</p>
           <div className={content.actions}>

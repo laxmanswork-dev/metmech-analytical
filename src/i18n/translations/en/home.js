@@ -6,7 +6,8 @@ export default {
   hero: {
     // Shown in uppercase above the heading.
     eyebrow: 'Material Testing · Analytical Research',
-    title: 'Understanding Materials for a Better Tomorrow',
+    // The heading, one entry per line. Shown in uppercase.
+    titleLines: ['Advancing', 'Materials', 'Through Science.'],
     text: 'We test metals, polymers and composites to support industrial and research needs.',
   },
   // The rotating display of testing categories in the hero.
@@ -43,19 +44,36 @@ export default {
     items: [
       {
         title: 'Accurate Testing',
-        text: 'Tests are carried out on suitable instruments, following the method agreed for your sample.',
+        points: [
+          'Suitable instruments for each test',
+          'Testing methods agreed for your sample',
+          'Reliable results through consistent testing procedures',
+        ],
       },
       {
         title: 'Advanced Instruments',
-        text: 'Mechanical, hardness, microscopy, thermal and surface instruments under one roof.',
+        points: [
+          'Mechanical and hardness testing',
+          'Microscopy and material analysis',
+          'Thermal and surface testing',
+        ],
       },
       {
         title: 'Industrial & Research Support',
-        text: 'We work with manufacturers, engineers, students and researchers on routine and project testing.',
+        points: [
+          'Support for manufacturers and engineers',
+          'Testing for students and researchers',
+          // U+2011 non-breaking hyphen: keeps "project-based" whole on one line.
+          'Routine and project‑based testing',
+        ],
       },
       {
         title: 'Technical Consultation',
-        text: 'Not sure which test fits your need? We discuss your objective before any work begins.',
+        points: [
+          'Understand your testing requirements',
+          'Identify suitable testing methods',
+          'Discuss objectives before testing begins',
+        ],
       },
     ],
   },

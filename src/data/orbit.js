@@ -12,6 +12,7 @@ import mechanical from '../assets/images/orbit/mechanical-testing.webp'
 import semCutout from '../assets/images/orbit/sem-cutout.webp'
 import surface from '../assets/images/orbit/surface-corrosion-testing.webp'
 import thermal from '../assets/images/orbit/thermal-analysis.webp'
+import welding from '../assets/images/orbit/welding-processing.webp'
 
 export const ORBIT_ITEMS = [
   { slug: 'mechanical-testing', image: mechanical },
@@ -19,7 +20,7 @@ export const ORBIT_ITEMS = [
   { slug: 'material-characterization', image: characterization },
   { slug: 'thermal-analysis', image: thermal },
   { slug: 'surface-corrosion-testing', image: surface },
-  { slug: 'welding-processing', image: null },
+  { slug: 'welding-processing', image: welding },
 ]
 
 export const ORBIT_THUMBNAIL_SIZE = 240

@@ -34,13 +34,15 @@
   object-fit: contain;
 }
 
+/* The emblem in quiet greyscale on the site's pale tint, sized from the
+   frame like the watermark is. */
 .placeholder {
-  flex-direction: column;
-  gap: var(--space-2);
-  padding: var(--space-4);
-  font-size: var(--text-sm);
-  text-align: center;
-  color: var(--color-text-muted);
-  background: var(--color-surface-muted);
-  border-style: dashed;
+  background: var(--color-surface-tint);
+}
+
+.placeholder > img {
+  width: clamp(3.5rem, 22cqw, 6rem);
+  height: auto;
+  opacity: 0.22;
+  filter: grayscale(1);
 }

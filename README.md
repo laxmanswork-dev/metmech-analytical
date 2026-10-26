@@ -250,9 +250,12 @@ awaiting confirmation on the site.
   microscope, electrochemical workstation, roughness tester, tribometer and
   impact tester, or photographs of the lab's own units. See `src/data/images.js`.
 
+- The company owner's full name, designation and a 4:5 portrait photograph for
+  the about page. The company description names Jayaraj M and Prem Kumar P as
+  contacts but not who the owner is. Fill in `src/data/owner.js`.
+
 **Wording to approve**
 
 - All Tamil text, by a Tamil-speaking subject expert.
-- Vision, Mission, "Why Choose Us" and the process steps (proposed copy).
 - The privacy policy (draft; needs client and legal review).
 - Which email address should receive enquiries.

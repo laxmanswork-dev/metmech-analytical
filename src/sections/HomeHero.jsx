@@ -15,7 +15,7 @@ import styles from './HomeHero.module.css'
 const LOOP_FADE_SECONDS = 1.1
 
 export default function HomeHero() {
-  const { t } = useLanguage()
+  const { t, tm } = useLanguage()
 
   // The clip's last frame does not match its first, so a plain loop shows a
   // cut. The poster underneath is the first frame: fading the video out over
@@ -57,15 +57,25 @@ export default function HomeHero() {
       <Container className={styles.inner}>
         <div className={styles.content}>
           <p className={styles.eyebrow}>{t('home.hero.eyebrow')}</p>
-          <h1 className={styles.title}>{t('home.hero.title')}</h1>
+          {/* Each line ends with a space so the heading reads as one sentence. */}
+          <h1 className={styles.title}>
+            {tm('home.hero.titleLines').map((line) => (
+              <span key={line} className={styles.titleLine}>
+                {line}{' '}
+              </span>
+            ))}
+          </h1>
           <p className={styles.text}>{t('home.hero.text')}</p>
+          {/* One conversion path: the enquiry is the solid primary action,
+              the same "Start a Test" as the header and the closing band.
+              Browsing the services is the solid white alternative, placed first. */}
           <div className={styles.actions}>
-            <Button to={ROUTES.services}>
+            <Button to={ROUTES.services} variant="inverse">
               {t('actions.exploreServices')}
-              <ArrowRight aria-hidden="true" size={18} />
             </Button>
-            <Button to={ENQUIRY_PATH} variant="inverse">
+            <Button to={ENQUIRY_PATH}>
               {t('actions.requestTest')}
+              <ArrowRight aria-hidden="true" size={18} />
             </Button>
           </div>
         </div>

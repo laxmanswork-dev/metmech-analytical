@@ -12,7 +12,7 @@ export const ROUTES = {
   privacy: '/privacy-policy',
 }
 
-// Where every "Request a Test" action leads: the enquiry form on the contact page.
+// Where every "Start a Test" action leads: the enquiry form on the contact page.
 export const ENQUIRY_PATH = `${ROUTES.contact}#enquiry`
 
 // Main navigation, in display order. `key` maps to `nav.<key>` in the dictionaries.

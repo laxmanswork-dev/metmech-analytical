@@ -1,4 +1,4 @@
-// Vision, mission and approach wording is proposed copy awaiting client approval.
+// English copy for this page is client-approved: change it only on the client's instruction.
 export default {
   meta: {
     title: 'About Us',
@@ -8,7 +8,7 @@ export default {
   hero: {
     title: 'About Metmech Analytical Engineers',
     lead: 'A Chennai-based material testing and analytical engineering firm dedicated to supporting industrial and research needs.',
-    imageAlt: 'Metallurgical microscope and image-analysis workstation in the Metmech laboratory',
+    imageAlt: 'Technician examining a sample on the Micro Vickers hardness tester in the Metmech laboratory',
   },
   intro: {
     heading: 'Who We Are',
@@ -25,6 +25,9 @@ export default {
   mission: {
     heading: 'Our Mission',
     text: 'To apply suitable test methods, communicate results responsibly, and support the testing needs of industry and research.',
+  },
+  owner: {
+    photoAlt: 'Portrait of {name}',
   },
   approach: {
     heading: 'Our Approach',

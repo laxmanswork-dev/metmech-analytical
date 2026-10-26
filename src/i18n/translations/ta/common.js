@@ -26,8 +26,7 @@ export default {
     privacy: 'தனியுரிமைக் கொள்கை',
   },
   actions: {
-    requestTest: 'சோதனை கோருங்கள்',
-    startRequest: 'கோரிக்கை தொடங்க',
+    requestTest: 'சோதனையைத் தொடங்குங்கள்',
     exploreServices: 'சோதனைச் சேவைகளைப் பாருங்கள்',
     viewDetails: 'விவரங்களைப் பார்க்க',
     viewSpecifications: 'விவரக்குறிப்புகளைப் பார்க்க',
@@ -40,7 +39,6 @@ export default {
     phone: 'தொலைபேசி',
     email: 'மின்னஞ்சல்',
     address: 'முகவரி',
-    photoPending: 'புகைப்படம் சேர்க்கப்படும்',
   },
   cta: {
     heading: 'பொருள் சோதனைத் தேவை உள்ளதா?',

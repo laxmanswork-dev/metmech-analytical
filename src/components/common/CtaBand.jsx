@@ -18,7 +18,7 @@ export default function CtaBand({ heading, text }) {
           </h2>
           <p className={styles.text}>{text ?? t('cta.text')}</p>
         </div>
-        <Button to={ENQUIRY_PATH} variant="inverse">
+        <Button to={ENQUIRY_PATH} shape="cylinder">
           {t('actions.requestTest')}
         </Button>
       </Container>

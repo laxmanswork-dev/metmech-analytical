@@ -1,0 +1,176 @@
+/* The lab photograph under a flat navy veil, in the same blue as the home
+   hero, with a white heading. Both layers are pseudo-elements behind the
+   content; the photograph's layer is navy underneath, so the heading stays
+   readable while the image loads.
+
+   To swap the photograph, replace the two files in
+   src/assets/images/backgrounds/ (keep the names): a smaller one for phones
+   and a full-size one from tablet width up. */
+.section {
+  /* The shared heading styles read these, so the section heading switches to
+     its on-dark colours without changes of its own. */
+  --color-heading: var(--color-text-inverse);
+  --color-accent: var(--color-accent-on-dark);
+  --heading-accent-secondary: var(--color-text-inverse-muted);
+  --color-focus: var(--color-text-inverse);
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  color: var(--color-text-inverse);
+  /* A faint navy edge keeps letter shapes crisp over the brighter parts of
+     the photograph, as in the hero. */
+  text-shadow: 0 1px 2px rgb(10 31 61 / 0.35);
+}
+
+/* At -2, so the cards' glass frames (at -1, below) sit above the photograph
+   and its veil but still behind the white card surfaces. */
+.section::before,
+.section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* The photograph's colour is muted a little, so the red fan and the blue
+   panel of the testing machine read as part of the room rather than bright
+   patches behind the cards. */
+.section::before {
+  background: var(--navy-900) url('../assets/images/backgrounds/what-we-offer-lab-mobile.webp')
+    center 55% / cover no-repeat;
+  filter: saturate(0.7);
+}
+
+/* One flat, even veil over the whole section. 72% keeps the lab
+   recognisable while the white cards stay the focus. Only the white heading
+   sits directly on the photograph; it is large text, which needs 3:1, and
+   keeps over 6:1 over the brightest wall (99th-percentile pixel,
+   measured). Re-measure before lowering this or changing the photograph. */
+.section::after {
+  background: rgb(10 31 61 / 0.72);
+}
+
+@media (min-width: 48rem) {
+  .section::before {
+    background-image: url('../assets/images/backgrounds/what-we-offer-lab.webp');
+  }
+}
+
+/* ---- The four capabilities: white cards ----
+   One column on phones, two from 40rem, four in a row from 72rem: below
+   that a quarter-width card leaves too little room for the points. Each card
+   spans two rows of the list's grid and takes them as a subgrid, so in any
+   row of cards the titles share one height and every numbered list starts on
+   the same line, however the titles wrap. Cards in a row stretch to the same
+   height.
+
+   The rows alternate title, points. The points row has a minimum height,
+   which sets how tall the cards are, with any extra space falling below the
+   points. In a subgrid the card's bottom padding counts towards that row, so
+   each minimum includes the 3rem of padding. */
+.list {
+  display: grid;
+  grid-auto-rows: auto minmax(9.5rem, auto);
+  /* Clear room between neighbouring glass frames at every size. */
+  gap: var(--space-5);
+}
+
+@media (min-width: 40rem) {
+  .list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 72rem) {
+  .list {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: auto minmax(15.5rem, auto);
+  }
+}
+
+/* An opaque white surface with a faint cool-cyan edge, set in a thin glass
+   frame. */
+.card {
+  position: relative;
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: var(--space-4);
+  align-content: start;
+  padding: var(--space-6) var(--space-5) var(--space-7);
+  text-shadow: none;
+  background: var(--white);
+  border: 1px solid rgb(111 208 238 / 0.45);
+  border-radius: var(--radius-md);
+}
+
+/* The glass frame: a 6px translucent rim just outside the card, so the
+   card's own size, padding and wrapping are unchanged. A light blur and a
+   faint white tint frost the lab behind it; a hairline of cool white marks
+   its outer edge; a soft, low shadow separates it from the background. It
+   sits behind the card (z-index -1, above the section's layers at -2), so
+   only the rim shows. */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: -7px;
+  z-index: -1;
+  background: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(220 240 250 / 0.2);
+  border-radius: calc(var(--radius-md) + 6px);
+  box-shadow: 0 18px 36px -18px rgb(2 8 20 / 0.55);
+  backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+
+.title {
+  font-size: var(--text-lg);
+  line-height: 1.3;
+  color: var(--navy-900);
+  text-wrap: balance;
+}
+
+.points {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  font-size: 0.9375rem;
+  line-height: var(--leading-body);
+  color: var(--grey-600);
+}
+
+/* Numeral and text side by side on a shared baseline; the numeral column is
+   just wide enough for "III", so every point's text starts on the same line
+   and wrapped lines stay clear of the numeral. A point that wraps is
+   balanced, so it never leaves a single word on its last line. */
+.point {
+  display: grid;
+  grid-template-columns: 1.5rem minmax(0, 1fr);
+  align-items: baseline;
+  text-wrap: balance;
+}
+
+/* The shared Roman numeral, set inline as a list marker: small and
+   semibold in the site's primary blue. The section's own accent is the
+   light on-dark cyan, too pale on a white card. */
+.numeral {
+  margin-bottom: 0;
+  font-size: 0.75rem;
+  line-height: inherit;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+}
+
+/* 1.25rem on desktop: the largest at which the longest title, "Industrial &
+   Research Support", still sets on two lines in a quarter-width card. */
+@media (min-width: 72rem) {
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .points {
+    font-size: var(--text-base);
+  }
+}

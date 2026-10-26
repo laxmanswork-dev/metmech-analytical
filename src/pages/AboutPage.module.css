@@ -1,0 +1,65 @@
+/* "Who We Are": the copy at reading width, the owner's portrait beside it on
+   desktop and below it on smaller screens. */
+.intro {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.intro > * {
+  min-width: 0;
+}
+
+@media (min-width: 64rem) {
+  .intro {
+    grid-template-columns: minmax(0, var(--container-narrow)) minmax(14rem, 17rem);
+    justify-content: space-between;
+    align-items: start;
+    gap: var(--space-8);
+  }
+
+  /* Level with the heading's top rather than the band's padding. */
+  .intro > figure {
+    margin-top: var(--space-2);
+  }
+}
+
+/* Vision and mission: two statements, side by side once both fit. */
+.purpose {
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (min-width: 48rem) {
+  .purpose {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.statement {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.statement h3 {
+  font-size: var(--text-lg);
+  letter-spacing: 0;
+}
+
+.statement p {
+  max-width: 34rem;
+  font-size: var(--text-xl);
+  line-height: 1.5;
+  color: var(--color-heading);
+  text-wrap: pretty;
+}
+
+html:lang(ta) .statement p {
+  line-height: var(--leading-body);
+}

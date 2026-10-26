@@ -13,7 +13,8 @@ import ServiceCard from '../components/common/ServiceCard.jsx'
 import Grid from '../components/layout/Grid.jsx'
 import Section from '../components/layout/Section.jsx'
 import LocalizedLink from '../components/navigation/LocalizedLink.jsx'
-import { INSTRUMENT_IMAGES } from '../data/images.js'
+import { SECTION_BACKGROUNDS } from '../data/backgrounds.js'
+import { getServiceImage } from '../data/images.js'
 import { getService } from '../data/services.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { ENQUIRY_PATH, instrumentPath, ROUTES, servicePath } from '../routes/pages.js'
@@ -31,7 +32,7 @@ export default function ServiceDetailPage() {
 
   const item = tm(`services.items.${slug}`)
   const labels = tm('services.labels')
-  const image = service.image ? INSTRUMENT_IMAGES[service.image] : null
+  const { image, alt } = getServiceImage(service, t)
 
   return (
     <>
@@ -51,7 +52,7 @@ export default function ServiceDetailPage() {
         ]}
       />
 
-      <Section>
+      <Section background={SECTION_BACKGROUNDS.serviceBody} panel>
         <div className={content.split}>
           <div className={content.stack}>
             <p className={content.lead}>{item.intro}</p>
@@ -91,11 +92,7 @@ export default function ServiceDetailPage() {
           </div>
 
           <aside className={content.aside}>
-            <MediaFrame
-              image={image}
-              alt={image ? t(`equipment.items.${service.image}.imageAlt`) : ''}
-              eager
-            />
+            <MediaFrame image={image} alt={alt} eager />
 
             {service.instruments.length > 0 && (
               <div className={content.block}>
@@ -120,12 +117,12 @@ export default function ServiceDetailPage() {
         </div>
       </Section>
 
-      <Section tone="muted" narrow labelledBy="faq-heading">
+      <Section background={SECTION_BACKGROUNDS.serviceFaq} panel narrow labelledBy="faq-heading">
         <SectionHeading id="faq-heading" title={labels.faq} />
         <FaqList items={item.faq} />
       </Section>
 
-      <Section labelledBy="related-heading">
+      <Section background={SECTION_BACKGROUNDS.serviceRelated} labelledBy="related-heading">
         <SectionHeading id="related-heading" title={labels.related} />
         <Grid min="lg">
           {service.related.map((related) => (

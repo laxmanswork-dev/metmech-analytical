@@ -54,6 +54,8 @@
   --font-sans:
     'Inter Variable', 'Noto Sans Tamil Variable', system-ui, -apple-system, 'Segoe UI',
     'Nirmala UI', sans-serif;
+  /* The company name in the header lockup only. One weight, Latin only. */
+  --font-brand: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
   --text-sm: 0.875rem;
   --text-nav: 0.9375rem;
   --text-base: 1rem;

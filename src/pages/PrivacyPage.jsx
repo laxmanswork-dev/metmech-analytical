@@ -1,6 +1,7 @@
 import PageHero from '../components/common/PageHero.jsx'
 import Seo from '../components/common/Seo.jsx'
 import Section from '../components/layout/Section.jsx'
+import { PAGE_BACKGROUNDS, SECTION_BACKGROUNDS } from '../data/backgrounds.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { ROUTES } from '../routes/pages.js'
 import content from '../styles/content.module.css'
@@ -17,6 +18,7 @@ export default function PrivacyPage() {
         path={ROUTES.privacy}
       />
       <PageHero
+        background={PAGE_BACKGROUNDS.privacy}
         title={t('privacy.hero.title')}
         lead={t('privacy.hero.lead')}
         breadcrumbs={[
@@ -25,7 +27,7 @@ export default function PrivacyPage() {
         ]}
       />
 
-      <Section narrow>
+      <Section background={SECTION_BACKGROUNDS.privacy} panel narrow>
         <div className={content.stack}>
           {tm('privacy.sections').map(({ heading, paragraphs }) => (
             <div key={heading} className={content.block}>

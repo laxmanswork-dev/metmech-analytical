@@ -14,10 +14,16 @@ import styles from './Header.module.css'
 
 const MENU_ID = 'site-menu'
 
+// The name is set on two lines, "METMECH ANALYTICAL" over "ENGINEERS", so it
+// is split at the last word rather than left to wrap wherever it runs out of room.
+const NAME_BREAK = OFFICIAL_NAME.lastIndexOf(' ')
+const NAME_FIRST_LINE = OFFICIAL_NAME.slice(0, NAME_BREAK)
+const NAME_SECOND_LINE = OFFICIAL_NAME.slice(NAME_BREAK + 1)
+
 // One row, three groups:
 //   left    logo, company name and descriptor
 //   centre  Home · Our Services (a dropdown) · About Us · Contact
-//   right   one outlined group: language selection and "Start a Request"
+//   right   one outlined group: language selection and "Start a Test"
 //
 // On large screens all three sit on the bar. On smaller screens the centre
 // group becomes a menu opened by a button, and on phones the right-hand group
@@ -56,8 +62,8 @@ export default function Header() {
         <LanguageSwitcher />
       </div>
       <div className={styles.request}>
-        <Button to={ENQUIRY_PATH} onClick={closeMenu}>
-          {t('actions.startRequest')}
+        <Button to={ENQUIRY_PATH} shape="cylinder" onClick={closeMenu}>
+          {t('actions.requestTest')}
         </Button>
       </div>
     </>
@@ -76,7 +82,10 @@ export default function Header() {
             decoding="async"
           />
           <span className={styles.wordmark}>
-            <span className={styles.brandName}>{OFFICIAL_NAME}</span>
+            <span className={styles.brandName}>
+              <span className={styles.brandLine}>{NAME_FIRST_LINE}</span>{' '}
+              <span className={styles.brandLine}>{NAME_SECOND_LINE}</span>
+            </span>
             <span className={styles.brandTag}>{t('site.descriptor')}</span>
           </span>
         </LocalizedLink>
