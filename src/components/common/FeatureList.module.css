@@ -1,34 +1,99 @@
-/* One column on phones, two on tablets, three on desktop. Whitespace alone
-   separates the blocks. */
+/* One column on phones, two on tablets, three on desktop.
+   The grid has twice as many tracks as visible columns and every card spans
+   two, so a short last row can be centred rather than left with a gap or a
+   stretched card: on tablets a lone last card sits in the middle, and on
+   desktop the last two of five sit centred under the three above. */
 .list {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--space-5);
 }
 
 @media (min-width: 40rem) {
   .list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-7);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .card {
+    grid-column: span 2;
+  }
+
+  .card:last-child:nth-child(odd) {
+    grid-column: 2 / span 2;
   }
 }
 
 @media (min-width: 64rem) {
   .list {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: var(--space-7) var(--space-8);
+    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
+
+  .card:last-child:nth-child(odd) {
+    grid-column: span 2;
+  }
+
+  /* Five cards: the fourth starts one track in, so the last row is centred. */
+  .card:nth-child(4):nth-last-child(2) {
+    grid-column: 2 / span 2;
+  }
+}
+
+/* A white card with the site's hairline border and soft shadow, and a short
+   brand-blue bar over its top edge at the upper left. */
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-6) var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: var(--space-5);
+  width: 2.5rem;
+  height: 3px;
+  background: var(--color-primary);
+  border-radius: 0 0 2px 2px;
+}
+
+/* The number in small, evenly spaced figures, with a hairline rule running
+   from it to the card's edge. */
+.number {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  color: var(--color-primary);
+}
+
+.number::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
 }
 
 .title {
   font-size: var(--text-lg);
   line-height: 1.35;
   letter-spacing: 0;
+  color: var(--color-heading);
   text-wrap: balance;
 }
 
+/* Plain wrapping: "pretty" breaks short descriptions early, at the hyphen in
+   "fibre-reinforced", leaving a ragged narrow block. */
 .text {
-  max-width: 34rem;
   margin-top: var(--space-2);
   color: var(--color-text-muted);
-  text-wrap: pretty;
 }

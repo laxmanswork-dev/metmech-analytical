@@ -4,12 +4,16 @@ import Section from '../components/layout/Section.jsx'
 import { useLanguage } from '../hooks/useLanguage.js'
 
 // "Why Choose Us?" block, shared by the home and about pages.
-export default function WhyChoose({ tone = 'default' }) {
+export default function WhyChoose() {
   const { t, tm } = useLanguage()
 
   return (
-    <Section tone={tone} labelledBy="why-heading">
-      <SectionHeading id="why-heading" title={t('home.why.heading')} />
+    <Section labelledBy="why-heading">
+      <SectionHeading
+        id="why-heading"
+        title={t('home.why.heading')}
+        lead={t('home.why.lead')}
+      />
       <FeatureList items={tm('home.why.items')} />
     </Section>
   )

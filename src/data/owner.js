@@ -2,9 +2,8 @@
 // Fill these in only from the client's own confirmation; never guess.
 //
 // name         Full name exactly as the client supplies it. Shown unchanged in
-//              both languages. REQUIRED: still to be confirmed by the client.
-//              (The company description lists "Jayaraj M & Prem Kumar P" as
-//              contacts, but does not say who the owner is.)
+//              both languages. Confirmed by the client on 2026-10-30 as the
+//              person in the portrait.
 // designation  Professional designation in each language, e.g. { en: '...', ta: '...' }.
 //              Leave a language empty to show no designation in it.
 // photo        The portrait. Until the client supplies one, leave it null and
@@ -15,11 +14,13 @@
 //              A photo of another shape fills the frame and is trimmed evenly
 //              from the edges; add `position: 'center top'` to keep the top.
 //              The current photo is the client's passport-style portrait, its
-//              scan border trimmed; it is small, so it is used at its own size.
+//              scan border trimmed. It is small, so on desktop it is shown
+//              somewhat larger than its own size; a larger original would be
+//              sharper.
 import ownerPhoto from '../assets/images/owner.webp'
 
 export const OWNER = {
-  name: '',
+  name: 'T. R. Parthasarathy',
   designation: { en: '', ta: '' },
   photo: { src: ownerPhoto, width: 320, height: 400 },
 }

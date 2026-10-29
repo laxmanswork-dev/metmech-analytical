@@ -44,7 +44,7 @@ export default {
   // Shared enquiry call to action shown near the end of most pages.
   cta: {
     heading: 'Have a Material Testing Requirement?',
-    text: 'Tell us about your sample and testing objective. Our team can help you discuss the appropriate next step.',
+    text: 'Tell us about your sample and testing objective, and our team will help you decide the appropriate next step.',
   },
   footer: {
     navHeading: 'Quick Links',

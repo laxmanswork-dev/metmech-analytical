@@ -7,6 +7,7 @@ import IndustriesPage from '../pages/IndustriesPage.jsx'
 import InstrumentDetailPage from '../pages/InstrumentDetailPage.jsx'
 import NotFoundPage from '../pages/NotFoundPage.jsx'
 import PrivacyPage from '../pages/PrivacyPage.jsx'
+import ResearchPage from '../pages/ResearchPage.jsx'
 import ServiceDetailPage from '../pages/ServiceDetailPage.jsx'
 import ServicesPage from '../pages/ServicesPage.jsx'
 import { localizePath } from '../utils/paths.js'
@@ -19,6 +20,7 @@ const PAGE_ROUTES = [
   { path: ROUTES.equipment, element: <EquipmentPage /> },
   { path: `${ROUTES.equipment}/:slug`, element: <InstrumentDetailPage /> },
   { path: ROUTES.industries, element: <IndustriesPage /> },
+  { path: ROUTES.research, element: <ResearchPage /> },
   { path: ROUTES.privacy, element: <PrivacyPage /> },
 ]
 

@@ -2,7 +2,7 @@ import { StrictMode } from 'react'
 import { renderToString } from 'react-dom/server'
 import { StaticRouter } from 'react-router'
 import App from './App.jsx'
-import { SITE_URL } from './data/site.js'
+import { ENQUIRY_API_URL, SITE_URL } from './data/site.js'
 import { DEFAULT_LANGUAGE, LANGUAGE_CODES } from './i18n/config.js'
 import { loadLanguage } from './i18n/translations/index.js'
 import { ALL_PATHS, LEGACY_REDIRECTS } from './routes/pages.js'
@@ -15,6 +15,8 @@ import { getLanguageFromPath, localizePath } from './utils/paths.js'
 await Promise.all(LANGUAGE_CODES.map(loadLanguage))
 
 export const siteUrl = SITE_URL
+// Read by scripts/prerender.js, which allows it in the security policy.
+export const enquiryApiUrl = ENQUIRY_API_URL
 export const defaultLanguage = DEFAULT_LANGUAGE
 
 // One entry per page, with its URL path in every language.

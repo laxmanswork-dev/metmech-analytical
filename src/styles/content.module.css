@@ -70,17 +70,50 @@
   font-weight: var(--weight-medium);
 }
 
+/* Stacked navigation buttons (a list of links to related pages): the name
+   leads, with a small arrow at the right edge. Hover tints the button and
+   nudges the arrow; focus shows the site's focus ring. */
+.linkButtons {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.linkButtons a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 3rem;
+  padding: var(--space-2) var(--space-4);
+  font-weight: var(--weight-medium);
+  line-height: 1.35;
+  color: var(--color-heading);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--transition),
+    border-color var(--transition);
+}
+
+.linkButtons a svg {
+  flex: none;
+  color: var(--color-primary);
+  transition: translate var(--transition);
+}
+
+.linkButtons a:hover {
+  color: var(--color-heading);
+  background: var(--color-surface-tint);
+  border-color: var(--color-primary);
+}
+
+.linkButtons a:hover svg {
+  translate: 3px 0;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
-}
-
-.moreLink {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  min-height: var(--target-size);
-  margin-top: var(--space-5);
-  font-weight: var(--weight-semibold);
 }

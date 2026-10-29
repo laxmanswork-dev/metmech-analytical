@@ -9,17 +9,21 @@ export default {
     lead: 'Discuss your testing requirement with our team.',
   },
   info: {
-    heading: 'Our Location',
+    detailsHeading: 'Contact Details',
+    mapHeading: 'Find Our Laboratory',
+    mapTitle: 'Map showing Metmech Analytical Engineers in Ekkattuthangal, Chennai',
+    mapArea: 'Balaji Nagar, Ekkattuthangal, Chennai',
+    getDirections: 'Get Directions',
     addressLines: [
       '#131/7, Block No. 1, 2nd Floor,',
       'Balaji Nagar, 1st Street,',
       'Ekkattuthangal, Chennai – 600 032,',
       'Tamil Nadu, India.',
     ],
-    directions: 'Get directions on Google Maps',
   },
   form: {
     heading: 'Send an Enquiry',
+    lead: 'Tell us about your material, sample and what you need to find out.',
     intro: 'Fields marked with an asterisk (*) are required.',
     required: 'required',
     optional: 'optional',

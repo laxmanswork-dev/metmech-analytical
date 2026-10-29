@@ -31,18 +31,13 @@ export default function IndustriesPage() {
         ]}
       />
 
-      {INDUSTRIES.map(({ key, services }, index) => {
+      {INDUSTRIES.map(({ key, services }) => {
         const item = tm(`industries.items.${key}`)
         const headingId = `${key}-heading`
 
         return (
           // Each section's id is the target of the industry links on the home page.
-          <Section
-            key={key}
-            id={key}
-            tone={index % 2 === 0 ? 'default' : 'muted'}
-            labelledBy={headingId}
-          >
+          <Section key={key} id={key} labelledBy={headingId}>
             <div className={styles.header}>
               <h2 id={headingId}>{item.title}</h2>
               <p className={styles.summary}>{item.summary}</p>
@@ -58,12 +53,12 @@ export default function IndustriesPage() {
 
               <div className={content.block}>
                 <h3>{labels.questions}</h3>
-                <CheckList items={item.questions} />
+                <CheckList items={item.questions} variant="ruled" />
               </div>
 
               <div className={content.block}>
                 <h3>{labels.services}</h3>
-                <ul className={content.linkList}>
+                <ul className={content.linkButtons}>
                   {services.map((service) => (
                     <li key={service}>
                       <LocalizedLink to={servicePath(service)}>

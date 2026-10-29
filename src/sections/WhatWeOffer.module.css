@@ -24,18 +24,23 @@
 }
 
 /* A white card with the site's usual hairline border and soft shadow, as on
-   the service and instrument cards. */
+   the service and instrument cards, and a fine brand-blue edge along its top
+   (an inset shadow, so it follows the rounded corners and adds no grid item
+   to the subgrid). The padding is even, so the card ends just below its
+   description. */
 .card {
   display: grid;
   grid-row: span 2;
   grid-template-rows: subgrid;
-  row-gap: var(--space-4);
+  row-gap: var(--space-3);
   align-content: start;
-  padding: var(--space-6) var(--space-5) var(--space-7);
+  padding: var(--space-6) var(--space-5);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  box-shadow:
+    inset 0 3px 0 var(--color-primary),
+    var(--shadow-sm);
 }
 
 .title {

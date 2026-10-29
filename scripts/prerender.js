@@ -2,8 +2,10 @@
 //
 // Renders every page in every language to a static HTML file in dist/, so
 // crawlers and link previews receive real content and metadata without running
-// JavaScript. Also writes 404.html and, when VITE_SITE_URL is set, sitemap.xml
+// JavaScript. Also writes 404.html, _headers (the security and caching headers
+// Cloudflare serves with the files) and, when VITE_SITE_URL is set, sitemap.xml
 // and the Sitemap line in robots.txt.
+import { createHash } from 'node:crypto'
 import { appendFile, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
@@ -17,10 +19,22 @@ const HTML_SLOT = '<!--app-html-->'
 // React writes <title>, <meta> and <link> tags at the very start of its output.
 const LEADING_HEAD_TAGS = /^(?:<title>[^<]*<\/title>|<meta [^>]*\/>|<link [^>]*\/>)+/
 
-const { render, pages, redirects, siteUrl, defaultLanguage } = await import(
+const { render, pages, redirects, siteUrl, defaultLanguage, enquiryApiUrl } = await import(
   pathToFileURL(path.join(serverDir, 'entry-server.js')).href
 )
-const template = await readFile(path.join(distDir, 'index.html'), 'utf8')
+// The body text face (Inter, Latin subset) is only discovered once the CSS has
+// been parsed, so it arrived late and text drawn in the fallback font reflowed
+// when it landed. Preloading it starts the download with the page. The file
+// name carries a content hash, so it is looked up in the build output.
+const bodyFont = (await readdir(path.join(distDir, 'assets'))).find((name) =>
+  /^inter-latin-wght-normal-.*\.woff2$/.test(name),
+)
+const template = (await readFile(path.join(distDir, 'index.html'), 'utf8')).replace(
+  '</head>',
+  bodyFont
+    ? `  <link rel="preload" as="font" type="font/woff2" href="/assets/${bodyFont}" crossorigin />\n  </head>`
+    : '</head>',
+)
 
 if (!template.includes(HEAD_SLOT) || !template.includes(HTML_SLOT)) {
   throw new Error(`index.html must contain ${HEAD_SLOT} and ${HTML_SLOT}`)
@@ -109,6 +123,65 @@ for (const { from, to } of redirects) {
   await writeFile(file, buildRedirect(to))
 }
 console.log(`Prerendered ${paths.length} pages, 404.html and ${redirects.length} redirects`)
+
+// Security headers, applied by Cloudflare to every response from dist/.
+// The Content-Security-Policy allows scripts only from the site itself plus
+// the small inline scripts in the generated pages, each by the hash of its
+// exact text, so they are collected here after every page is written. The
+// only third party is the Google Maps embed in the contact section. Inline
+// style attributes are allowed because the components set CSS variables
+// through them (no script can run through a style attribute).
+async function htmlFiles(dir) {
+  const found = []
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const full = path.join(dir, entry.name)
+    if (entry.isDirectory()) found.push(...(await htmlFiles(full)))
+    else if (entry.name.endsWith('.html')) found.push(full)
+  }
+  return found
+}
+const scriptHashes = new Set()
+for (const file of await htmlFiles(distDir)) {
+  const html = await readFile(file, 'utf8')
+  for (const [, attributes, body] of html.matchAll(/<script(?![^>]*\bsrc=)([^>]*)>([\s\S]*?)<\/script>/g)) {
+    if (/application\/ld\+json/.test(attributes)) continue
+    scriptHashes.add(`'sha256-${createHash('sha256').update(body).digest('base64')}'`)
+  }
+}
+const connectSources = ["'self'", enquiryApiUrl && new URL(enquiryApiUrl).origin].filter(Boolean)
+const policy = [
+  "default-src 'self'",
+  `script-src 'self' ${[...scriptHashes].join(' ')}`,
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data:",
+  "font-src 'self'",
+  "media-src 'self'",
+  `connect-src ${connectSources.join(' ')}`,
+  'frame-src https://www.google.com https://maps.google.com',
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "object-src 'none'",
+  'upgrade-insecure-requests',
+].join('; ')
+await writeFile(
+  path.join(distDir, '_headers'),
+  [
+    '/*',
+    `  Content-Security-Policy: ${policy}`,
+    '  Strict-Transport-Security: max-age=31536000; includeSubDomains',
+    '  X-Content-Type-Options: nosniff',
+    '  X-Frame-Options: DENY',
+    '  Referrer-Policy: strict-origin-when-cross-origin',
+    '  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()',
+    '',
+    // Built assets have content hashes in their names, so they never change.
+    '/assets/*',
+    '  Cache-Control: public, max-age=31536000, immutable',
+    '',
+  ].join('\n'),
+)
+console.log(`Wrote _headers (${scriptHashes.size} inline script hashes in the security policy)`)
 
 if (siteUrl) {
   await writeFile(path.join(distDir, 'sitemap.xml'), buildSitemap())

@@ -49,7 +49,7 @@ export default {
       challenge:
         'Aerospace materials combine low weight with high strength, and are often fibre-reinforced composites or advanced alloys whose behaviour must be thoroughly understood.',
       support:
-        'Tensile, flexural, shear and delamination tests characterise composite laminates. Thermal analysis and SEM support material development and investigation.',
+        'Tensile, flexural, shear and delamination tests characterize composite laminates. Thermal analysis and SEM support material development and investigation.',
       questions: [
         'What are the tensile and flexural properties of this laminate?',
         'How does this material behave as temperature rises?',

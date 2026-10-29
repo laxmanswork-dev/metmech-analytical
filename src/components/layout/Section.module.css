@@ -1,5 +1,9 @@
+/* Each section ends on a hairline. Only the bottom edge is ruled, so two
+   sections meeting can never draw a double line. */
 .section {
   padding-block: var(--section-padding);
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-divider);
 }
 
 /* Read by SectionHeading for the space below it. */
@@ -22,16 +26,4 @@
     min-height: min(calc(100vh - var(--header-height)), 64rem);
     min-height: min(calc(100svh - var(--header-height)), 64rem);
   }
-}
-
-.default {
-  background: var(--color-surface);
-}
-
-.muted {
-  background: var(--color-surface-muted);
-}
-
-.tint {
-  background: var(--color-surface-tint);
 }

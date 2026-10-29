@@ -36,6 +36,8 @@
   --color-text-inverse: var(--white);
   --color-text-inverse-muted: #c5d0e0;
   --color-border: var(--grey-200);
+  /* The hairline under each page section, on the white background. */
+  --color-divider: #e2e7ed;
   --color-primary: var(--blue-600);
   --color-primary-hover: var(--blue-700);
   --color-focus: var(--blue-600);
@@ -54,7 +56,11 @@
   --font-sans:
     'Inter Variable', 'Noto Sans Tamil Variable', system-ui, -apple-system, 'Segoe UI',
     'Nirmala UI', sans-serif;
-  /* The company name in the header lockup only. One weight, Latin only. */
+  /* The company name in the header lockup only, Latin only. "METMECH" and
+     "ANALYTICAL" are set in Bodoni Moda, an Italian editorial face whose
+     optical sizes keep its hairlines sturdy at small sizes; the letter-spaced
+     "ENGINEERS" stays in Barlow Semi Condensed (one weight). */
+  --font-brand-display: 'Bodoni Moda Variable', 'Bodoni 72', Didot, Georgia, serif;
   --font-brand: 'Barlow Semi Condensed', 'Arial Narrow', sans-serif;
   --text-sm: 0.875rem;
   --text-nav: 0.9375rem;
@@ -88,7 +94,7 @@
   --gutter: clamp(1rem, 0.5rem + 2.5vw, 2rem);
   --target-size: 2.75rem;
   /* Total height of the site header, kept in step with Header.module.css. */
-  --header-height: 3.8125rem;
+  --header-height: 5.0625rem;
 
   /* Shape and elevation */
   --radius-sm: 0.25rem;
@@ -99,10 +105,10 @@
   --transition: 150ms ease;
 }
 
-/* The header is taller on large screens: 79px + 1px border. */
+/* The header is taller on large screens: 100px + 1px border. */
 @media (min-width: 75rem) {
   :root {
-    --header-height: 5rem;
+    --header-height: 6.3125rem;
   }
 }
 

@@ -12,3 +12,27 @@
   font-size: var(--text-lg);
   color: var(--color-text-muted);
 }
+
+/* With an action: the action sits at the right, centred on the title and
+   its supporting line, and drops below the heading where the two do not fit
+   side by side. */
+.withAction {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4) var(--space-6);
+  margin-bottom: var(--heading-gap, var(--space-6));
+}
+
+.withAction > .heading {
+  flex: 1 1 28rem;
+  margin-bottom: 0;
+}
+
+/* Never wider than the row: a long label (Tamil runs to nearly 500px) wraps
+   inside the button rather than pushing the page sideways on phones. */
+.action {
+  flex: 0 1 auto;
+  max-width: 100%;
+}

@@ -9,6 +9,7 @@ import equipment from './equipment.js'
 import home from './home.js'
 import industries from './industries.js'
 import privacy from './privacy.js'
+import research from './research.js'
 import services from './services.js'
 
-export default { ...common, home, about, services, equipment, industries, contact, privacy }
+export default { ...common, home, about, services, equipment, industries, research, contact, privacy }

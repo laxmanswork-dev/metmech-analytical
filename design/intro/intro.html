@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Metmech Intro</title>
+<!--
+  The 6-second company intro, drawn as one deterministic scene: window.seek(t)
+  sets every element for time t in seconds, so render.js can capture it frame
+  by frame. Open the file with ?play to watch it in real time.
+-->
+<style>
+  @font-face {
+    font-family: 'Bodoni Moda';
+    src: url('../../node_modules/@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2') format('woff2');
+    font-weight: 400 900;
+  }
+  @font-face {
+    font-family: 'Inter';
+    src: url('../../node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2') format('woff2');
+    font-weight: 100 900;
+  }
+
+  :root {
+    --W: 330px;   /* one board of the book */
+    --H: 440px;
+    --T: 12px;    /* thickness of each half of the page block */
+    --navy-900: #0a1f3d;
+    --navy-800: #12305a;
+    --blue-600: #1a5fb4;
+    --gold: #c9a45c;
+    --gold-deep: #85652a;
+    --ivory: #f7f4ec;
+  }
+
+  html, body { margin: 0; background: #040b16; overflow: hidden; }
+  #stage {
+    position: relative; width: 1920px; height: 1080px; overflow: hidden;
+    background: #050d1a;
+  }
+  .layer { position: absolute; inset: 0; }
+
+  /* Backgrounds */
+  #bg-dark {
+    background:
+      radial-gradient(ellipse 60% 55% at 50% 52%, #143057 0%, #0b1f3c 45%, #050d1a 100%);
+  }
+  #bg-dark::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 80% 70% at 50% 50%, transparent 55%, rgb(0 0 0 / 0.55) 100%);
+  }
+  #bg-light {
+    opacity: 0;
+    background:
+      radial-gradient(ellipse 55% 60% at 50% 42%, #fffdf8 0%, #f6f2e8 45%, #e3e7ee 100%);
+  }
+  #bg-light::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 85% 75% at 50% 46%, transparent 60%, rgb(10 31 61 / 0.16) 100%);
+  }
+
+  #camera, #group { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; }
+
+  /* Light from the open book */
+  #bloom {
+    position: absolute; width: 1400px; height: 1400px; margin: -700px 0 0 -700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #fffaf0 0%, #fbf3e2 30%, rgb(247 238 218 / 0.6) 48%, transparent 70%);
+    opacity: 0;
+  }
+  #glow {
+    position: absolute; width: 900px; height: 520px; margin: -340px 0 0 -450px;
+    background:
+      radial-gradient(ellipse 22% 30% at 50% 66%, rgb(255 246 222 / 0.95) 0%, rgb(255 226 168 / 0.5) 40%, transparent 100%),
+      radial-gradient(ellipse 50% 55% at 50% 66%, rgb(240 200 130 / 0.35) 0%, transparent 100%);
+    mix-blend-mode: screen; opacity: 0;
+  }
+  #rays {
+    position: absolute; width: 1300px; height: 900px; margin: -880px 0 0 -650px;
+    background: conic-gradient(from -42deg at 50% 100%,
+      transparent 0deg, rgb(255 228 170 / 0.18) 6deg, transparent 11deg,
+      transparent 17deg, rgb(255 236 190 / 0.12) 22deg, transparent 29deg,
+      rgb(255 228 170 / 0.2) 36deg, transparent 41deg, transparent 47deg,
+      rgb(255 236 190 / 0.14) 53deg, transparent 58deg, rgb(255 228 170 / 0.16) 66deg,
+      transparent 72deg, transparent 360deg);
+    -webkit-mask-image: radial-gradient(ellipse 50% 100% at 50% 100%, #000 10%, transparent 80%);
+    filter: blur(6px); mix-blend-mode: screen; opacity: 0;
+  }
+  #particles { position: absolute; left: 0; top: 0; mix-blend-mode: screen; }
+  #shadow {
+    position: absolute; width: 900px; height: 160px; margin: -40px 0 0 -450px;
+    background: radial-gradient(ellipse 50% 50% at 50% 50%, rgb(0 0 0 / 0.55), transparent 70%);
+    filter: blur(10px);
+  }
+
+  /* The book: CSS 3D, lying on an unseen table */
+  #persp {
+    position: absolute; inset: 0;
+    perspective: 1900px; perspective-origin: 960px 330px;
+  }
+  #book {
+    position: absolute; left: 960px; top: 640px; width: 0; height: 0;
+    transform-style: preserve-3d;
+  }
+  #book div { position: absolute; transform-style: preserve-3d; }
+  .face { backface-visibility: visible; }
+
+  .board {
+    left: 0; top: calc(var(--H) / -2); width: var(--W); height: var(--H);
+    border-radius: 2px 7px 7px 2px;
+    background:
+      radial-gradient(ellipse 90% 70% at 30% 20%, rgb(255 255 255 / 0.10), transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.1 0 0 0 0 0.2 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"),
+      linear-gradient(160deg, #1c3b69 0%, #10284c 55%, #0b1d38 100%);
+  }
+  .board.back { transform: translateZ(-2px); }
+  .board-edge {
+    background: linear-gradient(#0d2242, #081730);
+  }
+  /* Gold foil on the front board */
+  .foil {
+    left: 22px; top: 22px; right: 22px; bottom: 22px;
+    border: 2px solid #c9a45c; border-radius: 3px;
+    box-shadow: inset 0 0 0 6px transparent, inset 0 0 0 7px rgb(201 164 92 / 0.65);
+  }
+  .foil::after {
+    content: ''; position: absolute; left: 50%; bottom: 58px; width: 120px; height: 1px;
+    margin-left: -60px; background: linear-gradient(90deg, transparent, #d8b873, transparent);
+  }
+  .emblem {
+    left: 50%; top: 42%; width: 150px; height: 148px; margin: -74px 0 0 -75px;
+    background: url('../../src/assets/brand/metmech-emblem.webp') center / contain no-repeat;
+    filter: saturate(0.9) brightness(1.05);
+  }
+  #cover-shade, #page-shade-l { left: 0; top: 0; width: 100%; height: 100%; background: #000; opacity: 0; }
+
+  .paper {
+    background:
+      linear-gradient(90deg, rgb(70 55 30 / 0.28) 0%, rgb(70 55 30 / 0.08) 7%, transparent 16%),
+      repeating-linear-gradient(180deg, transparent 0 11px, rgb(60 70 90 / 0.13) 11px 13px) 52px 62px / calc(100% - 92px) calc(100% - 124px) no-repeat,
+      linear-gradient(180deg, #fbf8f0, #f1ebdc);
+  }
+  .paper-glow {
+    left: 0; top: 0; width: 100%; height: 100%; opacity: 0;
+    background: radial-gradient(ellipse 70% 60% at 0% 50%, rgb(255 236 190 / 0.9), transparent 70%);
+  }
+  .page-edge {
+    background: repeating-linear-gradient(180deg, #f3ecdb 0 1px, #d9cfb8 1px 2px);
+  }
+  .page-edge.side { background: repeating-linear-gradient(90deg, #f3ecdb 0 1px, #d9cfb8 1px 2px); }
+
+  /* The joined hands */
+  #hands {
+    position: absolute; width: 440px; height: 440px; margin-left: -220px;
+    opacity: 0;
+  }
+  #hands svg { width: 100%; height: 100%; overflow: visible; }
+
+  /* The company name */
+  #name {
+    position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0;
+    text-align: center; color: var(--navy-800);
+  }
+  .line1 {
+    position: absolute; left: 0; right: 0; top: 640px;
+    font-family: 'Bodoni Moda', serif; font-size: 86px; line-height: 1;
+    font-weight: 650; font-variation-settings: 'opsz' 28;
+    letter-spacing: 0.01em; white-space: nowrap;
+  }
+  .line1 .ch { display: inline-block; }
+  .line2 {
+    position: absolute; left: 0; right: 0; top: 742px;
+    font-family: 'Bodoni Moda', serif; font-size: 40px; line-height: 1;
+    font-weight: 560; font-variation-settings: 'opsz' 20;
+    color: var(--navy-900); white-space: nowrap;
+  }
+  .line3 {
+    position: absolute; left: 0; right: 0; top: 812px;
+    font-family: 'Inter', sans-serif; font-size: 30px; font-weight: 450; line-height: 1;
+    color: var(--blue-600); letter-spacing: 0.02em;
+  }
+  .line4 {
+    position: absolute; left: 0; right: 0; top: 880px;
+    font-family: 'Inter', sans-serif; font-size: 21px; font-weight: 600; line-height: 1;
+    color: var(--gold-deep); letter-spacing: 0.42em; text-indent: 0.42em;
+  }
+  #sweep {
+    position: absolute; left: 0; right: 0; top: 640px; color: #fff3d6;
+    font-family: 'Bodoni Moda', serif; font-size: 86px; line-height: 1;
+    font-weight: 650; font-variation-settings: 'opsz' 28;
+    letter-spacing: 0.01em; white-space: nowrap; text-align: center;
+    -webkit-mask-image: linear-gradient(105deg, transparent 0%, transparent 42%, #000 50%, transparent 58%, transparent 100%);
+    -webkit-mask-size: 300% 100%; -webkit-mask-repeat: no-repeat;
+    text-shadow: 0 0 18px rgb(255 214 140 / 0.7);
+    opacity: 0;
+  }
+
+  #fade { background: #000; pointer-events: none; }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="layer" id="bg-dark"></div>
+  <div class="layer" id="bg-light"></div>
+
+  <div id="camera">
+    <div id="group">
+      <div id="bloom"></div>
+      <div id="shadow"></div>
+      <div id="persp">
+        <div id="book">
+          <!-- back board and the right half of the page block (static) -->
+          <div class="board back face"></div>
+          <div class="face board-edge" style="left:0; top:calc(var(--H)/2); width:var(--W); height:3px; transform-origin:top; transform:translateZ(-2px) rotateX(90deg)"></div>
+          <div class="face paper" id="page-r" style="left:0; top:calc(var(--H)/-2 + 6px); width:calc(var(--W) - 8px); height:calc(var(--H) - 12px); transform:translateZ(var(--T))"><div class="paper-glow" id="glow-r"></div></div>
+          <div class="face page-edge" style="left:0; top:calc(var(--H)/2 - 6px); width:calc(var(--W) - 8px); height:var(--T); transform-origin:top; transform:rotateX(90deg)"></div>
+          <div class="face page-edge side" style="left:calc(var(--W) - 8px); top:calc(var(--H)/-2 + 6px); width:var(--T); height:calc(var(--H) - 12px); transform-origin:left; transform:rotateY(-90deg)"></div>
+          <div id="spine-mark" style="left:-2px; top:-2px; width:4px; height:4px; transform:translateZ(var(--T))"></div>
+
+          <!-- flipping pages -->
+          <div id="flip1" style="left:0; top:0; width:0; height:0"></div>
+          <div id="flip2" style="left:0; top:0; width:0; height:0"></div>
+
+          <!-- front board with the left half of the page block, hinged at the spine -->
+          <div id="leaf" style="left:0; top:0; width:0; height:0">
+            <div class="face paper" style="left:0; top:calc(var(--H)/-2 + 6px); width:calc(var(--W) - 8px); height:calc(var(--H) - 12px)"><div class="paper-glow" id="glow-l"></div><div id="page-shade-l"></div></div>
+            <div class="face page-edge" style="left:0; top:calc(var(--H)/2 - 6px); width:calc(var(--W) - 8px); height:var(--T); transform-origin:top; transform:rotateX(90deg)"></div>
+            <div class="face page-edge side" style="left:calc(var(--W) - 8px); top:calc(var(--H)/-2 + 6px); width:var(--T); height:calc(var(--H) - 12px); transform-origin:left; transform:rotateY(-90deg)"></div>
+            <div class="face board-edge" style="left:0; top:calc(var(--H)/2); width:var(--W); height:3px; transform-origin:top; transform:translateZ(var(--T)) rotateX(90deg)"></div>
+            <div class="face board-edge" style="left:var(--W); top:calc(var(--H)/-2); width:3px; height:var(--H); transform-origin:left; transform:translateZ(var(--T)) rotateY(-90deg)"></div>
+            <div class="board face" id="cover" style="transform:translateZ(calc(var(--T) + 3px))">
+              <div class="foil"></div>
+              <div class="emblem"></div>
+              <div id="cover-shade"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="rays"></div>
+      <div id="glow"></div>
+      <canvas id="particles" width="1920" height="1080"></canvas>
+
+      <div id="hands">
+        <!-- The client's Vanakkam icon (vanakkam-source.png), used exactly as
+             supplied. vanakkam-mask.png is the same drawing with its black
+             lines turned into opacity, so the lines can take the scene's
+             colour: warm white on the navy opening, navy on the ivory close. -->
+        <svg viewBox="0 0 1254 1254" aria-label="Two palms joined in the Vanakkam greeting">
+          <defs>
+            <mask id="vanakkamMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1254" height="1254">
+              <image href="vanakkam-mask.png" width="1254" height="1254"/>
+            </mask>
+            <linearGradient id="sweepGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#fff3d0" stop-opacity="0"/>
+              <stop offset="0.5" stop-color="#fff3d0" stop-opacity="1"/>
+              <stop offset="1" stop-color="#fff3d0" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <g mask="url(#vanakkamMask)">
+            <rect id="handsInk" width="1254" height="1254" fill="#f3eee2"/>
+            <rect id="handSweep" x="-600" y="0" width="420" height="1254" fill="url(#sweepGrad)" transform="skewX(-14)"/>
+          </g>
+        </svg>
+      </div>
+
+      <div id="name">
+        <div class="line1" id="line1"></div>
+        <div class="line2" id="line2">ENGINEERS</div>
+        <div class="line3" id="line3">A Research Lab</div>
+        <div class="line4" id="line4">SINCE 2005</div>
+        <div id="sweep">METMECH ANALYTICAL</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="layer" id="fade"></div>
+</div>
+
+<script>
+const $ = (id) => document.getElementById(id)
+const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v))
+const seg = (t, a, b) => clamp((t - a) / (b - a))
+const mix = (a, b, p) => a + (b - a) * p
+const easeInOut = (p) => (p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2)
+const easeOut = (p) => 1 - Math.pow(1 - p, 3)
+const easeOutQuint = (p) => 1 - Math.pow(1 - p, 5)
+const easeInOutSine = (p) => -(Math.cos(Math.PI * p) - 1) / 2
+
+const W = 330, H = 440, T = 12
+const CX = 960, CY = 540
+
+// Company name, one span per letter for the staggered reveal.
+const NAME = 'METMECH ANALYTICAL'
+$('line1').innerHTML = [...NAME].map((c) => `<span class="ch">${c === ' ' ? '&nbsp;' : c}</span>`).join('')
+const letters = [...$('line1').querySelectorAll('.ch')]
+
+// ENGINEERS spans the width of the line above it, as in the site's wordmark.
+const engineersSpacing = 0.62
+function calibrate() {
+  return
+  const line1 = $('line1').querySelector('.ch').parentElement
+  const range = document.createRange()
+  range.selectNodeContents(line1)
+  const target = range.getBoundingClientRect().width
+  const l2 = $('line2')
+  l2.style.letterSpacing = '0em'
+  const r2 = document.createRange()
+  r2.selectNodeContents(l2)
+  const base = r2.getBoundingClientRect().width
+  // letter-spacing is added after every letter; the last one is cancelled by text-indent
+  engineersSpacing = (target - base) / 8 / 38
+}
+
+// Flipping pages: a strip chain so each page curls as it turns.
+const STRIPS = 10
+function buildFlip(el) {
+  let parent = el
+  const strips = []
+  const sw = (W - 8) / STRIPS
+  for (let i = 0; i < STRIPS; i++) {
+    const s = document.createElement('div')
+    s.className = 'face'
+    s.style.cssText = `left:${i === 0 ? 0 : sw}px; top:${i === 0 ? -H / 2 + 6 : 0}px; width:${sw + 0.6}px; height:${H - 12}px; transform-origin:0 50%;`
+    // Plain paper per strip; a full-page background would spill past the strip.
+    s.style.background = i === 0
+      ? 'linear-gradient(90deg, rgb(70 55 30 / 0.22), transparent 60%), linear-gradient(180deg, #fbf8f0, #f1ebdc)'
+      : i < STRIPS - 1
+        ? 'repeating-linear-gradient(180deg, transparent 0 11px, rgb(60 70 90 / 0.13) 11px 13px) 0 62px / 100% calc(100% - 124px) no-repeat, linear-gradient(180deg, #fbf8f0, #f1ebdc)'
+        : 'linear-gradient(180deg, #fbf8f0, #f1ebdc)'
+    const shade = document.createElement('div')
+    shade.style.cssText = 'position:absolute; inset:0; background:#000; opacity:0'
+    s.appendChild(shade)
+    parent.appendChild(s)
+    strips.push({ el: s, shade })
+    parent = s
+  }
+  return strips
+}
+const flips = [buildFlip($('flip1')), buildFlip($('flip2'))]
+
+function setFlip(strips, root, p, lift) {
+  // p: 0 lying on the right, 1 lying on the left.
+  const angle = 180 * easeInOutSine(p)
+  const curl = Math.sin(Math.PI * p) * 7.5
+  root.style.transform = `translateZ(${T + lift}px) rotateY(${-angle}deg)`
+  strips.forEach((s, i) => {
+    const bend = i === 0 ? 0 : curl * (0.35 + i / STRIPS)
+    s.el.style.transform = `rotateY(${bend}deg)`
+    const a = angle - curl * i * 0.6
+    s.shade.style.opacity = (0.22 * Math.sin((a * Math.PI) / 180) ** 2).toFixed(3)
+  })
+  root.style.visibility = p <= 0 ? 'hidden' : 'visible'
+}
+
+// Seeded random numbers so every render is identical.
+function rng(seed) {
+  return () => {
+    seed = (seed * 1664525 + 1013904223) >>> 0
+    return seed / 4294967296
+  }
+}
+const rand = rng(2005)
+const particles = Array.from({ length: 64 }, () => ({
+  birth: mix(0.55, 3.6, rand()),
+  life: mix(1.3, 2.2, rand()),
+  x: (rand() - 0.5) * 2,
+  y: rand(),
+  drift: (rand() - 0.5) * 40,
+  rise: mix(150, 330, rand()),
+  size: mix(0.8, 2.6, rand()),
+  tw: rand() * 6.28,
+}))
+const ctx = $('particles').getContext('2d')
+
+function affine(ox, oy, tx, ty, s) {
+  return new DOMMatrix().translate(ox + tx, oy + ty).scale(s).translate(-ox, -oy)
+}
+
+function seek(t) {
+  // ---- camera: a slow push-in across the whole intro, settling at the end
+  const camS = 1 + 0.05 * easeInOutSine(seg(t, 0, 6.0)) + 0.012 * easeOut(seg(t, 0, 1.6))
+  const camM = affine(CX, CY, 0, 0, camS)
+  $('camera').style.transform = camM.toString()
+
+  // ---- group: book and hands rise and settle above the name
+  const settle = easeInOut(seg(t, 2.75, 3.6))
+  const gS = mix(1, 0.64, settle)
+  const gM = affine(CX, 470, 0, mix(40, -128, settle), gS)
+  $('group').style.transform = gM.toString()
+
+  // ---- book opening
+  const open = seg(t, 0.18, 1.38)
+  const theta = 180 * easeInOut(open)
+  const shift = -(W / 2) * (1 - easeInOut(seg(t, 0.22, 1.45)))
+  $('book').style.transform = `translateX(${shift}px) rotateX(54deg)`
+  $('leaf').style.transform = `translateZ(${T}px) rotateY(${-theta}deg)`
+  $('cover-shade').style.opacity = (0.45 * Math.sin((theta * Math.PI) / 180) ** 1.5).toFixed(3)
+  $('page-shade-l').style.opacity = (0.35 * clamp(Math.sin((theta * Math.PI) / 180))).toFixed(3)
+  setFlip(flips[0], $('flip1'), easeInOut(seg(t, 0.46, 1.42)), 0.6)
+  setFlip(flips[1], $('flip2'), easeInOut(seg(t, 0.64, 1.56)), 1.2)
+
+  // ---- book light
+  const light = easeOut(seg(t, 0.55, 1.7))
+  const darkFade = 1 - easeInOut(seg(t, 2.85, 3.45))
+  const pageGlow = light * mix(0.85, 0.35, 1 - darkFade)
+  $('glow-r').style.opacity = pageGlow.toFixed(3)
+  $('glow-l').style.opacity = pageGlow.toFixed(3)
+
+  // Projected spine centre, in group coordinates.
+  const r = $('spine-mark').getBoundingClientRect()
+  const inv = camM.multiply(gM).inverse()
+  const g = inv.transformPoint(new DOMPoint(r.left + r.width / 2, r.top + r.height / 2))
+  const place = (el, dy = 0) => { el.style.left = `${g.x}px`; el.style.top = `${g.y + dy}px` }
+  place($('glow'))
+  place($('rays'), -10)
+  place($('shadow'), 108)
+  place($('bloom'), -60)
+  $('glow').style.opacity = (light * (0.55 + 0.45 * darkFade) * (0.92 + 0.08 * Math.sin(t * 5))).toFixed(3)
+  $('rays').style.opacity = (light * darkFade * 0.9 * easeOut(seg(t, 0.8, 1.9))).toFixed(3)
+  $('shadow').style.opacity = mix(0.9, 0.35, 1 - darkFade).toFixed(3)
+
+  // ---- light fills the frame, carrying us from navy to ivory
+  // The bloom floods out from the book first; the ivory ground settles in beneath it.
+  const bloomP = easeInOut(seg(t, 2.6, 3.35))
+  $('bloom').style.transform = `scale(${mix(0.2, 3.6, bloomP)})`
+  $('bloom').style.opacity = (easeOut(seg(t, 2.6, 2.95)) * (1 - easeInOut(seg(t, 3.3, 3.8)))).toFixed(3)
+  $('bg-light').style.opacity = easeInOut(seg(t, 2.85, 3.35)).toFixed(3)
+
+  // ---- particles
+  ctx.clearRect(0, 0, 1920, 1080)
+  for (const p of particles) {
+    const age = (t - p.birth) / p.life
+    if (age <= 0 || age >= 1) continue
+    const a = Math.sin(Math.PI * age) * (0.25 + 0.75 * darkFade) * (0.6 + 0.4 * Math.sin(p.tw + t * 7))
+    const x = g.x + p.x * 230 + p.drift * age
+    const y = g.y - 10 + p.y * 30 - p.rise * easeOut(age)
+    const grad = ctx.createRadialGradient(x, y, 0, x, y, p.size * 4)
+    grad.addColorStop(0, `rgba(255,240,205,${a})`)
+    grad.addColorStop(0.3, `rgba(255,214,140,${a * 0.5})`)
+    grad.addColorStop(1, 'rgba(255,214,140,0)')
+    ctx.fillStyle = grad
+    ctx.beginPath()
+    ctx.arc(x, y, p.size * 4, 0, 6.283)
+    ctx.fill()
+  }
+
+  // ---- the Vanakkam hands
+  const hIn = easeOutQuint(seg(t, 2.0, 2.75))
+  const hands = $('hands')
+  hands.style.left = `${g.x}px`
+  hands.style.top = `${g.y - 560 + (1 - hIn) * 46}px`
+  hands.style.opacity = hIn.toFixed(3)
+  hands.style.transform = `scale(${mix(0.94, 1, hIn)})`
+  const glowHands = 1 - darkFade
+  hands.style.filter = `blur(${((1 - hIn) * 6).toFixed(2)}px) drop-shadow(0 0 ${mix(26, 10, glowHands)}px rgba(255,214,150,${(0.4 * hIn * darkFade).toFixed(3)})) drop-shadow(0 10px 18px rgba(10,31,61,${(0.28 * glowHands).toFixed(3)}))`
+  const hs = easeInOut(seg(t, 2.25, 2.95))
+  $('handSweep').setAttribute('x', mix(-500, 1700, hs).toFixed(1))
+  // Warm white over navy, settling to the brand navy as the frame turns ivory.
+  const ink = [[243, 18], [238, 48], [226, 90]].map(([from, to]) => Math.round(mix(from, to, glowHands)))
+  $('handsInk').setAttribute('fill', `rgb(${ink.join(',')})`)
+
+  // ---- company name
+  const textTop = 0
+  letters.forEach((el, i) => {
+    const p = easeOutQuint(seg(t, 3.0 + i * 0.022, 3.65 + i * 0.022))
+    el.style.opacity = p.toFixed(3)
+    el.style.transform = `translateY(${((1 - p) * 26).toFixed(2)}px)`
+    el.style.filter = p < 1 ? `blur(${((1 - p) * 5).toFixed(2)}px)` : 'none'
+  })
+  const e = easeOutQuint(seg(t, 3.35, 3.95))
+  const l2 = $('line2')
+  const sp = engineersSpacing + (1 - e) * 0.18
+  l2.style.letterSpacing = `${sp}em`
+  l2.style.textIndent = `${sp}em`
+  l2.style.opacity = e.toFixed(3)
+  l2.style.filter = e < 1 ? `blur(${((1 - e) * 4).toFixed(2)}px)` : 'none'
+  const l3 = easeOutQuint(seg(t, 3.75, 4.3))
+  $('line3').style.opacity = l3.toFixed(3)
+  $('line3').style.transform = `translateY(${((1 - l3) * 16).toFixed(2)}px)`
+  const l4 = easeOutQuint(seg(t, 4.5, 5.05))
+  $('line4').style.opacity = l4.toFixed(3)
+  $('line4').style.letterSpacing = `${mix(0.62, 0.42, l4)}em`
+  $('line4').style.textIndent = `${mix(0.62, 0.42, l4)}em`
+  // The name is laid out in screen space beneath the settled group.
+  $('name').style.transform = `${gM.inverse().toString()} translateY(${textTop}px)`
+
+  // ---- light sweep across the name
+  const sw = seg(t, 4.95, 5.5)
+  $('sweep').style.opacity = sw > 0 && sw < 1 ? '1' : '0'
+  $('sweep').style.webkitMaskPosition = `${mix(100, 0, easeInOut(sw))}% 0`
+
+  // ---- fade from black at the very start
+  $('fade').style.opacity = (1 - easeOut(seg(t, 0, 0.45))).toFixed(3)
+}
+
+window.seek = seek
+window.ready = document.fonts.ready.then(() => { calibrate(); seek(0) })
+
+if (location.search.includes('play')) {
+  window.ready.then(() => {
+    const start = performance.now()
+    const tick = () => {
+      const t = (performance.now() - start) / 1000
+      seek(Math.min(t, 6))
+      if (t < 7.5) requestAnimationFrame(tick)
+    }
+    requestAnimationFrame(tick)
+  })
+}
+</script>
+</body>
+</html>

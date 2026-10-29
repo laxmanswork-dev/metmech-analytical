@@ -1,7 +1,13 @@
-/* The introduction at reading width, the owner's portrait beside it on
-   desktop and below it on smaller screens. */
+/* The opening (heading and statement), the owner's portrait and the three
+   topics. Below desktop they stack in that order, so the portrait follows
+   the opening rather than the whole text. On desktop the portrait stands in
+   its own column beside the text, level with the heading. */
 .intro {
   display: grid;
+  grid-template-areas:
+    'opening'
+    'portrait'
+    'topics';
   gap: var(--space-7);
 }
 
@@ -9,29 +15,79 @@
   min-width: 0;
 }
 
+/* The heading sits close over the single opening statement (SectionHeading
+   reads --heading-gap for the space below it). */
+.opening {
+  --heading-gap: var(--space-3);
+
+  grid-area: opening;
+}
+
+.opening > p {
+  max-width: 40rem;
+}
+
+.intro > figure {
+  grid-area: portrait;
+}
+
+.topics {
+  grid-area: topics;
+}
+
+/* The portrait column takes about two fifths of the width, so the portrait
+   carries real presence while the text keeps a comfortable measure. */
 @media (min-width: 64rem) {
   .intro {
-    grid-template-columns: minmax(0, var(--container-narrow)) minmax(18rem, 22rem);
-    justify-content: space-between;
-    align-items: start;
-    gap: var(--space-8);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 26rem);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'opening portrait'
+      'topics portrait';
+    column-gap: var(--space-8);
+    row-gap: var(--space-6);
   }
 
-  /* Level with the heading's top rather than the band's padding. */
+  /* Its own height, at the top of the column, level with the heading. It
+     sits a little to the right of the content edge for more space beside
+     the text: up to 3.75rem, taken from the space beside the centred
+     container (as the home hero does with its orbit), so it tapers to
+     nothing where the container fills the screen. */
   .intro > figure {
+    align-self: start;
+    max-width: none;
     margin-top: var(--space-2);
+    translate: max(0px, min(3.75rem, (100vw - var(--container-max)) / 2)) 0;
   }
 }
 
-/* The opening statement, then each subsection as a heading over a paragraph. */
-.copy {
+/* Each topic set off by a hairline rule whose first 2.5rem is brand blue,
+   the same short bar that marks the top edge of the site's cards. */
+.topics {
   display: grid;
-  gap: var(--space-6);
+  max-width: var(--container-narrow);
 }
 
 .topic {
+  position: relative;
   display: grid;
   gap: var(--space-2);
+  padding-block: var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.topic::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 2.5rem;
+  height: 2px;
+  background: var(--color-primary);
+}
+
+.topic:last-child {
+  padding-bottom: 0;
 }
 
 .topic h3 {
@@ -39,8 +95,13 @@
   letter-spacing: 0;
 }
 
+.topic p {
+  color: var(--color-text-muted);
+}
+
 /* Vision and mission: two statements below the introduction, side by side
-   once both fit. */
+   once both fit, with the brand-blue top edge used on the site's other
+   cards. Each is labelled in small spaced capitals over the statement. */
 .purpose {
   display: grid;
   gap: var(--space-5);
@@ -55,18 +116,29 @@
 
 .statement {
   display: grid;
-  gap: var(--space-3);
+  gap: var(--space-4);
   align-content: start;
   padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-top: 3px solid var(--color-accent);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
+  box-shadow:
+    inset 0 3px 0 var(--color-primary),
+    var(--shadow-sm);
 }
 
 .statement h3 {
-  font-size: var(--text-lg);
+  font-size: 0.8125rem;
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  color: var(--color-primary);
+  text-transform: uppercase;
+}
+
+/* Tamil has no capitals and reads poorly when letter-spaced. */
+html:lang(ta) .statement h3 {
+  font-size: var(--text-sm);
   letter-spacing: 0;
 }
 

@@ -4,6 +4,9 @@
   padding-block: clamp(2.5rem, 2rem + 3vw, 4rem);
   color: var(--color-text-inverse-muted);
   background: var(--navy-800);
+  /* Dark on dark above the footer: a faint light hairline marks the seam,
+     where the light sections' divider colour would read as a mistake. */
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
 }
 
 .inner {

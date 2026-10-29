@@ -67,9 +67,10 @@ ol {
   list-style: none;
 }
 
+/* Links are never underlined; they are set apart by colour. */
 a {
   color: var(--color-primary);
-  text-underline-offset: 0.2em;
+  text-decoration: none;
 }
 
 a:hover {

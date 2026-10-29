@@ -20,7 +20,7 @@ export default {
   },
   help: {
     heading: 'Not sure which test you need?',
-    text: 'Describe your requirement and our team can help you discuss a suitable testing approach.',
+    text: 'Describe your requirement and we will help you identify a suitable testing approach.',
   },
   labels: {
     evaluates: 'What the Test Evaluates',
@@ -130,7 +130,7 @@ export default {
         'Surface features and fracture surfaces at high magnification',
         'Elemental composition of a selected area',
         'Crystalline phases present in a material',
-        'Porosity, case depth and decarburised depth',
+        'Porosity, case depth and decarburized depth',
       ],
       why: 'Two materials with the same nominal grade can behave very differently if their microstructure differs. Characterization links processing to performance and is central to failure analysis.',
       applications: [
@@ -143,7 +143,7 @@ export default {
         'Micro examination (metallography)',
         'Macro examination',
         'Scanning Electron Microscopy (SEM)',
-        'Energy Dispersive Spectroscopy (EDS)',
+        'Energy-Dispersive X-ray Spectroscopy (EDS)',
         'X-ray Diffraction (XRD)',
         'Porosity measurement',
         'Failure analysis (combined test package)',
@@ -169,7 +169,7 @@ export default {
       evaluates: [
         'Thermal stability and decomposition temperature',
         'Moisture, volatile and filler content',
-        'Melting, crystallisation and other transitions',
+        'Melting, crystallization and other transitions',
         'Oxidation behaviour',
       ],
       why: 'Many materials are processed or used at elevated temperature. Knowing when a material loses weight, melts or reacts helps set processing limits and compare formulations.',
@@ -234,6 +234,7 @@ export default {
     },
     'welding-processing': {
       title: 'Welding & Processing',
+      imageAlt: 'Welder in a protective helmet and gloves joining steel, with sparks from the welding arc',
       summary:
         'Welding, casting, powder metallurgy, heat treatment and coating processes for research and development work.',
       intro:
@@ -313,7 +314,7 @@ export default {
       summary:
         'High-magnification imaging of surfaces with elemental analysis of selected areas.',
       intro:
-        'A scanning electron microscope (SEM) uses a focused beam of electrons to image a sample’s surface structure and morphology at far higher magnification than an optical microscope. Energy dispersive spectroscopy (EDS) uses the X-rays produced by the same beam to identify the elements present.',
+        'A scanning electron microscope (SEM) uses a focused beam of electrons to image a sample’s surface structure and morphology at far higher magnification than an optical microscope. Energy-dispersive X-ray spectroscopy (EDS) uses the X-rays produced by the same beam to identify the elements present.',
       evaluates: [
         'Surface structure and morphology at high magnification',
         'Fracture surface features that indicate how a part failed',

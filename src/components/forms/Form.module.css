@@ -18,9 +18,12 @@
   color: var(--color-text-muted);
 }
 
+/* Side-by-side fields share a bottom edge, so their inputs line up even when
+   one label wraps to a second line ("Company or institution (optional)"). */
 .row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+  align-items: end;
   gap: var(--space-5);
 }
 
@@ -84,6 +87,12 @@ textarea.control {
   display: flex;
   align-items: flex-start;
   gap: var(--space-3);
+}
+
+/* Set apart from the sentence by weight as well as colour (WCAG 1.4.1); the
+   site uses no underlines. */
+.consent a {
+  font-weight: var(--weight-semibold);
 }
 
 .checkbox {

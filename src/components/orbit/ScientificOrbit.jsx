@@ -1,17 +1,24 @@
 import { Flame, Pause, Play } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
-import { ORBIT_CENTRE_IMAGE, ORBIT_ITEMS, ORBIT_THUMBNAIL_SIZE } from '../../data/orbit.js'
+import { ORBIT_ITEMS, ORBIT_THUMBNAIL_SIZE } from '../../data/orbit.js'
 import { useLanguage } from '../../hooks/useLanguage.js'
+import { announceHeroMotion } from '../../utils/heroMotion.js'
 import Watermark from '../common/Watermark.jsx'
+import CircleFrame from './CircleFrame.jsx'
+import HexRing from './HexRing.jsx'
 import styles from './ScientificOrbit.module.css'
 
-// Six testing categories circling a central instrument.
+// Six testing categories riding a machined hexagonal plate (HexRing) that
+// turns about a still, round frame whose window holds the specimen book and
+// leads to the research capabilities page (CircleFrame). On arrival the ring
+// swings up first, then the frame drops in and seats, then the book opens.
 //
-// The motion is entirely CSS. One animation turns the ring; each category
-// counter-turns to stay upright; and each category's emphasis and caption use
-// the same duration with a delay derived from its place on the ring. Because
-// they share a timeline, the highlighted image, label and caption cannot drift
-// apart, and nothing re-renders while the orbit runs.
+// The motion is entirely CSS. The plate and the orbit turn clockwise
+// together; each category counter-turns to stay upright; and each
+// category's emphasis and caption use the orbit's duration with a delay
+// derived from its place on the circle. Because they share a timeline, the
+// highlighted image and its caption cannot drift apart, and nothing
+// re-renders while the orbit runs.
 //
 // React state changes only on interaction: hovering or focusing a category
 // highlights it for the moment, clicking or tapping pins it, and either one
@@ -39,6 +46,17 @@ export default function ScientificOrbit() {
   const isHeld = isUserPaused || pinned !== null
   const isPaused = isHeld || hovered !== null || !isInView
 
+  // The pause button stops the hero's background video too (see heroMotion.js).
+  // Only the visitor's own choice is passed on, not a hover or a pinned category.
+  const isFirstRender = useRef(true)
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+    announceHeroMotion(isUserPaused)
+  }, [isUserPaused])
+
   const togglePlayback = () => {
     if (isHeld) {
       setPinned(null)
@@ -56,28 +74,10 @@ export default function ScientificOrbit() {
       data-override={highlighted ? '' : undefined}
     >
       <div className={styles.stage}>
-        <div className={styles.track} aria-hidden="true" />
-        <div className={styles.activeArc} aria-hidden="true" />
+        <HexRing paused={isPaused} />
+        <CircleFrame paused={isPaused} />
 
-        <div className={styles.centre}>
-          {/* Largest element on first load, so it is not lazy-loaded. */}
-          <img
-            src={ORBIT_CENTRE_IMAGE.src}
-            width={ORBIT_CENTRE_IMAGE.width}
-            height={ORBIT_CENTRE_IMAGE.height}
-            alt={t('home.orbit.centreAlt')}
-            fetchPriority="high"
-            decoding="async"
-          />
-        </div>
-
-        <div className={styles.ring}>
-          <div aria-hidden="true">
-            {ORBIT_ITEMS.map(({ slug }, index) => (
-              <span key={slug} className={styles.spoke} style={{ '--i': index }} />
-            ))}
-          </div>
-
+        <div className={styles.pivot}>
           <ul className={styles.list} aria-label={t('home.orbit.label')}>
             {ORBIT_ITEMS.map(({ slug, image }, index) => {
               const title = t(`services.items.${slug}.title`)

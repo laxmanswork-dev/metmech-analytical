@@ -7,6 +7,7 @@ export const ROUTES = {
   services: '/testing-services',
   equipment: '/equipment',
   industries: '/industries',
+  research: '/research-capabilities',
   privacy: '/privacy-policy',
 }
 

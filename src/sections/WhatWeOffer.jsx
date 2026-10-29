@@ -9,7 +9,7 @@ export default function WhatWeOffer() {
   const { t, tm } = useLanguage()
 
   return (
-    <Section labelledBy="capabilities-heading">
+    <Section labelledBy="capabilities-heading" spacing="compact">
       <SectionHeading id="capabilities-heading" title={t('home.capabilities.heading')} />
       <ul className={styles.list}>
         {tm('home.capabilities.items').map(({ title, text }) => (

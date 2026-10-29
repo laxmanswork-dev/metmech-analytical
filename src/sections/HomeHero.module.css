@@ -26,9 +26,19 @@
   height: 100%;
 }
 
+/* The clip's first frame. Only the image for the current screen is
+   downloaded; phones take the phone clip's frame (breakpoint and reason in
+   HomeHero.jsx). */
 .poster {
+  background-image: var(--poster);
   background-position: center;
   background-size: cover;
+}
+
+@media (max-width: 37.49rem) {
+  .poster {
+    background-image: var(--poster-mobile, var(--poster));
+  }
 }
 
 .video {
@@ -42,33 +52,33 @@
   opacity: 0;
 }
 
-/* One flat, even navy over the whole hero, edge to edge and at every screen
-   size, so the blue never looks patchy behind the text or the animation.
+/* One flat, even layer over the whole hero, edge to edge and at every screen
+   size: 21% navy over 39% black. That is 40% of the blue tint of the earlier
+   52% navy at the same darkness, so the footage keeps its own colours (the
+   furnace's orange) while the text stays readable. A plain colour can only be
+   the last background layer, so the navy is written as a one-colour gradient.
 
-   52% is the lightest this footage allows, with the graded layer below doing
-   the extra work behind the text. Measured over 16 frames through the clip at
-   1440, 1024, 768 and 390px (99th-percentile brightest pixel behind each
-   block), white text keeps at least: heading 5.1:1, paragraph 5.2:1, eyebrow
-   5.1:1, orbit caption 4.76:1 (tablet, the tightest). At 45% the heading,
-   paragraph and caption drop to 4.0-4.4:1, under the 4.5:1 small text needs.
-   Small cyan text cannot reach 4.5:1 on footage this bright, so the eyebrow
-   and the animation's caption title are set in white.
-   Re-measure before lowering this, or after changing the video.
+   Measured over 16 frames of the foundry clip at 1440, 1024, 768 and 390px
+   (95th-percentile brightest pixel behind each block), white text keeps at
+   least: heading 5.5:1, paragraph 6.6:1, eyebrow 5.3:1, orbit caption 4.25:1
+   (desktop; the clip's bright machinery sits behind it). Halving the darkness
+   as well (26% navy alone) drops the heading to 2.6:1. Re-measure before
+   lightening this, or after changing the video.
 
-   A second, graded layer adds up to a further third of navy behind the text
-   only, where the testing machine's white column runs behind the heading. It
-   fades out before the orbit, so the equipment on that side keeps the flat
-   52%. Text sits above the orbit on smaller screens, so there it runs from the
+   A second, graded layer adds up to a further third of dark navy (navy
+   at 40% of its brightness) behind the text only. It fades out before the orbit.
+   Text sits above the orbit on smaller screens, so there it runs from the
    top down instead. */
 .overlay {
   background:
     linear-gradient(
       180deg,
-      rgb(10 31 61 / 0.34) 0%,
-      rgb(10 31 61 / 0.26) 40%,
-      rgb(10 31 61 / 0) 62%
+      rgb(4 13 25 / 0.34) 0%,
+      rgb(4 13 25 / 0.26) 40%,
+      rgb(4 13 25 / 0) 62%
     ),
-    rgb(10 31 61 / 0.52);
+    linear-gradient(rgb(10 31 61 / 0.21), rgb(10 31 61 / 0.21)),
+    rgb(0 0 0 / 0.39);
 }
 
 @media (min-width: 64rem) {
@@ -76,11 +86,12 @@
     background:
       linear-gradient(
         90deg,
-        rgb(10 31 61 / 0.36) 0%,
-        rgb(10 31 61 / 0.3) 38%,
-        rgb(10 31 61 / 0) 60%
+        rgb(4 13 25 / 0.36) 0%,
+        rgb(4 13 25 / 0.3) 38%,
+        rgb(4 13 25 / 0) 60%
       ),
-      rgb(10 31 61 / 0.52);
+      linear-gradient(rgb(10 31 61 / 0.21), rgb(10 31 61 / 0.21)),
+      rgb(0 0 0 / 0.39);
   }
 }
 
@@ -137,7 +148,7 @@ html:lang(ta) .eyebrow {
    mass of bold. */
 .title {
   /* The 8.8vw cap only applies on the narrowest phones (under about 390px),
-     where it keeps "THROUGH SCIENCE." on one line. */
+     where it keeps the longest line, "ENGINEERING", well inside the screen. */
   font-size: min(clamp(2.125rem, 1.45rem + 2.5vw, 3.5rem), 8.8vw);
   /* Capitals have no descenders, so the lines can sit close; 1 would let
      the stacked lines touch visually. */
@@ -152,11 +163,11 @@ html:lang(ta) .eyebrow {
   display: block;
 }
 
-/* Tamil keeps the shared heading size and line height: its marks need the
-   room, and it is not letter-spaced. */
+/* Tamil takes the same size as English (its lines are no wider than
+   "ENGINEERING"), but more line height, for the marks
+   above and below its letters. It is not letter-spaced. */
 html:lang(ta) .title {
-  font-size: var(--text-3xl);
-  line-height: var(--leading-heading);
+  line-height: 1.3;
   letter-spacing: 0;
 }
 
@@ -238,6 +249,59 @@ html:lang(ta) .actions {
   }
 }
 
+/* ---- Google reviews: a trust note, not a third action ----
+   A small gold star (the one colour people read as a rating) beside two
+   short lines: a title in white over a line of detail in softer white, with
+   no frame, fill or border. It aligns with the buttons' left edge, and the
+   whole note is one link; hovering brightens the detail line. */
+.reviews {
+  display: inline-grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: var(--space-2);
+  max-width: 100%;
+  /* The padding makes a 44px tap target without moving the note: the gap
+     to the buttons still reads as var(--space-5). */
+  margin-top: calc(var(--space-5) - 0.25rem);
+  padding-block: 0.25rem;
+  line-height: 1.35;
+  color: var(--color-text-inverse);
+  text-shadow: 0 1px 2px rgb(10 31 61 / 0.35);
+}
+
+.star {
+  grid-row: 1;
+  align-self: center;
+  color: #f5b301;
+  fill: #f5b301;
+}
+
+.reviewsTitle {
+  grid-column: 2;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+}
+
+.reviewsText {
+  grid-column: 2;
+  font-size: 0.8125rem;
+  color: rgb(255 255 255 / 0.72);
+  transition: color var(--transition);
+}
+
+.reviews:hover .reviewsText {
+  color: var(--color-text-inverse);
+}
+
+.reviews:focus-visible {
+  outline: 2px solid var(--color-text-inverse);
+  outline-offset: 4px;
+}
+
+.external {
+  display: inline;
+  vertical-align: -0.0625rem;
+}
+
 .visual {
   display: flex;
   justify-content: center;
@@ -261,10 +325,11 @@ html:lang(ta) .actions {
     gap: var(--space-8);
   }
 
-  /* The right column is the circle plus a caption beneath it. This padding is
-     the caption's height, so the text centres on the circle itself. */
+  /* The right column is the circle plus a caption beneath it. Padding the
+     caption's height (4.5rem) would centre the text on the circle itself;
+     0.5rem sets it 2rem lower than that, as requested. */
   .content {
-    padding-bottom: 4.5rem;
+    padding-bottom: 0.5rem;
     /* The text sits a little left of the site's content edge: up to 3.75rem,
        taken from the space beside the centred container, so it tapers to
        nothing where the container fills the screen. The orbit stays put. */

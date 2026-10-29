@@ -51,7 +51,6 @@
 
 .link:hover {
   color: var(--color-text-inverse);
-  text-decoration: underline;
 }
 
 .address {

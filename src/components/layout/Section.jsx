@@ -1,7 +1,8 @@
 import Container from './Container.jsx'
 import styles from './Section.module.css'
 
-// A vertically padded page band. `tone` sets the background: default, muted or tint.
+// A vertically padded page band on the site's white background; every
+// section is white, set apart from the next by a hairline.
 // `spacing="compact"` gives a short section less padding and a closer heading.
 // `fill` makes the section a full screen on desktop, like the home hero, with
 // its content centred in it.
@@ -9,7 +10,6 @@ import styles from './Section.module.css'
 // and `id` to make the section a link target. `className` adds the caller's
 // own styles.
 export default function Section({
-  tone = 'default',
   spacing = 'default',
   narrow = false,
   fill = false,
@@ -20,7 +20,6 @@ export default function Section({
 }) {
   const className = [
     styles.section,
-    styles[tone],
     spacing === 'compact' && styles.compact,
     fill && styles.fill,
     extraClassName,

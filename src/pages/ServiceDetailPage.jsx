@@ -77,7 +77,7 @@ export default function ServiceDetailPage() {
             </div>
           </div>
 
-          <aside className={content.aside}>
+          <div className={content.aside}>
             <MediaFrame image={image} alt={alt} eager />
 
             {service.instruments.length > 0 && (
@@ -99,11 +99,11 @@ export default function ServiceDetailPage() {
             <div className={content.actions}>
               <Button to={ENQUIRY_PATH}>{labels.enquire}</Button>
             </div>
-          </aside>
+          </div>
         </div>
       </Section>
 
-      <Section tone="muted" narrow labelledBy="faq-heading">
+      <Section narrow labelledBy="faq-heading">
         <SectionHeading id="faq-heading" title={labels.faq} />
         <FaqList items={item.faq} />
       </Section>

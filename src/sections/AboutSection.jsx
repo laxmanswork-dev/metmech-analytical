@@ -7,31 +7,33 @@ import content from '../styles/content.module.css'
 import styles from './AboutSection.module.css'
 
 // "About Us" on the home page, the target of the About Us links (#about): who
-// the firm is, its leadership, expertise and purpose, with the owner's
-// portrait, then its vision and mission.
-export default function AboutSection({ tone }) {
+// the firm is, with the owner's portrait beside it, then its leadership,
+// expertise and purpose, then its vision and mission.
+export default function AboutSection() {
   const { t, tm } = useLanguage()
 
   return (
-    <Section id="about" tone={tone} labelledBy="about-heading">
+    <Section id="about" labelledBy="about-heading">
       <div className={styles.intro}>
-        <div>
+        <div className={styles.opening}>
           <SectionHeading id="about-heading" title={t('about.hero.title')} />
-          <div className={styles.copy}>
-            {tm('about.intro.paragraphs').map((paragraph) => (
-              <p key={paragraph} className={content.lead}>
-                {paragraph}
-              </p>
-            ))}
-            {tm('about.intro.sections').map(({ heading, text }) => (
-              <div key={heading} className={styles.topic}>
-                <h3>{heading}</h3>
-                <p>{text}</p>
-              </div>
-            ))}
-          </div>
+          {tm('about.intro.paragraphs').map((paragraph) => (
+            <p key={paragraph} className={content.lead}>
+              {paragraph}
+            </p>
+          ))}
         </div>
+
         <OwnerProfile person={OWNER} />
+
+        <div className={styles.topics}>
+          {tm('about.intro.sections').map(({ heading, text }) => (
+            <div key={heading} className={styles.topic}>
+              <h3>{heading}</h3>
+              <p>{text}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className={styles.purpose}>

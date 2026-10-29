@@ -1,6 +1,14 @@
+/* Contact details and the map on the left, the enquiry form on the right.
+   Phones stack them in reading order: details, map, form. On tablets the
+   details and the map sit side by side above the full-width form. On desktop
+   the details and map share the left column beside the form.
+
+   The three panels are white cards with the site's hairline border and soft
+   shadow; the details and the form carry the brand-blue top edge used on
+   the site's other cards. */
 .layout {
   display: grid;
-  gap: var(--space-7);
+  gap: var(--space-6);
 }
 
 .info {
@@ -9,54 +17,246 @@
   align-content: start;
 }
 
-.info h4 {
-  margin-bottom: var(--space-1);
-  font-size: var(--text-base);
+.info > *,
+.layout > * {
+  min-width: 0;
+}
+
+@media (min-width: 48rem) {
+  .info {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+  }
+}
+
+/* On desktop the two columns end together: the map takes whatever height
+   the form leaves beside the details, but never less than a useful size. */
+@media (min-width: 64rem) {
+  .layout {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: var(--space-7);
+  }
+
+  .info {
+    grid-template-columns: none;
+    grid-template-rows: auto 1fr;
+  }
+
+  .mapCard {
+    grid-template-rows: auto minmax(18rem, 1fr) auto;
+    align-self: stretch;
+  }
+}
+
+.card,
+.mapCard,
+.formPanel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+
+.card,
+.formPanel {
+  box-shadow:
+    inset 0 3px 0 var(--color-primary),
+    var(--shadow-sm);
+}
+
+.cardHeading {
+  font-size: var(--text-lg);
   letter-spacing: 0;
 }
 
+/* ---- Contact details ---- */
+
+.card {
+  display: grid;
+  padding: var(--space-6) var(--space-5) var(--space-3);
+}
+
+.card .cardHeading {
+  margin-bottom: var(--space-2);
+}
+
+/* Each detail beside its icon, set apart from the next by a hairline rule. */
 .item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2.5rem minmax(0, 1fr);
   gap: var(--space-4);
-  min-width: 0;
+  padding-block: var(--space-4);
 }
 
-.item > div {
-  min-width: 0;
+.item + .item {
+  border-top: 1px solid var(--color-border);
 }
 
+/* The icon in a small square of the site's pale tint. */
 .icon {
-  flex: none;
-  margin-top: 0.15em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
   color: var(--color-primary);
+  background: var(--color-surface-tint);
+  border-radius: var(--radius-md);
+}
+
+.itemBody {
+  display: grid;
+  gap: var(--space-1);
+  align-content: start;
+  padding-top: 0.125rem;
+}
+
+/* Small spaced capitals, as on the vision and mission labels. */
+.label {
+  font-size: 0.75rem;
+  font-weight: var(--weight-semibold);
+  line-height: 1.4;
+  letter-spacing: 0.12em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
+/* Tamil has no capitals and reads poorly when letter-spaced. */
+html:lang(ta) .label {
+  font-size: var(--text-sm);
+  letter-spacing: 0;
 }
 
 .address {
   display: grid;
   font-style: normal;
+  line-height: 1.6;
+  color: var(--color-heading);
 }
 
+.links {
+  display: grid;
+}
+
+/* Tall enough to tap comfortably; long addresses wrap rather than overflow. */
 .link {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  min-height: 2rem;
+  min-height: 2.25rem;
+  font-weight: var(--weight-medium);
   overflow-wrap: anywhere;
 }
 
-.formPanel {
+.phone {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.01em;
+}
+
+/* ---- Map ---- */
+
+.mapCard {
   display: grid;
-  gap: var(--space-5);
-  align-content: start;
-  padding: clamp(1.25rem, 0.75rem + 2.5vw, 2.5rem);
-  background: var(--color-surface-muted);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.mapCard .cardHeading {
+  padding: var(--space-5) var(--space-5) var(--space-4);
+}
+
+/* Edge to edge in the card, between hairline rules. Below desktop it keeps
+   a 4:3 shape; on desktop it fills the card's height (above). */
+.map {
+  aspect-ratio: 4 / 3;
+  background: var(--color-surface-tint);
+  border-block: 1px solid var(--color-border);
 }
 
 @media (min-width: 64rem) {
-  .layout {
-    grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
-    gap: var(--space-8);
+  .map {
+    aspect-ratio: auto;
   }
+}
+
+.map iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* The map takes keyboard focus but draws no ring of its own in the page:
+   show the site's focus ring on its frame instead. */
+.map:focus-within {
+  outline: 3px solid var(--color-focus);
+  outline-offset: -3px;
+}
+
+.mapFooter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-4);
+  padding: var(--space-4) var(--space-5);
+}
+
+.mapArea {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.mapArea svg {
+  flex: none;
+  color: var(--color-primary);
+}
+
+/* A compact outlined button: the map's one action. */
+.directions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 2.75rem;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--color-primary);
+  background: var(--color-surface);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-md);
+  transition:
+    background-color var(--transition),
+    color var(--transition);
+}
+
+.directions:hover {
+  color: var(--color-text-inverse);
+  background: var(--color-primary);
+}
+
+/* ---- Enquiry form ---- */
+
+.formPanel {
+  display: grid;
+  gap: var(--space-6);
+  align-content: start;
+  padding: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+}
+
+.formHead {
+  display: grid;
+  gap: var(--space-2);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.formHeading {
+  font-size: var(--text-xl);
+  letter-spacing: 0;
+}
+
+.formLead {
+  color: var(--color-text-muted);
 }

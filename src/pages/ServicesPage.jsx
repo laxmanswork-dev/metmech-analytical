@@ -41,7 +41,7 @@ export default function ServicesPage() {
         </Grid>
       </Section>
 
-      <Section tone="muted" labelledBy="focus-heading">
+      <Section labelledBy="focus-heading">
         <SectionHeading
           id="focus-heading"
           title={t('services.focus.heading')}

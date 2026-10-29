@@ -19,7 +19,7 @@ export default {
     sections: [
       {
         heading: 'Leadership & Experience',
-        text: 'The organization is led by P. R. Parthasarathy, a retired scientist from CVRD, Avadi, with nearly 45 years of professional experience. His background in metallurgy and extensive scientific experience provide a strong foundation for the organization’s technical approach.',
+        text: 'The organization is led by T. R. Parthasarathy, a retired scientist from CVRD, Avadi, with nearly 45 years of professional experience. His background in metallurgy and extensive scientific experience provide a strong foundation for the organization’s technical approach.',
       },
       {
         heading: 'Our Expertise',

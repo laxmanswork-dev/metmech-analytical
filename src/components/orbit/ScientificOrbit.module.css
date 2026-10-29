@@ -3,36 +3,55 @@
  * with the width it is given rather than with the viewport.
  *
  * Angles: 90deg is the bottom of the circle, which is the highlighted
- * position. Category i starts at (90 - 60i)deg and the ring turns clockwise,
+ * position. Category i starts at (90 - 60i)deg and the orbit turns clockwise,
  * so categories reach the bottom in order, one every sixth of a revolution.
  */
 .orbit {
-  --duration: 30s;
-  /* The same circles spread wide, so each reads as its own node and the
-     cluster stays light (about 63px between neighbours at full size). */
-  --radius: 50cqw;
-  --thumb: clamp(3.25rem, 32cqw, 7.25rem);
-  /* Guides stay in the background: faint enough that the photographs lead. */
-  --line: rgb(255 255 255 / 0.08);
+  --duration: 18s;
+  /* The categories' circles (about 111px at full size; their names need it)
+     sit inside the box, on a circle that leaves room for the highlight. */
+  --thumb: min(7rem, 22cqw);
+  --radius: calc(50cqw - var(--thumb) / 2 - 1.5cqw);
   /* Width of each circle's white edge; the highlight ring and the label's
      clip are measured from it. */
   --edge: 1.5px;
+  /* The round frame is as large as the circles allow as they pass it at
+     their largest (highlighted: grown by 3.5% each way, with the blue ring
+     3px outside the edge). */
+  --frame-r: calc(var(--radius) - var(--thumb) * 0.535 - var(--edge) - 3px - 0.8cqw);
+  /* The hexagonal plate carries the circles at its corners, which reach just
+     past them to the edge of the box (less its thickness, which shows below
+     it). Its bore fits round the frame with a narrow gap. */
+  --hex-depth: 1.1cqw;
+  --hex-r: calc(50cqw - var(--hex-depth));
+  --hex-band: calc(var(--hex-r) * 0.866 - var(--frame-r) - 0.6cqw);
 
   container-type: inline-size;
   display: grid;
+  flex: none;
   gap: var(--space-2);
-  width: 100%;
   /* The one size control: everything inside scales with this width. */
-  max-width: 21.75rem;
+  width: min(100%, 34rem);
   color: var(--color-text-inverse);
+}
+
+/* Beside the text, the orbit may take a little more than its column, but
+   never comes within 1rem of the screen's edge (the column's own margin,
+   less the hero's shift of the orbit to the right), and stays short enough
+   that the caption is in the first screen. */
+@media (min-width: 64rem) {
+  .orbit {
+    width: min(
+      40rem,
+      100% + 2rem + max(0px, 100vw - 82.5rem),
+      100svh - var(--header-height) - 10.5rem
+    );
+  }
 }
 
 .stage {
   position: relative;
   aspect-ratio: 1;
-  /* Room for the thumbnails, which are centred on the circle and so reach
-     past it, and for the ring around the highlighted one. */
-  margin-block: 17cqw;
 }
 
 /* A soft pool of navy behind the orbit, so the moving footage there is calmer
@@ -41,7 +60,7 @@
 .stage::before {
   content: '';
   position: absolute;
-  inset: -18%;
+  inset: -10%;
   background: radial-gradient(
     circle closest-side,
     rgb(10 31 61 / 0.3) 0%,
@@ -51,57 +70,14 @@
   pointer-events: none;
 }
 
-/* ---- Fixed guides ---- */
+/* The ring and the frame: HexRing.module.css and CircleFrame.module.css. */
 
-.track,
-.activeArc {
-  position: absolute;
-  inset: calc(50% - var(--radius));
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.track {
-  border: 1px solid var(--line);
-}
-
-/* Marks the highlighted position at the bottom of the circle, in the same
-   blue as the highlighted category's ring. */
-.activeArc {
-  border: 2px solid transparent;
-  border-bottom-color: var(--color-primary);
-}
-
-/* ---- Central instrument: never moves ---- */
-
-.centre {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 34cqw;
-  transform: translate(-50%, -50%);
-}
-
-.centre::before {
-  content: '';
-  position: absolute;
-  inset: -22%;
-  background: radial-gradient(circle, rgb(111 208 238 / 0.14) 0%, rgb(111 208 238 / 0) 64%);
-  border-radius: 50%;
-}
-
-.centre img {
-  position: relative;
-  width: 100%;
-  filter: drop-shadow(0 0.25rem 0.75rem rgb(4 10 20 / 0.4));
-}
-
-/* ---- Rotating ring ---- */
+/* ---- The orbit ---- */
 
 /* A zero-size pivot at the centre of the stage. Having no area of its own, it
-   cannot extend past the circle or intercept the pointer as it turns; only the
+   cannot cover the frame or intercept the pointer as it turns; only the
    thumbnails inside it are interactive. */
-.ring {
+.pivot {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -117,23 +93,6 @@
   inset: 0;
 }
 
-.spoke {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--radius);
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    transparent 41%,
-    var(--line) 46%,
-    var(--line) 62%,
-    transparent 66%
-  );
-  transform: rotate(calc(90deg - var(--i) * 60deg));
-  transform-origin: 0 50%;
-}
-
 /* A zero-size point on the circle for category i. */
 .arm {
   --delay: calc(var(--i) * var(--duration) / 6 - var(--duration));
@@ -146,7 +105,7 @@
   transform: rotate(calc(90deg - var(--i) * 60deg)) translateX(var(--radius));
 }
 
-/* Undo the arm's own angle, then undo the ring's turn, so content stays upright. */
+/* Undo the arm's own angle, then undo the orbit's turn, so content stays upright. */
 .upright {
   transform: rotate(calc(var(--i) * 60deg - 90deg));
 }
@@ -200,8 +159,8 @@
   box-shadow:
     0 1px 2px rgb(4 10 20 / 0.18),
     0 6px 16px rgb(4 10 20 / 0.16);
-  /* Grows towards the centre, so the highlight never pushes outwards. */
-  transform-origin: 50% 100%;
+  /* Grows evenly, so it stays clear of the ring as it passes. */
+  transform-origin: 50% 50%;
   animation: emphasis var(--duration) linear infinite;
   animation-delay: var(--delay);
 }
@@ -287,7 +246,8 @@ html:lang(ta) .icon svg {
   inset: auto 0 0;
   padding: 1.5em 0 14%;
   white-space: nowrap;
-  font-size: 0.75rem;
+  /* 12px at full size; a little smaller where the circles are. */
+  font-size: min(0.75rem, var(--thumb) * 0.107);
   font-weight: var(--weight-semibold);
   line-height: 1.2;
   letter-spacing: -0.01em;
@@ -328,13 +288,12 @@ html:lang(ta) .label {
 
 /* ---- Playback control ---- */
 
-/* Sits beside the caption, below the lowest thumbnail, so nothing in the orbit
-   ever passes over it. The offset is the stage's bottom margin plus the gap
-   to the caption. */
+/* In the stage's lower right corner, outside the circle, so nothing in the
+   orbit ever passes over it. */
 .toggle {
   position: absolute;
-  right: -2.5rem;
-  bottom: calc(-17cqw - var(--space-2) - 2.5rem);
+  right: 0;
+  bottom: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -355,13 +314,9 @@ html:lang(ta) .label {
 
 /* ---- Captions: all six share one cell, so the height never changes ---- */
 
-/* Wider than the circle, so a description fits on two lines. Side padding
-   keeps the centred text clear of the playback control. */
 .captions {
   display: grid;
   min-height: 3.5rem;
-  margin-inline: -2.5rem;
-  padding-inline: 2.75rem;
   text-align: center;
 }
 
@@ -443,9 +398,9 @@ html:lang(ta) .captionTitle {
 
 /* Each caption owns a sixth of the cycle (8.33% either side of its peak) and
    stays at full strength for all of it. At the hand-over it fades out in
-   0.12s and the next fades in over the following 0.12s: a quick swap, so the
+   0.07s and the next fades in over the following 0.07s: a quick swap, so the
    text never spends long half-faded over the footage, and two captions are
-   never legible on top of each other. (At 30s, 1% is 0.3s.) */
+   never legible on top of each other. (At 18s, 1% is 0.18s.) */
 @keyframes caption {
   0%,
   7.9% {
@@ -465,7 +420,7 @@ html:lang(ta) .captionTitle {
 
 /* ---- Paused: every animation stops together, so they stay in step ---- */
 
-.orbit[data-paused] .ring,
+.orbit[data-paused] .pivot,
 .orbit[data-paused] .counter,
 .orbit[data-paused] .media,
 .orbit[data-paused] .media::after,
@@ -492,8 +447,6 @@ html:lang(ta) .captionTitle {
 
 .orbit[data-override] .item[data-active] .media {
   scale: 1.07 !important;
-  /* Grow evenly: the category may be anywhere on the circle. */
-  transform-origin: 50% 50%;
 }
 
 .orbit[data-override] .item[data-active] .media::after,
@@ -506,28 +459,15 @@ html:lang(ta) .captionTitle {
    are the touch targets ---- */
 
 @media (max-width: 40rem) {
-  /* The instrument is wider here, so the thumbnails are a little smaller to
-     keep the highlighted one clear of it. */
+  /* The frame and its book lead here: the thumbnails are smaller (still a
+     comfortable touch target) so the frame can be larger. */
   .orbit {
-    --radius: 43cqw;
-    --thumb: 22cqw;
-  }
+    --thumb: 15.5cqw;
+    --radius: calc(50cqw - var(--thumb) / 2 - 1cqw);
+    --hex-depth: 1.5cqw;
 
-  /* Only the thumbnails' own overhang past the circle to clear. */
-  .stage {
-    margin-block: 5cqw;
-  }
-
-  /* No labels here, so the control returns to the stage's free corner. */
-  .toggle {
-    top: -5cqw;
-    right: 0;
-    bottom: auto;
-  }
-
-  .captions {
-    margin-inline: 0;
-    padding-inline: 0;
+    /* Wider than the text column: the screen less half a rem each side. */
+    width: calc(100vw - 1rem);
   }
 
   .label {
@@ -547,9 +487,37 @@ html:lang(ta) .captionTitle {
     width: 46%;
     height: 46%;
   }
+}
 
-  .centre {
-    width: 38cqw;
+/* ---- Entrance: the categories arrive once the ring has swung up ---- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .list {
+    animation: arrive 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 1.1s both;
+  }
+
+  .captions {
+    animation: arrive-fade 0.8s ease-out 1.5s both;
+  }
+}
+
+/* Waits behind the intro film (HomeIntro), on the screens it plays on. */
+@media (min-aspect-ratio: 4/3) and (prefers-reduced-motion: no-preference) {
+  html[data-intro='play'] :is(.list, .captions) {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes arrive {
+  from {
+    opacity: 0;
+    scale: 0.94;
+  }
+}
+
+@keyframes arrive-fade {
+  from {
+    opacity: 0;
   }
 }
 
@@ -557,7 +525,7 @@ html:lang(ta) .captionTitle {
    highlighted. Categories can still be selected. ---- */
 
 @media (prefers-reduced-motion: reduce) {
-  .ring,
+  .pivot,
   .counter,
   .media,
   .media::after,

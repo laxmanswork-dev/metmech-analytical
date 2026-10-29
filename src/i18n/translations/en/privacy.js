@@ -38,6 +38,12 @@ export default {
       ],
     },
     {
+      heading: 'Map',
+      paragraphs: [
+        'The Contact section shows a map from Google Maps. The map is loaded from Google, which receives the technical information your browser sends when loading it, such as your IP address. Google’s own privacy policy applies to that information.',
+      ],
+    },
+    {
       heading: 'Keeping your information',
       paragraphs: [
         'We keep enquiry details for as long as needed to deal with your enquiry and to maintain our business and testing records.',

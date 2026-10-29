@@ -100,6 +100,7 @@ export default function EnquiryForm() {
       {textField('requirement', {
         required: true,
         multiline: true,
+        rows: 5,
         hint: labels.requirementHint,
       })}
       {textField('material', {})}

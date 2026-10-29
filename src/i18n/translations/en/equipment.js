@@ -178,7 +178,7 @@ export default {
       applications: [
         'Grain size measurement and phase analysis',
         'Inclusion rating',
-        'Case depth and decarburised depth',
+        'Case depth and decarburized depth',
         'Nodularity and graphite characteristics in cast irons',
         'Porosity evaluation',
       ],

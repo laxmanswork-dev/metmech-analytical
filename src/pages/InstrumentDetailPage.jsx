@@ -73,7 +73,7 @@ export default function InstrumentDetailPage() {
             </div>
           </div>
 
-          <aside className={content.aside}>
+          <div className={content.aside}>
             <MediaFrame image={image} alt={item.imageAlt} eager />
 
             <div className={content.block}>
@@ -98,7 +98,7 @@ export default function InstrumentDetailPage() {
             <div className={content.actions}>
               <Button to={ENQUIRY_PATH}>{labels.enquire}</Button>
             </div>
-          </aside>
+          </div>
         </div>
       </Section>
 

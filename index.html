@@ -6,7 +6,14 @@
     <meta name="theme-color" content="#0a1f3d" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <!-- The header's company-name font, fetched early so the name does not reflow when it arrives. -->
+    <!-- The header's company-name fonts, fetched early so the name does not reflow when they arrive. -->
+    <link
+      rel="preload"
+      href="/node_modules/@fontsource-variable/bodoni-moda/files/bodoni-moda-latin-opsz-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link
       rel="preload"
       href="/node_modules/@fontsource/barlow-semi-condensed/files/barlow-semi-condensed-latin-600-normal.woff2"
@@ -14,6 +21,13 @@
       type="font/woff2"
       crossorigin
     />
+    <!-- Marks whether this tab should see the home-page intro, before the first
+         paint, so the cover never flashes on repeat visits (src/sections/HomeIntro.jsx). -->
+    <script>
+      try {
+        document.documentElement.dataset.intro = sessionStorage.getItem('metmech-intro-seen') ? 'seen' : 'play'
+      } catch (e) {}
+    </script>
     <!--app-head-->
   </head>
   <body>

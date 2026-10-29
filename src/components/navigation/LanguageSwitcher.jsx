@@ -7,13 +7,21 @@ import styles from './LanguageSwitcher.module.css'
 
 // Real links to the same page in each language, so the switcher works for
 // crawlers and without JavaScript once pages are prerendered.
-export default function LanguageSwitcher() {
+//
+// The header's copy is the language navigation landmark. Pass `group` for a
+// second copy (the footer's): it is then a labelled group, so assistive
+// technology does not list two identical "Language" navigation regions.
+export default function LanguageSwitcher({ group = false }) {
   const { language, t } = useLanguage()
   const { pathname, search, hash } = useLocation()
   const page = stripLanguage(pathname)
+  const Wrapper = group ? 'div' : 'nav'
+  const wrapperProps = group
+    ? { role: 'group', 'aria-label': t('a11y.languageSwitcher') }
+    : { 'aria-label': t('a11y.languageSwitcher') }
 
   return (
-    <nav aria-label={t('a11y.languageSwitcher')}>
+    <Wrapper {...wrapperProps}>
       <ul className={styles.list}>
         {LANGUAGES.map(({ code, label }) => (
           <li key={code}>
@@ -30,6 +38,6 @@ export default function LanguageSwitcher() {
           </li>
         ))}
       </ul>
-    </nav>
+    </Wrapper>
   )
 }

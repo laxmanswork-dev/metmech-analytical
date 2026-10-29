@@ -1,0 +1,587 @@
+/*
+ * A page of the research book. Sizes are in units of the page's own width
+ * (cqi), times --type: the book sets 1 for a two-page view and a little more
+ * for the taller single page on phones. So a page lays out the same at
+ * every size and never reflows into overflow when the book scales.
+ */
+/* The page's width is the unit for everything on it. */
+.frame {
+  container-type: inline-size;
+  position: absolute;
+  inset: 0;
+}
+
+.sheet {
+  --u: calc(var(--type, 1) * 1cqi);
+  --ink: #12233b;
+  --ink-soft: #46546a;
+  --ink-faint: #7c8798;
+  --rule: rgb(60 48 28 / 0.16);
+
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: calc(var(--u) * 2.5);
+  padding: 7cqi 8cqi 5cqi;
+  overflow: hidden;
+  font-size: calc(var(--u) * 3.45);
+  line-height: 1.55;
+  color: var(--ink);
+  /* Warm ivory with a faint grain. */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.28 0 0 0 0 0.16 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E"),
+    #f8f4ea;
+}
+
+/* Tamil runs longer and needs taller lines for its marks. */
+html:lang(ta) .sheet {
+  font-size: calc(var(--u) * 3.05);
+  line-height: 1.6;
+}
+
+html:lang(ta) .steps,
+html:lang(ta) .sets {
+  gap: calc(var(--u) * 2.6);
+}
+
+html:lang(ta) .steps li {
+  padding-bottom: calc(var(--u) * 2.6);
+}
+
+html:lang(ta) :is(.steps strong, .sets strong) {
+  font-size: calc(var(--u) * 3.4);
+}
+
+html:lang(ta) .setText {
+  font-size: calc(var(--u) * 2.85);
+}
+
+html:lang(ta) .facts {
+  font-size: calc(var(--u) * 2.85);
+}
+
+html:lang(ta) .facts div {
+  padding-block: calc(var(--u) * 1.1);
+}
+
+html:lang(ta) .entry {
+  padding-block: calc(var(--u) * 1.05);
+}
+
+html:lang(ta) .table {
+  font-size: calc(var(--u) * 2.55);
+}
+
+/* ---- Running head and foot ---- */
+
+.head,
+.foot {
+  font-size: calc(var(--u) * 2.25);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+html:lang(ta) :is(.head, .foot) {
+  letter-spacing: 0.02em;
+}
+
+.head {
+  padding-bottom: calc(var(--u) * 1.6);
+  border-bottom: 1px solid var(--rule);
+}
+
+/* The page number at the outer corner, the publication towards the
+   binding. */
+.foot {
+  grid-row: 3;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: calc(var(--u) * 3);
+}
+
+.sheet[data-side='left'] .foot {
+  flex-direction: row-reverse;
+}
+
+.publication {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.folio {
+  font-family: var(--font-brand-display);
+  font-size: calc(var(--u) * 3.6);
+  font-weight: 600;
+  font-variation-settings: 'opsz' 18;
+  letter-spacing: 0.02em;
+  color: var(--navy-900);
+}
+
+/* ---- The body ---- */
+
+/* Fixed rows, so the foot stays at the bottom of a page with no head. */
+.head {
+  grid-row: 1;
+}
+
+.body {
+  grid-row: 2;
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--u) * 3);
+  min-height: 0;
+}
+
+.heading {
+  font-size: calc(var(--u) * 5.4);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--navy-900);
+  text-wrap: balance;
+}
+
+.subheading {
+  margin-top: calc(var(--u) * 1.5);
+  font-size: calc(var(--u) * 3.6);
+  color: var(--navy-900);
+}
+
+.text,
+.lead,
+.description {
+  color: var(--ink);
+}
+
+.note {
+  font-size: calc(var(--u) * 2.9);
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.caption {
+  margin-top: calc(var(--u) * 1.8);
+  font-size: calc(var(--u) * 2.8);
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+/* A micrograph as a printed plate: whole, scale bar included, on white with
+   a fine edge. */
+.micrograph {
+  --watermark-size: 7%;
+
+  position: relative;
+  display: block;
+  aspect-ratio: 4 / 3;
+  padding: 1.2%;
+  background: #fff;
+  box-shadow:
+    0 0 0 1px rgb(60 48 28 / 0.18),
+    0 calc(var(--u) * 0.5) calc(var(--u) * 1.5) rgb(60 48 28 / 0.14);
+}
+
+.micrograph img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #e4ded1;
+}
+
+.figure,
+.plate {
+  margin: 0;
+}
+
+/* The book can narrow a page's micrograph (--plate-width); the 4:3 frame
+   keeps its proportions. */
+:is(.figure, .plate) .micrograph {
+  width: var(--plate-width, 100%);
+  margin-inline: auto;
+}
+
+/* ---- Title page ---- */
+
+.sheet[data-kind='title'] .body {
+  justify-content: center;
+  gap: calc(var(--u) * 4);
+}
+
+.emblem {
+  width: calc(var(--u) * 20);
+  height: auto;
+}
+
+.imprint {
+  display: grid;
+  gap: calc(var(--u) * 0.8);
+  font-family: var(--font-brand-display);
+  font-size: calc(var(--u) * 3.6);
+  font-weight: 600;
+  font-variation-settings: 'opsz' 18;
+  letter-spacing: 0.08em;
+  color: var(--blue-700);
+  text-transform: uppercase;
+}
+
+.descriptor {
+  font-family: var(--font-sans);
+  font-size: calc(var(--u) * 2.8);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
+  text-transform: none;
+}
+
+.title {
+  padding-top: calc(var(--u) * 4);
+  font-size: calc(var(--u) * 9.5);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--navy-900);
+  text-wrap: balance;
+  border-top: 1px solid var(--rule);
+}
+
+html:lang(ta) .title {
+  font-size: calc(var(--u) * 7.6);
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+.lead {
+  font-size: calc(var(--u) * 3.7);
+  line-height: 1.6;
+}
+
+html:lang(ta) .lead {
+  font-size: calc(var(--u) * 3.3);
+}
+
+/* ---- Preparation and sets ---- */
+
+.steps {
+  display: grid;
+  gap: calc(var(--u) * 4);
+  counter-reset: step;
+}
+
+.steps li {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 8) 1fr;
+  gap: calc(var(--u) * 0.6) calc(var(--u) * 2);
+  padding-bottom: calc(var(--u) * 4);
+  border-bottom: 1px solid var(--rule);
+  counter-increment: step;
+}
+
+.steps li:last-child {
+  border-bottom: 0;
+}
+
+.steps li::before {
+  content: counter(step, decimal-leading-zero);
+  grid-row: span 2;
+  font-family: var(--font-brand-display);
+  font-size: calc(var(--u) * 5.5);
+  font-weight: 600;
+  line-height: 1;
+  color: var(--blue-700);
+}
+
+.steps strong,
+.sets strong {
+  font-size: calc(var(--u) * 3.8);
+  color: var(--navy-900);
+}
+
+.steps span,
+.setText {
+  color: var(--ink-soft);
+}
+
+.sets {
+  display: grid;
+  gap: calc(var(--u) * 3);
+}
+
+.sets li {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: calc(var(--u) * 3);
+  align-items: start;
+  padding: calc(var(--u) * 3);
+  border: 1px solid var(--rule);
+}
+
+.setCount {
+  font-family: var(--font-brand-display);
+  font-size: calc(var(--u) * 8);
+  font-weight: 600;
+  line-height: 0.95;
+  color: var(--blue-700);
+}
+
+.sets strong,
+.setText {
+  display: block;
+}
+
+.setText {
+  margin-top: calc(var(--u) * 0.8);
+  font-size: calc(var(--u) * 3.1);
+}
+
+.links {
+  display: grid;
+  gap: calc(var(--u) * 1.5);
+}
+
+.links a {
+  display: inline-flex;
+  align-items: center;
+  gap: calc(var(--u) * 1.5);
+  font-weight: var(--weight-semibold);
+  color: var(--color-primary);
+}
+
+.links svg {
+  width: 1em;
+  height: 1em;
+}
+
+.links a:hover {
+  color: var(--color-primary-hover);
+}
+
+/* ---- Contents ---- */
+
+.contents {
+  display: grid;
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: calc(var(--u) * 7) 1fr auto;
+  gap: calc(var(--u) * 2);
+  align-items: baseline;
+  width: 100%;
+  padding: calc(var(--u) * 1.35) 0;
+  font: inherit;
+  font-size: calc(var(--u) * 3.2);
+  line-height: 1.3;
+  text-align: left;
+  color: inherit;
+  background: none;
+  border: 0;
+  border-bottom: 1px dotted var(--rule);
+}
+
+button.entry {
+  cursor: pointer;
+}
+
+button.entry:hover .entryName {
+  color: var(--color-primary);
+}
+
+button.entry:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+.entryNumber,
+.entryPage {
+  font-family: var(--font-brand-display);
+  font-weight: 600;
+  color: var(--blue-700);
+  font-variant-numeric: tabular-nums;
+}
+
+.entryName {
+  font-weight: var(--weight-semibold);
+  color: var(--navy-900);
+}
+
+/* ---- A specimen: its text page ---- */
+
+.specimenLabel {
+  font-size: calc(var(--u) * 2.4);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.16em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+html:lang(ta) .specimenLabel {
+  letter-spacing: 0.02em;
+}
+
+.specimenNumber {
+  margin-top: calc(var(--u) * -2.2);
+  font-family: var(--font-brand-display);
+  font-size: calc(var(--u) * 13);
+  font-weight: 600;
+  font-variation-settings: 'opsz' 28;
+  line-height: 1;
+  color: var(--navy-900);
+}
+
+.specimenName {
+  font-size: calc(var(--u) * 6);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--navy-900);
+  text-wrap: balance;
+}
+
+html:lang(ta) .specimenName {
+  font-size: calc(var(--u) * 5.2);
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.description {
+  padding-top: calc(var(--u) * 3);
+  border-top: 1px solid var(--rule);
+}
+
+/* ---- A specimen: its plate page ---- */
+
+.plateLabel {
+  display: flex;
+  justify-content: space-between;
+  gap: calc(var(--u) * 2);
+  font-size: calc(var(--u) * 2.4);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.16em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+}
+
+html:lang(ta) .plateLabel {
+  letter-spacing: 0.02em;
+}
+
+.zone {
+  color: var(--blue-700);
+}
+
+.facts {
+  display: grid;
+  margin: 0;
+  font-size: calc(var(--u) * 3.1);
+  line-height: 1.4;
+  border-top: 1px solid var(--rule);
+}
+
+.facts div {
+  display: grid;
+  grid-template-columns: minmax(32%, auto) 1fr;
+  gap: calc(var(--u) * 3);
+  padding: calc(var(--u) * 1.5) 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.facts dt {
+  color: var(--ink-soft);
+}
+
+.facts dd {
+  margin: 0;
+  font-weight: var(--weight-semibold);
+  color: var(--navy-900);
+}
+
+/* ---- Reference table ---- */
+
+.table {
+  width: 100%;
+  font-size: calc(var(--u) * 2.75);
+  line-height: 1.3;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: calc(var(--u) * 1.2) calc(var(--u) * 1.2);
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule);
+}
+
+.table th:first-child,
+.table td:first-child {
+  padding-left: 0;
+}
+
+.table thead th {
+  font-size: calc(var(--u) * 2.3);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  text-transform: uppercase;
+  border-bottom-color: rgb(60 48 28 / 0.35);
+}
+
+html:lang(ta) .table thead th {
+  letter-spacing: 0;
+}
+
+.table tbody th {
+  font-weight: var(--weight-semibold);
+  color: var(--navy-900);
+}
+
+.table td:first-child,
+.table td:nth-child(3) {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.rowSet {
+  display: block;
+  font-size: calc(var(--u) * 2.3);
+  font-weight: var(--weight-medium);
+  color: var(--ink-faint);
+}
+
+/* ---- Handling, and the closing page ---- */
+
+.care {
+  display: grid;
+  gap: calc(var(--u) * 2.4);
+  padding-left: calc(var(--u) * 4);
+  list-style: disc;
+}
+
+.care li::marker {
+  color: var(--blue-700);
+}
+
+.action {
+  margin-block: calc(var(--u) * 1) calc(var(--u) * 2);
+}
+
+.colophon {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--u) * 2.5);
+  margin-top: auto;
+  font-family: var(--font-brand-display);
+  font-size: calc(var(--u) * 3);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--blue-700);
+  text-transform: uppercase;
+}
+
+.colophon img {
+  width: calc(var(--u) * 11);
+  height: auto;
+}

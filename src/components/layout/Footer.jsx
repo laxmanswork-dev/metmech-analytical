@@ -81,7 +81,7 @@ export default function Footer() {
         <LocalizedLink to={ROUTES.privacy} className={styles.link}>
           {t('nav.privacy')}
         </LocalizedLink>
-        <LanguageSwitcher />
+        <LanguageSwitcher group />
       </Container>
     </footer>
   )

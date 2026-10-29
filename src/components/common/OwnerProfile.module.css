@@ -1,6 +1,8 @@
+/* A leadership portrait: the photograph with rounded corners and a soft
+   lift off the page, the name beneath it. No frame line or backing panel. */
 .profile {
   width: 100%;
-  max-width: 22rem;
+  max-width: 26rem;
   margin: 0;
 }
 
@@ -13,8 +15,8 @@
   aspect-ratio: 4 / 5;
   overflow: hidden;
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
   container-type: inline-size;
 }
 
@@ -51,7 +53,7 @@
   gap: var(--space-1);
   margin-top: var(--space-4);
   padding-left: var(--space-3);
-  border-left: 3px solid var(--color-accent);
+  border-left: 3px solid var(--color-primary);
 }
 
 .name {

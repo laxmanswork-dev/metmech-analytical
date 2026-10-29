@@ -27,3 +27,12 @@ dist-ssr
 # in src/assets/video/web/, is kept.
 design/video/
 src/assets/video/*.mp4
+
+# Full-size originals of the instrument photographs (about 2 MB each). The
+# site uses the 960px WebP copies in src/assets/images/instruments/; the
+# originals are kept locally for re-exporting, like the footage above.
+design/instruments-originals/
+
+# Rendered output of the intro film; design/intro/render.js recreates it.
+# The site uses the compressed copy in src/assets/intro/.
+design/intro/out/

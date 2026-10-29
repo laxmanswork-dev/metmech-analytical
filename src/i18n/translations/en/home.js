@@ -3,17 +3,26 @@ export default {
     description:
       'Metmech Analytical Engineers is a Chennai research lab offering mechanical testing, hardness testing, SEM with EDS, thermal analysis, and surface and corrosion testing.',
   },
+  // The 6-second company intro shown over the home page.
+  intro: {
+    skip: 'Skip intro',
+  },
   hero: {
     // Shown in uppercase above the heading.
-    eyebrow: 'Material Testing · Analytical Research',
+    eyebrow: 'Material Testing · Research Laboratories',
     // The heading, one entry per line. Shown in uppercase.
-    titleLines: ['Advancing', 'Materials', 'Through Science.'],
-    text: 'We test metals, polymers and composites to support industrial and research needs.',
+    titleLines: ['Advanced', 'Engineering', 'Solutions'],
+    text: 'We test metals, polymers and composites to support industrial and research needs, including failure analysis.',
+    // The link to the business's Google profile under the buttons: a title
+    // over a line of detail. With a rating set in src/data/site.js the
+    // rating versions are used instead.
+    reviews: { title: 'Google Reviews', text: 'Read feedback from our clients' },
+    rating: { title: '{value}/5 on Google', text: 'Based on {count} reviews' },
   },
   // The rotating display of testing categories in the hero.
   orbit: {
     label: 'Testing capabilities',
-    centreAlt: 'Scanning electron microscope with operator workstation',
+    explore: 'Explore our research capabilities: metallographic specimens and their microstructures',
     pause: 'Pause animation',
     play: 'Play animation',
     // The lines each name is set on inside its circle, which is about 110px
@@ -74,25 +83,26 @@ export default {
   },
   why: {
     heading: 'Why Choose Us?',
+    lead: 'Practical materials testing and analytical support for engineering, manufacturing and research.',
     items: [
       {
-        title: 'Range of testing services',
+        title: 'Range of Testing Services',
         text: 'Mechanical, hardness, microstructure, thermal, surface and corrosion tests are available from one laboratory.',
       },
       {
-        title: 'Analytical instrumentation',
+        title: 'Analytical Instrumentation',
         text: 'Access to SEM with EDS, XRD, thermal analysis and metallurgical microscopy for deeper investigation.',
       },
       {
-        title: 'Metals, polymers and composites',
+        title: 'Metals, Polymers and Composites',
         text: 'We test metallic materials as well as polymers and fibre-reinforced composites.',
       },
       {
-        title: 'Clear technical communication',
+        title: 'Clear Technical Communication',
         text: 'Results are shared with the context needed to understand them, and we are available to discuss them.',
       },
       {
-        title: 'Help choosing the right test',
+        title: 'Help Choosing the Right Test',
         text: 'Describe the problem you are trying to solve and we will help identify a suitable testing approach.',
       },
     ],
@@ -102,23 +112,23 @@ export default {
     lead: 'A typical testing enquiry follows these steps.',
     steps: [
       {
-        title: 'Share your requirement',
+        title: 'Share Your Requirement',
         text: 'Tell us about your material, sample and what you need to find out.',
       },
       {
-        title: 'Discuss the testing need',
+        title: 'Discuss the Testing Need',
         text: 'We talk through the objective, the applicable standard and any constraints.',
       },
       {
-        title: 'Confirm the suitable test',
+        title: 'Confirm the Suitable Test',
         text: 'The test method, number of samples and specimen details are agreed.',
       },
       {
-        title: 'Coordinate sample submission',
+        title: 'Coordinate Sample Submission',
         text: 'You send or deliver the samples to our laboratory in Chennai.',
       },
       {
-        title: 'Receive results',
+        title: 'Receive Results',
         text: 'We share the results and remain available for technical discussion.',
       },
     ],

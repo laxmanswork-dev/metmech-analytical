@@ -19,23 +19,21 @@ const MENU_ID = 'site-menu'
 // Ids of the home-page sections the navigation links to, in page order.
 const SECTION_IDS = Object.values(HOME_SECTIONS).map((path) => path.split('#')[1])
 
-// The name is set on two lines, "METMECH ANALYTICAL" over "ENGINEERS", so it
-// is split at the last word rather than left to wrap wherever it runs out of room.
-const NAME_BREAK = OFFICIAL_NAME.lastIndexOf(' ')
-const NAME_FIRST_LINE = OFFICIAL_NAME.slice(0, NAME_BREAK)
-const NAME_SECOND_LINE = OFFICIAL_NAME.slice(NAME_BREAK + 1)
+// The name is set on two lines: "METMECH ANALYTICAL", with "METMECH" the
+// larger, over a letter-spaced "ENGINEERS".
+const [NAME_PRIMARY, NAME_SECONDARY, NAME_TERTIARY] = OFFICIAL_NAME.split(' ')
 
-// One row, three groups:
+// One row, two sides:
 //   left    logo, company name and descriptor
-//   centre  Home · Our Services (a dropdown) · About Us · Contact
+//   right   Home · Our Services (a dropdown) · About Us · Contact, then
 //           Home, About Us and Contact are all on the home page: About Us and
 //           Contact scroll to their sections, and while the home page is
 //           showing, the current item follows the section being read.
-//   right   one outlined group: language selection and "Start a Test"
+//           one outlined group: language selection and "Start a Test"
 //
-// On large screens all three sit on the bar. On smaller screens the centre
-// group becomes a menu opened by a button, and on phones the right-hand group
-// moves into that menu too.
+// On large screens everything sits on the bar. On smaller screens the links
+// become a menu opened by a button, and on phones the outlined group moves
+// into that menu too.
 //
 // Phone and email are deliberately not here; they live in the footer and on
 // the contact page.
@@ -94,8 +92,11 @@ export default function Header() {
           />
           <span className={styles.wordmark}>
             <span className={styles.brandName}>
-              <span className={styles.brandLine}>{NAME_FIRST_LINE}</span>{' '}
-              <span className={styles.brandLine}>{NAME_SECOND_LINE}</span>
+              <span className={styles.brandLine}>
+                <span className={styles.brandPrimary}>{NAME_PRIMARY}</span>{' '}
+                <span className={styles.brandSecondary}>{NAME_SECONDARY}</span>
+              </span>{' '}
+              <span className={styles.brandTertiary}>{NAME_TERTIARY}</span>
             </span>
             <span className={styles.brandTag}>{t('site.descriptor')}</span>
           </span>

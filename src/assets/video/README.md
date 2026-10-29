@@ -11,7 +11,15 @@ the `web/` subfolder:
 - `web/lab-poster.webp`: its first frame, shown while the video loads and
   instead of the video for visitors who prefer reduced motion.
 
-Your `lab.mp4` is never modified. Other files in this folder are ignored.
+**Phones (under 600px wide) play their own clip:** save it here as
+`lab mobile.mp4` (with the space). The same script writes
+`web/lab-mobile.mp4` and `web/lab-mobile-poster.webp` from it. Each device
+downloads only its own clip. The phone clip is expected to be a 9:16 picture
+centred in a 16:9 frame; see `MOBILE_MEDIA` in `src/sections/HomeHero.jsx`
+before changing its shape or the breakpoint.
+
+Your `lab.mp4` and `lab mobile.mp4` are never modified. Other files in this
+folder are ignored.
 
 - **To remove the video**, delete `lab.mp4` and the `web/` folder.
 - **After changing the video**, check that the hero text is still readable.

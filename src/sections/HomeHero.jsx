@@ -1,11 +1,13 @@
-import { ArrowRight } from 'lucide-react'
-import { useState } from 'react'
+import { ArrowRight, ExternalLink, Star } from 'lucide-react'
+import { useEffect, useRef, useState } from 'react'
 import Button from '../components/common/Button.jsx'
 import Container from '../components/layout/Container.jsx'
 import ScientificOrbit from '../components/orbit/ScientificOrbit.jsx'
-import { HERO_POSTER, HERO_VIDEO } from '../data/images.js'
+import { HERO_POSTER, HERO_POSTER_MOBILE, HERO_VIDEO, HERO_VIDEO_MOBILE } from '../data/images.js'
+import { GOOGLE_PROFILE_URL, GOOGLE_RATING } from '../data/site.js'
 import { useLanguage } from '../hooks/useLanguage.js'
 import { ENQUIRY_PATH, ROUTES } from '../routes/pages.js'
+import { HERO_MOTION_EVENT } from '../utils/heroMotion.js'
 import styles from './HomeHero.module.css'
 
 // How long before its end the video starts dissolving into the poster. The
@@ -13,6 +15,13 @@ import styles from './HomeHero.module.css'
 // only about four times a second, so the rest is headroom to be sure the fade
 // has finished before the clip restarts.
 const LOOP_FADE_SECONDS = 1.1
+
+// Phones held upright get their own clip. It is a 9:16 picture centred in a
+// 16:9 frame, so the hero must be at least 16:9 tall for its width or the
+// black sides show; below 37.5rem (600px) the hero always is (measured to
+// 0.56 at 600px, against 0.5625). Wider screens get the landscape clip. Must
+// match the poster's breakpoint in HomeHero.module.css.
+const MOBILE_MEDIA = '(max-width: 37.49rem)'
 
 export default function HomeHero() {
   const { t, tm } = useLanguage()
@@ -27,6 +36,19 @@ export default function HomeHero() {
     setIsEndingLoop(duration - currentTime < LOOP_FADE_SECONDS)
   }
 
+  // The orbit's pause button pauses this video as well (see heroMotion.js).
+  const videoRef = useRef(null)
+  useEffect(() => {
+    const handleMotion = ({ detail }) => {
+      const video = videoRef.current
+      if (!video) return
+      if (detail.paused) video.pause()
+      else video.play().catch(() => {})
+    }
+    window.addEventListener(HERO_MOTION_EVENT, handleMotion)
+    return () => window.removeEventListener(HERO_MOTION_EVENT, handleMotion)
+  }, [])
+
   return (
     <div className={styles.hero}>
       {/* Decorative background video (see src/assets/video/README.md). Layers, back to
@@ -34,14 +56,24 @@ export default function HomeHero() {
           the areas behind the text and the animation. */}
       {HERO_VIDEO && (
         <>
+          {/* The poster is a CSS background, so a phone or a desktop only ever
+              fetches its own frame (see .poster). */}
           {HERO_POSTER && (
-            <div className={styles.poster} style={{ backgroundImage: `url(${HERO_POSTER})` }} />
+            <div
+              className={styles.poster}
+              style={{
+                '--poster': `url(${HERO_POSTER})`,
+                '--poster-mobile': HERO_POSTER_MOBILE ? `url(${HERO_POSTER_MOBILE})` : undefined,
+              }}
+            />
           )}
+          {/* The browser takes the first <source> whose media matches when the
+              page loads and downloads only that file, so a phone never fetches
+              the desktop clip or the reverse. */}
           <video
+            ref={videoRef}
             className={`${styles.video} ${isEndingLoop ? styles.videoEnding : ''}`}
             onTimeUpdate={HERO_POSTER ? handleTimeUpdate : undefined}
-            src={HERO_VIDEO}
-            poster={HERO_POSTER ?? undefined}
             autoPlay
             muted
             loop
@@ -49,7 +81,10 @@ export default function HomeHero() {
             preload="metadata"
             aria-hidden="true"
             tabIndex={-1}
-          />
+          >
+            {HERO_VIDEO_MOBILE && <source src={HERO_VIDEO_MOBILE} type="video/mp4" media={MOBILE_MEDIA} />}
+            <source src={HERO_VIDEO} type="video/mp4" />
+          </video>
           <div className={styles.overlay} />
         </>
       )}
@@ -78,6 +113,33 @@ export default function HomeHero() {
               <ArrowRight aria-hidden="true" size={18} />
             </Button>
           </div>
+          {/* The business's Google profile: a small trust note beneath the two
+              actions, not a third one. It quotes a rating only when one is
+              set in src/data/site.js. */}
+          {GOOGLE_PROFILE_URL && (
+            <a
+              href={GOOGLE_PROFILE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={styles.reviews}
+            >
+              <Star aria-hidden="true" size={16} className={styles.star} />
+              <span className={styles.reviewsTitle}>
+                {GOOGLE_RATING
+                  ? t('home.hero.rating.title', { value: GOOGLE_RATING.value.toFixed(1) })
+                  : t('home.hero.reviews.title')}
+              </span>
+              <span className={styles.reviewsText}>
+                {GOOGLE_RATING
+                  ? t('home.hero.rating.text', { count: GOOGLE_RATING.count })
+                  : t('home.hero.reviews.text')}
+                {/* A no-break space keeps the icon on the last word's line. */}
+                {' '}
+                <ExternalLink aria-hidden="true" size={12} className={styles.external} />
+                <span className="visually-hidden"> ({t('a11y.opensInNewTab')})</span>
+              </span>
+            </a>
+          )}
         </div>
         <div className={styles.visual}>
           <ScientificOrbit />
