@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import introVideo from '../assets/intro/metmech-intro.mp4'
+import introVideoPortrait from '../assets/intro/metmech-intro-portrait.mp4'
 import { useLanguage } from '../hooks/useLanguage.js'
 import styles from './HomeIntro.module.css'
 
@@ -12,9 +13,14 @@ import styles from './HomeIntro.module.css'
 // never set and the cover stays hidden (HomeIntro.module.css).
 const STORAGE_KEY = 'metmech-intro-seen'
 
-// Only on landscape screens (the film is 16:9 with the name across its middle)
-// and never for visitors who ask for reduced motion. Must match the CSS.
-const PLAY_MEDIA = '(min-aspect-ratio: 4/3) and (prefers-reduced-motion: no-preference)'
+// On every screen, but never for visitors who ask for reduced motion. Must
+// match the CSS.
+const PLAY_MEDIA = '(prefers-reduced-motion: no-preference)'
+
+// The film is 16:9 with the name across its middle, so screens narrower than
+// 4:3 (phones held upright, portrait tablets) get the same scene reframed for
+// a tall screen (design/intro/render.js). Chosen once, when the intro starts.
+const LANDSCAPE_MEDIA = '(min-aspect-ratio: 4/3)'
 
 // If the video stalls or autoplay is blocked without an error, give up after this.
 const GIVE_UP_MS = 9000
@@ -31,6 +37,13 @@ export default function HomeIntro() {
   const { t } = useLanguage()
   const videoRef = useRef(null)
   const canPlay = useSyncExternalStore(noSubscription, shouldPlay, unknownOnServer)
+  // Fixed for the intro's six seconds, so turning the phone does not restart it.
+  // The video only renders in the browser (canPlay is null on the server).
+  const [videoSrc] = useState(() =>
+    typeof window !== 'undefined' && !window.matchMedia(LANDSCAPE_MEDIA).matches
+      ? introVideoPortrait
+      : introVideo,
+  )
   // playing · leaving · done
   const [phase, setPhase] = useState('playing')
   const isPlaying = canPlay === true && phase === 'playing'
@@ -72,7 +85,7 @@ export default function HomeIntro() {
         <video
           ref={videoRef}
           className={styles.video}
-          src={introVideo}
+          src={videoSrc}
           muted
           playsInline
           preload="auto"

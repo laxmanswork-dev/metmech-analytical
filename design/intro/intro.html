@@ -277,6 +277,31 @@
 
 <script>
 const $ = (id) => document.getElementById(id)
+
+// Portrait version for phones (intro.html?portrait, rendered by render.js).
+// The stage becomes 1080 x 2400 (9:20, as tall as current phones), so the
+// background layers and their vignettes fill the tall frame, and the whole
+// scene is scaled to 0.85 and centred in it: unchanged otherwise, just
+// smaller. Its visible content spans x 391-1529 and y 59-940 of the
+// 1920 x 1080 scene, so at 0.85 it keeps a 5% margin either side and fills
+// only the middle third of the height: on any screen narrower than 4:3 the
+// film can fill it, cropping background alone. FRAME is that placement;
+// seek() undoes it, with the camera, when it maps screen points back into
+// the scene.
+let FRAME = new DOMMatrix()
+if (new URLSearchParams(location.search).has('portrait')) {
+  const SCALE = 0.85
+  const stage = $('stage')
+  stage.style.width = '1080px'
+  stage.style.height = '2400px'
+  const frame = document.createElement('div')
+  frame.style.cssText = 'position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0'
+  // The content's centre (960, 500) goes to the frame's centre (540, 1200).
+  FRAME = new DOMMatrix().translate(540 - 960 * SCALE, 1200 - 500 * SCALE).scale(SCALE)
+  frame.style.transform = FRAME.toString()
+  $('camera').before(frame)
+  frame.append($('camera'))
+}
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v))
 const seg = (t, a, b) => clamp((t - a) / (b - a))
 const mix = (a, b, p) => a + (b - a) * p
@@ -407,7 +432,7 @@ function seek(t) {
 
   // Projected spine centre, in group coordinates.
   const r = $('spine-mark').getBoundingClientRect()
-  const inv = camM.multiply(gM).inverse()
+  const inv = FRAME.multiply(camM).multiply(gM).inverse()
   const g = inv.transformPoint(new DOMPoint(r.left + r.width / 2, r.top + r.height / 2))
   const place = (el, dy = 0) => { el.style.left = `${g.x}px`; el.style.top = `${g.y + dy}px` }
   place($('glow'))
