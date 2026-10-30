@@ -79,20 +79,33 @@
 /* A faint cyan glow around the emblem's outline (drop-shadow follows the
    hexagons, not the image box), kept light over the emblem's own navy halo. It brightens and settles once every few
    seconds, slowly enough to read as light rather than a pulse, and holds
-   still for visitors who ask for less motion. */
+   still for visitors who ask for less motion.
+   The emblem also turns clockwise, one full turn every 24 seconds, about its
+   own centre (the hexagon ring sits centred in the image, so it turns without
+   wobbling). A transform doesn't move anything around it, and the glow has no
+   offset, so it stays even as the emblem turns. */
 .logo {
   flex: none;
   width: auto;
   height: 4.5rem;
   filter: drop-shadow(0 0 0.125rem rgb(111 208 238 / 0.22))
     drop-shadow(0 0 0.5rem rgb(11 127 166 / 0.08));
-  animation: logo-glow 4s ease-in-out infinite alternate;
+  animation:
+    logo-glow 4s ease-in-out infinite alternate,
+    logo-turn 24s linear infinite;
+  will-change: transform;
 }
 
 @keyframes logo-glow {
   to {
     filter: drop-shadow(0 0 0.1875rem rgb(111 208 238 / 0.3))
       drop-shadow(0 0 0.625rem rgb(11 127 166 / 0.12));
+  }
+}
+
+@keyframes logo-turn {
+  to {
+    transform: rotate(1turn);
   }
 }
 
