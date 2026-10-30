@@ -9,7 +9,7 @@ export default {
   },
   hero: {
     // Shown in uppercase above the heading.
-    eyebrow: 'Material Testing · Research Laboratories',
+    eyebrow: 'Material Testing · Research Laboratory',
     // The heading, one entry per line. Shown in uppercase.
     titleLines: ['Advanced', 'Engineering', 'Solutions'],
     text: 'We test metals, polymers and composites to support industrial and research needs, including failure analysis.',
