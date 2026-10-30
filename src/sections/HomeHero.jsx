@@ -38,8 +38,10 @@ export default function HomeHero() {
 
   // The orbit's pause button pauses this video as well (see heroMotion.js).
   const videoRef = useRef(null)
+  const isPausedRef = useRef(false)
   useEffect(() => {
     const handleMotion = ({ detail }) => {
+      isPausedRef.current = detail.paused
       const video = videoRef.current
       if (!video) return
       if (detail.paused) video.pause()
@@ -47,6 +49,24 @@ export default function HomeHero() {
     }
     window.addEventListener(HERO_MOTION_EVENT, handleMotion)
     return () => window.removeEventListener(HERO_MOTION_EVENT, handleMotion)
+  }, [])
+
+  // The browser picks a <source> only when the video loads, so a window
+  // resized or a phone turned across the breakpoint would keep the other
+  // clip. Reloading makes it pick again; only the newly matching clip is
+  // fetched. A visitor who paused the hero stays paused.
+  useEffect(() => {
+    if (!HERO_VIDEO_MOBILE) return undefined
+    const query = window.matchMedia(MOBILE_MEDIA)
+    const handleChange = () => {
+      const video = videoRef.current
+      if (!video) return
+      setIsEndingLoop(false)
+      video.load()
+      if (isPausedRef.current) video.pause()
+    }
+    query.addEventListener('change', handleChange)
+    return () => query.removeEventListener('change', handleChange)
   }, [])
 
   return (
