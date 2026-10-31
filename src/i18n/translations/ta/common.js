@@ -40,6 +40,12 @@ export default {
     email: 'மின்னஞ்சல்',
     address: 'முகவரி',
   },
+  shortcuts: {
+    whatsapp: 'WhatsApp-இல் எங்களுடன் உரையாடுங்கள்',
+    call: 'Metmech Analytical Engineers-ஐ அழைக்கவும்',
+    whatsappMessage:
+      'வணக்கம் Metmech Analytical Engineers, உங்கள் சோதனைச் சேவைகள் பற்றி விசாரிக்க விரும்புகிறேன்.',
+  },
   cta: {
     heading: 'பொருள் சோதனைத் தேவை உள்ளதா?',
     text: 'உங்கள் மாதிரி மற்றும் சோதனையின் நோக்கத்தை எங்களிடம் தெரிவியுங்கள். அடுத்து என்ன செய்யலாம் என்பதை எங்கள் குழு உங்களுடன் கலந்துரையாடும்.',

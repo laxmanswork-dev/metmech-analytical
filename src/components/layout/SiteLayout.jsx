@@ -4,6 +4,7 @@ import { useLanguage } from '../../hooks/useLanguage.js'
 import { useRouteChangeReset } from '../../hooks/useRouteChangeReset.js'
 import ErrorBoundary from '../common/ErrorBoundary.jsx'
 import ErrorFallback from '../common/ErrorFallback.jsx'
+import FloatingContact from './FloatingContact.jsx'
 import Footer from './Footer.jsx'
 import Header from './Header.jsx'
 import styles from './SiteLayout.module.css'
@@ -29,6 +30,7 @@ export default function SiteLayout() {
         </ErrorBoundary>
       </main>
       <Footer />
+      <FloatingContact />
     </>
   )
 }

@@ -41,6 +41,14 @@ export default {
     email: 'Email',
     address: 'Address',
   },
+  // The floating call and WhatsApp buttons. `whatsappMessage` is typed into
+  // the chat, ready for the visitor to send.
+  shortcuts: {
+    whatsapp: 'Chat with us on WhatsApp',
+    call: 'Call Metmech Analytical Engineers',
+    whatsappMessage:
+      'Hello Metmech Analytical Engineers, I would like to enquire about your testing services.',
+  },
   // Shared enquiry call to action shown near the end of most pages.
   cta: {
     heading: 'Have a Material Testing Requirement?',

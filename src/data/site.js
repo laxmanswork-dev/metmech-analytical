@@ -15,6 +15,14 @@ export const PHONES = [
   { display: '82485 42077', tel: '+918248542077' },
 ]
 
+// The number behind the floating WhatsApp and call buttons: the first number
+// above, in international form without the plus.
+export const WHATSAPP_NUMBER = '919962034530'
+
+// A WhatsApp chat with that number, with `message` typed in ready to send.
+export const whatsappUrl = (message) =>
+  `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
+
 export const EMAILS = ['metmech2005@yahoo.co.in', 'metmechanalyticalengineers@gmail.com']
 
 // Used for structured data. The displayed address comes from the dictionaries.
