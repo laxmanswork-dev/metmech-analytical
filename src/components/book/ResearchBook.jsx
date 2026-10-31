@@ -172,6 +172,12 @@ export default function ResearchBook() {
     let frame = 0
     const start = performance.now()
     const tick = (now) => {
+      // The sound starts with the first frame that moves the leaf: the pose
+      // below is at rest, and a slow device may take a while to draw it.
+      if (soundedTurn.current !== view.turn) {
+        soundedTurn.current = view.turn
+        playFlip()
+      }
       const progress = Math.min(1, (now - start) / duration)
       pose(progress)
       if (progress < 1) frame = requestAnimationFrame(tick)
@@ -179,10 +185,6 @@ export default function ResearchBook() {
     }
     pose(0)
     turnStarted.current = start
-    if (soundedTurn.current !== view.turn) {
-      soundedTurn.current = view.turn
-      playFlip()
-    }
     frame = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(frame)
   }, [turn, isSpread, view.turn, playFlip])
