@@ -41,6 +41,7 @@ export default {
     address: 'முகவரி',
   },
   shortcuts: {
+    label: 'விரைவுத் தொடர்பு',
     whatsapp: 'WhatsApp-இல் எங்களுடன் உரையாடுங்கள்',
     call: 'Metmech Analytical Engineers-ஐ அழைக்கவும்',
     whatsappMessage:

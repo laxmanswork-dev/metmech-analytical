@@ -42,8 +42,13 @@ async function markSent(id) {
   }
 }
 
+// The static pages get their security headers from dist/_headers; the API's
+// own responses carry the ones that matter for JSON.
 const json = (body, status = 200, headers = {}) =>
-  Response.json(body, { status, headers: { 'Cache-Control': 'no-store', ...headers } })
+  Response.json(body, {
+    status,
+    headers: { 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', ...headers },
+  })
 
 // Responses carry a short reason only; details stay in the Worker's logs.
 const unavailable = () => json({ ok: false, error: 'unavailable' }, 503)

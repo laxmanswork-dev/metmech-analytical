@@ -25,7 +25,7 @@ export default function FloatingContact() {
   const { t } = useLanguage()
 
   return (
-    <div className={styles.dock}>
+    <aside className={styles.dock} aria-label={t('shortcuts.label')}>
       <a className={`${styles.button} ${styles.call}`} href={`tel:${PHONES[0].tel}`} aria-label={t('shortcuts.call')}>
         <Phone aria-hidden="true" size={ICON_SIZE} />
       </a>
@@ -38,6 +38,6 @@ export default function FloatingContact() {
       >
         <WhatsAppIcon />
       </a>
-    </div>
+    </aside>
   )
 }

@@ -7,6 +7,8 @@ import { LanguageContext } from './LanguageContext.js'
 import { getMessage, translate } from './translate.js'
 import { isLanguageLoaded, loadLanguage } from './translations/index.js'
 
+const RELOAD_KEY = 'metmech-language-reload'
+
 // The URL is the source of truth for the active language, so every language
 // version has its own indexable address. localStorage only remembers the
 // visitor's last explicit choice.
@@ -25,9 +27,26 @@ export default function LanguageProvider({ children }) {
 
   useEffect(() => {
     let isCurrent = true
-    loadLanguage(urlLanguage).then(() => {
-      if (isCurrent) setLanguage(urlLanguage)
-    })
+    loadLanguage(urlLanguage).then(
+      () => {
+        if (isCurrent) setLanguage(urlLanguage)
+      },
+      (error) => {
+        // Usually a tab left open across a new deployment, whose chunk names no
+        // longer exist. Loading the address afresh fetches the current version;
+        // only once per tab, so a lasting failure leaves the page in the
+        // previous language instead of reloading forever.
+        console.error(`Could not load the "${urlLanguage}" dictionary.`, error)
+        try {
+          if (isCurrent && !sessionStorage.getItem(RELOAD_KEY)) {
+            sessionStorage.setItem(RELOAD_KEY, '1')
+            window.location.reload()
+          }
+        } catch {
+          // Storage unavailable: stay on the previous language.
+        }
+      },
+    )
     return () => {
       isCurrent = false
     }

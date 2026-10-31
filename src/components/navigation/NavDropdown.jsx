@@ -31,11 +31,21 @@ export default function NavDropdown({ label, items, buttonClassName, onNavigate 
     const closeIfOutside = (event) => {
       if (!rootRef.current?.contains(event.target)) setIsOpen(false)
     }
+    // Safari does not focus a button when it is clicked, so after opening the
+    // list with the mouse, Escape reaches the document rather than the
+    // wrapper's handler below (which stops it when focus is inside).
+    const closeOnEscape = (event) => {
+      if (event.key !== 'Escape') return
+      setIsOpen(false)
+      buttonRef.current?.focus()
+    }
     document.addEventListener('pointerdown', closeIfOutside)
     document.addEventListener('focusin', closeIfOutside)
+    document.addEventListener('keydown', closeOnEscape)
     return () => {
       document.removeEventListener('pointerdown', closeIfOutside)
       document.removeEventListener('focusin', closeIfOutside)
+      document.removeEventListener('keydown', closeOnEscape)
     }
   }, [isOpen])
 

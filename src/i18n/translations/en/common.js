@@ -44,6 +44,7 @@ export default {
   // The floating call and WhatsApp buttons. `whatsappMessage` is typed into
   // the chat, ready for the visitor to send.
   shortcuts: {
+    label: 'Quick contact',
     whatsapp: 'Chat with us on WhatsApp',
     call: 'Call Metmech Analytical Engineers',
     whatsappMessage:
