@@ -3,10 +3,6 @@ export default {
     description:
       'Metmech Analytical Engineers is a Chennai research lab offering mechanical testing, hardness testing, SEM with EDS, thermal analysis, and surface and corrosion testing.',
   },
-  // The 6-second company intro shown over the home page.
-  intro: {
-    skip: 'Skip intro',
-  },
   hero: {
     // Shown in uppercase above the heading.
     eyebrow: 'Material Testing · Research Laboratory',

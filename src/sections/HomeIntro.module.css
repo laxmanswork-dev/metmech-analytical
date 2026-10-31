@@ -33,29 +33,3 @@
   height: 100%;
   object-fit: cover;
 }
-
-/* Readable on both the film's navy opening and its ivory close. */
-.skip {
-  position: absolute;
-  right: clamp(1rem, 3vw, 2.5rem);
-  bottom: clamp(1rem, 3vw, 2.5rem);
-  padding: 0.5rem 1rem;
-  border: 1px solid rgb(255 255 255 / 0.35);
-  border-radius: 999px;
-  font: 500 0.875rem/1.2 var(--font-sans);
-  letter-spacing: 0.04em;
-  color: var(--white);
-  background: rgb(10 31 61 / 0.55);
-  backdrop-filter: blur(6px);
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.skip:hover {
-  background: rgb(10 31 61 / 0.8);
-}
-
-.skip:focus-visible {
-  outline: 2px solid var(--white);
-  outline-offset: 3px;
-}

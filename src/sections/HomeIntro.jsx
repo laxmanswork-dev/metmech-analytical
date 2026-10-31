@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import introVideo from '../assets/intro/metmech-intro.mp4'
 import introVideoPortrait from '../assets/intro/metmech-intro-portrait.mp4'
-import { useLanguage } from '../hooks/useLanguage.js'
 import styles from './HomeIntro.module.css'
 
 // The 6-second company intro (source and renderer in design/intro/), played
@@ -34,7 +33,6 @@ const shouldPlay = () =>
 const unknownOnServer = () => null
 
 export default function HomeIntro() {
-  const { t } = useLanguage()
   const videoRef = useRef(null)
   const canPlay = useSyncExternalStore(noSubscription, shouldPlay, unknownOnServer)
   // Fixed for the intro's six seconds, so turning the phone does not restart it.
@@ -94,11 +92,6 @@ export default function HomeIntro() {
           aria-hidden="true"
           tabIndex={-1}
         />
-      )}
-      {isPlaying && (
-        <button type="button" className={styles.skip} onClick={leave}>
-          {t('home.intro.skip')}
-        </button>
       )}
     </div>
   )
