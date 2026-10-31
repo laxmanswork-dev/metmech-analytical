@@ -95,6 +95,15 @@ export default {
     wearRange: 'Wear measurement range',
     capacity: 'Capacity',
     sampleDiameters: 'Sample diameters',
+    instrumentType: 'Instrument type',
+    hardnessScale: 'Hardness scale',
+    measurementMethod: 'Measurement method',
+    suitableMaterials: 'Suitable materials',
+    testMethod: 'Test method',
+    testEnvironment: 'Test environment',
+    suitableSamples: 'Suitable samples',
+    chamberCapacity: 'Chamber capacity',
+    testStandard: 'Applicable test standard',
   },
   items: {
     'sem-eds': {
@@ -189,8 +198,13 @@ export default {
       short: 'Durometer for rubbers',
       purpose: 'Measures the indentation hardness of rubbers and soft elastomers.',
       overview:
-        'A spring-loaded indenter is pressed into the material and the hardness is read directly from the dial on the Shore A scale, the scale used for rubbers and soft elastomers.',
-      applications: ['Hardness of rubbers and elastomers', 'Quality checks on rubber seals, gaskets and moulded parts'],
+        'The Shore A hardness tester is used to measure the indentation hardness of relatively soft materials, particularly rubber and elastomers. A calibrated indenter is pressed against the material under specified conditions, and the hardness value is read from the instrument’s dial.',
+      applications: [
+        'Measuring the hardness of rubber and elastomeric materials',
+        'Quality control of rubber seals, gaskets and moulded components',
+        'Comparing hardness consistency between material batches',
+        'Evaluating material suitability for industrial applications',
+      ],
       imageAlt: 'Shore A durometer for rubber hardness',
     },
     'metallurgical-microscope': {
@@ -252,11 +266,12 @@ export default {
       short: 'Accelerated corrosion testing',
       purpose: 'Exposes samples to a salt fog to compare their corrosion resistance.',
       overview:
-        'Samples are placed in a closed chamber and exposed to a fine mist of salt solution for a set period. The corrosion seen afterwards is used to compare materials, coatings and surface treatments.',
+        'The salt spray test chamber is used to evaluate the corrosion resistance of metallic materials and protective surface coatings under controlled salt-fog exposure conditions. Test specimens are placed inside the chamber and exposed to a salt solution mist for a specified duration. The resulting corrosion is assessed according to the applicable test method and acceptance criteria.',
       applications: [
-        'Corrosion resistance of coated and plated parts',
-        'Comparing coatings and surface treatments',
-        'Corrosion studies of metals and alloys',
+        'Evaluating the corrosion resistance of coated and plated components',
+        'Comparing the performance of protective surface treatments',
+        'Assessing corrosion behaviour of metals and alloys',
+        'Supporting quality control of corrosion-protection processes',
       ],
       imageAlt: 'Salt spray test chamber',
     },

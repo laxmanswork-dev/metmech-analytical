@@ -112,12 +112,21 @@ export const INSTRUMENTS = [
     ],
   },
   {
-    // The dial in the client's photograph reads Shore A. Make, model and
-    // range await the client's confirmation.
+    // The dial in the client's photograph reads Shore A. Make, model, range
+    // and resolution await the client's confirmation.
     slug: 'shore-a-hardness-tester',
     category: 'hardness',
     services: ['hardness-testing'],
-    specs: [],
+    specs: [
+      { label: 'instrumentType', value: 'Shore A hardness tester' },
+      { label: 'hardnessScale', value: 'Shore A' },
+      { label: 'measurementMethod', value: 'Indentation hardness measurement' },
+      { label: 'suitableMaterials', value: 'Soft rubber and elastomers' },
+      { label: 'make', value: null },
+      { label: 'model', value: null },
+      { label: 'measuringRange', value: null },
+      { label: 'resolution', value: null },
+    ],
   },
   {
     slug: 'metallurgical-microscope',
@@ -180,11 +189,22 @@ export const INSTRUMENTS = [
     ],
   },
   {
-    // Make, model and test conditions await the client's confirmation.
+    // Make, model, capacity, temperature and test standard await the client's
+    // confirmation. No standard is named until the lab confirms one.
     slug: 'salt-spray-test-chamber',
     category: 'surface',
     services: ['surface-corrosion-testing'],
-    specs: [],
+    specs: [
+      { label: 'instrumentType', value: 'Salt spray test chamber' },
+      { label: 'testMethod', value: 'Salt spray corrosion testing' },
+      { label: 'testEnvironment', value: 'Controlled salt-fog exposure' },
+      { label: 'suitableSamples', value: 'Metallic specimens and coated components' },
+      { label: 'make', value: null },
+      { label: 'model', value: null },
+      { label: 'chamberCapacity', value: null },
+      { label: 'temperatureRange', value: null },
+      { label: 'testStandard', value: null },
+    ],
   },
   {
     slug: 'surface-roughness-tester',
