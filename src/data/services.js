@@ -15,7 +15,12 @@ export const SERVICES = [
   {
     slug: 'hardness-testing',
     image: 'micro-vickers-hardness-tester',
-    instruments: ['micro-vickers-hardness-tester', 'shore-d-hardness-tester'],
+    instruments: [
+      'micro-vickers-hardness-tester',
+      'rockwell-hardness-tester',
+      'shore-d-hardness-tester',
+      'shore-a-hardness-tester',
+    ],
     related: ['mechanical-testing', 'material-characterization', 'sample-preparation'],
   },
   {
@@ -38,13 +43,14 @@ export const SERVICES = [
       'surface-roughness-tester',
       'wear-test-machine',
       'electrochemical-workstation',
+      'salt-spray-test-chamber',
     ],
     related: ['material-characterization', 'sem-eds-analysis', 'hardness-testing'],
   },
   {
     slug: 'welding-processing',
     image: null,
-    instruments: [],
+    instruments: ['powder-metallurgy-press'],
     related: ['mechanical-testing', 'hardness-testing', 'material-characterization'],
   },
   {

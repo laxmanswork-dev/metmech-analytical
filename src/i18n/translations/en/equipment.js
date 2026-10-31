@@ -93,6 +93,8 @@ export default {
     techniques: 'Techniques',
     rotationalSpeed: 'Rotational speed',
     wearRange: 'Wear measurement range',
+    capacity: 'Capacity',
+    sampleDiameters: 'Sample diameters',
   },
   items: {
     'sem-eds': {
@@ -169,6 +171,28 @@ export default {
       applications: ['Hardness of rigid plastics and composites', 'Quality checks on polymer parts'],
       imageAlt: 'Shore D durometer mounted on a test stand',
     },
+    'rockwell-hardness-tester': {
+      name: 'Rockwell Hardness Tester',
+      short: 'Saroj bench hardness tester',
+      purpose: 'Measures the hardness of metals from the depth of an indentation.',
+      overview:
+        'A diamond cone or hardened ball indenter is pressed into the sample under a minor load, then a major load is applied and removed. The hardness is read from the remaining depth of penetration on the Rockwell scale.',
+      applications: [
+        'Hardness of steels, cast irons and non-ferrous metals',
+        'Checking the result of heat treatment',
+        'Quality control of finished parts',
+      ],
+      imageAlt: 'Saroj Rockwell hardness tester',
+    },
+    'shore-a-hardness-tester': {
+      name: 'Shore A Rubber Hardness Tester',
+      short: 'Durometer for rubbers',
+      purpose: 'Measures the indentation hardness of rubbers and soft elastomers.',
+      overview:
+        'A spring-loaded indenter is pressed into the material and the hardness is read directly from the dial on the Shore A scale, the scale used for rubbers and soft elastomers.',
+      applications: ['Hardness of rubbers and elastomers', 'Quality checks on rubber seals, gaskets and moulded parts'],
+      imageAlt: 'Shore A durometer for rubber hardness',
+    },
     'metallurgical-microscope': {
       name: 'Inverted Trinocular Metallurgical Microscope',
       short: 'Dewinter Victory-800 with image analysis',
@@ -223,6 +247,19 @@ export default {
       ],
       imageAlt: 'Corrtest electrochemical workstation connected to a three-electrode test cell',
     },
+    'salt-spray-test-chamber': {
+      name: 'Salt Spray Test Chamber',
+      short: 'Accelerated corrosion testing',
+      purpose: 'Exposes samples to a salt fog to compare their corrosion resistance.',
+      overview:
+        'Samples are placed in a closed chamber and exposed to a fine mist of salt solution for a set period. The corrosion seen afterwards is used to compare materials, coatings and surface treatments.',
+      applications: [
+        'Corrosion resistance of coated and plated parts',
+        'Comparing coatings and surface treatments',
+        'Corrosion studies of metals and alloys',
+      ],
+      imageAlt: 'Salt spray test chamber',
+    },
     'surface-roughness-tester': {
       name: 'Surface Roughness Tester',
       short: 'Mitutoyo Surftest SJ-210',
@@ -260,6 +297,18 @@ export default {
         'Research on metals, ceramics and composites',
       ],
       imageAlt: 'X-ray diffraction system with the enclosure door open',
+    },
+    'powder-metallurgy-press': {
+      name: 'Powder Metallurgy Compaction Press',
+      short: '20-ton press with electronic load cell',
+      purpose: 'Compacts metal powders into samples for powder metallurgy work.',
+      overview:
+        'Metal powder is pressed in a die to form a compact 10 mm, 12.5 mm or 25 mm in diameter. The press has a capacity of 20 tons, and an electronic load cell measures the applied load.',
+      applications: [
+        'Compacting metal powders for research and development work',
+        'Preparing compacts for sintering and later testing',
+      ],
+      imageAlt: 'Powder metallurgy compaction press with electronic load cell',
     },
   },
 }

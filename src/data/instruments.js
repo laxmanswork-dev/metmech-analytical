@@ -100,6 +100,26 @@ export const INSTRUMENTS = [
     ],
   },
   {
+    slug: 'rockwell-hardness-tester',
+    category: 'hardness',
+    services: ['hardness-testing'],
+    // Make from the machine's nameplate. Model and scales await the client's
+    // confirmation.
+    specs: [
+      { label: 'make', value: 'Saroj' },
+      { label: 'model', value: null },
+      { label: 'scales', value: null },
+    ],
+  },
+  {
+    // The dial in the client's photograph reads Shore A. Make, model and
+    // range await the client's confirmation.
+    slug: 'shore-a-hardness-tester',
+    category: 'hardness',
+    services: ['hardness-testing'],
+    specs: [],
+  },
+  {
     slug: 'metallurgical-microscope',
     category: 'microscopy',
     services: ['material-characterization', 'sample-preparation'],
@@ -160,6 +180,13 @@ export const INSTRUMENTS = [
     ],
   },
   {
+    // Make, model and test conditions await the client's confirmation.
+    slug: 'salt-spray-test-chamber',
+    category: 'surface',
+    services: ['surface-corrosion-testing'],
+    specs: [],
+  },
+  {
     slug: 'surface-roughness-tester',
     category: 'surface',
     services: ['surface-corrosion-testing'],
@@ -184,6 +211,18 @@ export const INSTRUMENTS = [
     category: 'other',
     services: ['material-characterization'],
     specs: [],
+  },
+  {
+    // Capacity, sample diameters and load cell as stated by the client; make
+    // and model await confirmation.
+    slug: 'powder-metallurgy-press',
+    category: 'other',
+    services: ['welding-processing'],
+    specs: [
+      { label: 'capacity', value: '20 tons' },
+      { label: 'sampleDiameters', value: '10 mm, 12.5 mm and 25 mm' },
+      { label: 'features', value: 'Electronic load cell' },
+    ],
   },
 ]
 

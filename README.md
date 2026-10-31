@@ -226,6 +226,20 @@ awaiting confirmation on the site.
   BET, Raman) are carried out with partner facilities. The site says tests are
   "available" and avoids claiming ownership.
 - XRD make, model and specifications; surface roughness tester specifications.
+- Rockwell hardness tester: make Saroj (from the nameplate). The nameplate also
+  appears to read model RAB250 with Rockwell scales A to V; model and scales
+  are shown as "Awaiting confirmation" until the client confirms them. The
+  client's brief listed a "Rockwell tester" and a "Saroj hardness tester"
+  separately; the photographs show one machine, so the site has one entry.
+- Shore A rubber hardness tester: the brief said "Shore D rubber", but the dial
+  in the photograph reads Shore A (make tse); the site says Shore A. Make,
+  model and range not yet confirmed.
+- Salt spray test chamber: make, model and test conditions.
+- Powder metallurgy compaction press: 20 tons, 10 / 12.5 / 25 mm diameters
+  and electronic load cell are as stated by the client; make and model not
+  supplied. The brief also asked for a separate "vertical mechanical testing
+  apparatus", but its photograph shows this press, so no separate entry was
+  made.
 - Business hours (the design mockup shows hours, but no document confirms them).
 - Exact map location. The directions link is a Google Maps search for the
   address, not a pinned point.
@@ -247,8 +261,13 @@ awaiting confirmation on the site.
   the hero orbit. It currently uses the Zeiss product image from the client's
   document with its background removed.
 - Permission to use the manufacturer product images for the SEM, XRD, digital
-  microscope, electrochemical workstation, roughness tester, tribometer and
-  impact tester, or photographs of the lab's own units. See `src/data/images.js`.
+  microscope, electrochemical workstation, roughness tester and impact
+  tester, or photographs of the lab's own units. See `src/data/images.js`.
+- Confirmation of the powder metallurgy press photograph. It shows a machine
+  with a black base, handwheel and two columns, unlike the client's photo of
+  the press (green frame, hydraulic jack, load cell). The Rockwell, Shore A,
+  salt spray and press photographs are AI-edited composites of machines on a
+  generated lab background, like the other instrument photographs.
 
 - The company owner's full name, designation and a 4:5 portrait photograph for
   the about page. The company description names Jayaraj M and Prem Kumar P as

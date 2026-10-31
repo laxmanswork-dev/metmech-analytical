@@ -3,7 +3,8 @@
 // reserve space and avoid layout shift.
 //
 // Lab photographs: ta-sdt-650, universal-testing-machine,
-// micro-vickers-hardness-tester, shore-d-hardness-tester, metallurgical-microscope.
+// micro-vickers-hardness-tester, shore-d-hardness-tester, metallurgical-microscope,
+// wear-test-machine.
 // The rest are manufacturer product images supplied by the client; confirm
 // usage rights or replace them with photographs of the lab's own units.
 import digitalMicroscope from '../assets/images/instruments/digital-microscope.webp'
@@ -16,7 +17,11 @@ import samplePreparation from '../assets/images/services/sample-preparation.webp
 // From the 240px orbit thumbnail, the only welding photograph supplied; a
 // larger original would be sharper.
 import weldingProcessing from '../assets/images/services/welding-processing.webp'
+import powderMetallurgyPress from '../assets/images/instruments/powder-metallurgy-press.webp'
+import rockwellHardnessTester from '../assets/images/instruments/rockwell-hardness-tester.webp'
+import saltSprayTestChamber from '../assets/images/instruments/salt-spray-test-chamber.webp'
 import semEds from '../assets/images/instruments/sem-eds.webp'
+import shoreA from '../assets/images/instruments/shore-a-hardness-tester.webp'
 import shoreD from '../assets/images/instruments/shore-d-hardness-tester.webp'
 import surfaceRoughness from '../assets/images/instruments/surface-roughness-tester.webp'
 import taSdt650 from '../assets/images/instruments/ta-sdt-650.webp'
@@ -31,14 +36,26 @@ export const INSTRUMENT_IMAGES = {
   'impact-testing-machine': { src: impactTestingMachine, width: 960, height: 720 },
   'micro-vickers-hardness-tester': { src: microVickers, width: 960, height: 720 },
   'shore-d-hardness-tester': { src: shoreD, width: 960, height: 720 },
+  'rockwell-hardness-tester': { src: rockwellHardnessTester, width: 960, height: 720 },
+  'shore-a-hardness-tester': { src: shoreA, width: 960, height: 640 },
   'metallurgical-microscope': { src: metallurgicalMicroscope, width: 960, height: 720 },
   'stereo-digital-microscope': { src: digitalMicroscope, width: 960, height: 720 },
   'contact-angle-measurement-system': { src: digitalMicroscope, width: 960, height: 720 },
   'electrochemical-workstation': { src: electrochemicalWorkstation, width: 960, height: 720 },
+  'salt-spray-test-chamber': { src: saltSprayTestChamber, width: 960, height: 720 },
   'surface-roughness-tester': { src: surfaceRoughness, width: 960, height: 720 },
   'wear-test-machine': { src: wearTestMachine, width: 960, height: 720 },
   'xrd-system': { src: xrdSystem, width: 960, height: 720 },
+  // Shows a different machine from the client's photograph of the press (green
+  // frame, hydraulic jack, load cell); awaiting the client's confirmation.
+  'powder-metallurgy-press': { src: powderMetallurgyPress, width: 960, height: 720 },
 }
+
+// An instrument with no entry above shows the emblem tile (see MediaFrame).
+// To add a photograph, save it as 960-pixel-wide WebP named after the slug in
+// src/assets/images/instruments/ (original in design/instruments-originals/),
+// import it at the top and add its entry above; `npm run check:images -- --fix`
+// corrects the size if it differs.
 
 // Photographs for services with no instrument photograph of their own, keyed by
 // service slug. Their alt text is `services.items.<slug>.imageAlt`.
