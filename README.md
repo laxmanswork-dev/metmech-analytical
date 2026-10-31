@@ -266,7 +266,7 @@ awaiting confirmation on the site.
 - Confirmation of the powder metallurgy press photograph. It shows a machine
   with a black base, handwheel and two columns, unlike the client's photo of
   the press (green frame, hydraulic jack, load cell). The Rockwell, Shore A,
-  salt spray and press photographs are AI-edited composites of machines on a
+  salt spray, press and wear test rig photographs are AI-edited composites of machines on a
   generated lab background, like the other instrument photographs.
 
 - The company owner's full name, designation and a 4:5 portrait photograph for
