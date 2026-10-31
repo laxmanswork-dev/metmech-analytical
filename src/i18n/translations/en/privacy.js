@@ -44,6 +44,13 @@ export default {
       ],
     },
     {
+      heading: 'WhatsApp',
+      paragraphs: [
+        'The WhatsApp button opens a chat with us in WhatsApp, a service of Meta. Messages you send there are handled by WhatsApp under its own privacy policy.',
+        'Enquiries sent through the form may be passed to our team as a WhatsApp message through Meta’s WhatsApp Business Platform, which processes them on our behalf to deliver them.',
+      ],
+    },
+    {
       heading: 'Keeping your information',
       paragraphs: [
         'We keep enquiry details for as long as needed to deal with your enquiry and to maintain our business and testing records.',

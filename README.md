@@ -157,32 +157,151 @@ kept in `design/video/`.
 
 ## Enquiry form and backend
 
-No enquiry API exists yet, so the form does **not** pretend to submit. With
-`VITE_ENQUIRY_API_URL` empty it validates the input and then opens the visitor's
-email app with the enquiry filled in, addressed to the first address in
-`EMAILS`. It says so on the page.
+There is one enquiry form, at the end of the home page (`/#enquiry`). Every
+"Start a Test" button leads to it. The "Enquire" buttons on instrument and
+service pages also tell it which instrument or service the enquiry is about;
+the form shows "Enquiry about: …" and includes it with the enquiry.
 
-To switch to real submission, build an endpoint and set `VITE_ENQUIRY_API_URL`
-to its public URL. The form then sends:
+How the form sends depends on `VITE_ENQUIRY_API_URL`:
+
+- **Empty (the current setting):** the form validates the input and opens the
+  visitor's email app with the enquiry filled in, addressed to the first
+  address in `EMAILS`. It says so on the page. Nothing is sent to a server.
+- **`/api/enquiry`:** the form posts the enquiry to the site's own enquiry API
+  (below), which sends it to the business on WhatsApp. The visitor sees the
+  success message only after WhatsApp has accepted the message. If sending
+  fails, the form keeps what the visitor typed and offers to send it by email
+  instead.
+
+The form posts:
 
 ```
-POST <VITE_ENQUIRY_API_URL>
+POST /api/enquiry
 Content-Type: application/json
 
 { "name", "company", "email", "phone", "requirement", "material",
-  "message", "consent": true, "language": "en" | "ta" }
+  "message", "consent": true, "language": "en" | "ta",
+  "about": "Salt Spray Test Chamber" | null,   // English name, or null
+  "page": "/equipment/salt-spray-test-chamber", // where it was started
+  "submissionId": "<uuid>" }                    // the same on a retry
 ```
 
-Any 2xx response shows the success message; anything else shows the failure
-message and keeps what the visitor typed.
+### The enquiry API (worker/)
 
-The API must:
+`worker/index.js` is the site's only server code: a Cloudflare Worker
+deployed with the static site by `wrangler deploy` (see `wrangler.jsonc`). It
+runs only for `/api/*`; pages are served without it. For each enquiry it:
 
-- validate every field again on the server (browser checks can be bypassed);
-- reject requests without `consent: true`;
-- add spam protection (rate limiting, and a CAPTCHA or similar if needed);
-- allow cross-origin requests from the website's domain if hosted elsewhere;
-- keep email or database credentials in server-side environment variables only.
+1. accepts only a JSON `POST` from the site's own origin (32 KB at most);
+2. silently drops posts that filled in the hidden honeypot field;
+3. validates the fields again with the form's own rules
+   (`src/utils/enquiryRules.js`) and answers `422` with the invalid fields;
+4. ignores a `submissionId` it has already sent in the last day, so a retry
+   or double submission does not send a second message;
+5. sends the WhatsApp notification (`worker/whatsapp.js`) and answers `200`
+   only once WhatsApp has accepted it, or `503` if it is not configured or
+   sending failed. Responses never contain the token or error details; the
+   reason is written to the Worker's logs (Cloudflare dashboard > Workers >
+   metmech-analytical > Logs).
+
+Not built in: rate limiting. Add a rate limiting rule for `/api/enquiry` in
+the Cloudflare dashboard (Security > WAF > Rate limiting rules) if spam
+appears.
+
+### WhatsApp enquiry notifications
+
+The notification goes to **919962034530** through the WhatsApp Business
+Platform Cloud API (Meta). **It is not live yet**: it needs a Meta account,
+a sending number, an approved template and two secrets, none of which exist
+yet. Until then the form keeps using email.
+
+Steps:
+
+1. **Meta Business account and app.** In Meta Business Suite
+   (business.facebook.com) set up the business, ideally verified. At
+   developers.facebook.com create an app of type Business and add the
+   WhatsApp product. This creates a WhatsApp Business Account.
+2. **A sending number.** The API sends *from* a business number registered
+   on the Cloud API *to* 919962034530. They must be different numbers. A
+   number registered on the Cloud API generally cannot also be used in the
+   ordinary WhatsApp or WhatsApp Business app (Meta's "coexistence" option
+   for WhatsApp Business app numbers is the exception; check its current
+   terms). So use a spare number (a new SIM, or one not on WhatsApp), not
+   99620 34530. Meta's free test number can only message up to five
+   registered recipients and is for trying things out only.
+3. **Phone number ID.** WhatsApp Manager > API Setup shows the *Phone number
+   ID* of the sending number (a long number, not the phone number).
+4. **Permanent access token.** Business settings > Users > System users: add
+   a system user, assign it the app and the WhatsApp Business Account, and
+   generate a token with the `whatsapp_business_messaging` permission (and
+   `whatsapp_business_management`). Temporary tokens from the API Setup page
+   expire after a day; do not use them in production.
+5. **Message template.** WhatsApp Manager > Message templates > Create:
+   category *Utility*, name `website_enquiry`, language *English*, body:
+
+   ```
+   New enquiry from the Metmech website.
+
+   Name: {{1}}
+   Phone: {{2}}
+   Email: {{3}}
+   Company: {{4}}
+   Regarding: {{5}}
+   Requirement: {{6}}
+   Sample/material: {{7}}
+   Message: {{8}}
+   Page: {{9}}
+   Received: {{10}}
+
+   Please reply to the customer directly.
+   ```
+
+   Give sample values for each variable when submitting, and wait for
+   approval. Businesses may only start a WhatsApp conversation with an
+   approved template, so this is required. If you name it differently or
+   choose another language code (`en_US`, say), change
+   `WHATSAPP_TEMPLATE_NAME` or `WHATSAPP_TEMPLATE_LANGUAGE` in
+   `wrangler.jsonc`.
+6. **Billing.** Add a payment method to the WhatsApp Business Account. Meta
+   charges per template message delivered.
+7. **Secrets.** Set the two secrets on the Worker (or in the Cloudflare
+   dashboard under the Worker's Settings > Variables and Secrets, type
+   *Secret*):
+
+   ```
+   npx wrangler secret put WHATSAPP_ACCESS_TOKEN
+   npx wrangler secret put WHATSAPP_PHONE_NUMBER_ID
+   ```
+
+   The recipient, template name, language and API version are in
+   `wrangler.jsonc` under `vars`. Never give any of these a `VITE_` prefix:
+   `VITE_` values are published in the website's JavaScript.
+8. **Test before switching the form over.** After deploying, send a test
+   enquiry straight to the API and check that it arrives on 99620 34530:
+
+   ```
+   curl -X POST https://metmechresearch.com/api/enquiry \
+     -H "Content-Type: application/json" \
+     -d '{"name":"Test","email":"test@example.com","phone":"9876543210","requirement":"Test enquiry, please ignore","consent":true,"submissionId":"test-0001"}'
+   ```
+
+   `{"ok":true}` means WhatsApp accepted the message. `503` means it is not
+   configured or WhatsApp refused it; the Worker's logs give the reason.
+   Repeat with a new `submissionId` for each test (a repeated id is ignored).
+9. **Switch the form over.** Set `VITE_ENQUIRY_API_URL=/api/enquiry` in
+   `.env.production`, build and deploy. Then send an enquiry from the site
+   itself, including one from an instrument page.
+
+The WhatsApp button on every page (below) is separate: it is a plain
+`wa.me` link that opens a chat with 919962034530 and needs no setup.
+
+### Floating call and WhatsApp buttons
+
+`src/components/layout/FloatingContact.jsx` shows a call button
+(`tel:+919962034530`) and a WhatsApp button (`wa.me/919962034530`, with a
+greeting typed in, in the page's language) in the bottom-right corner of
+every page. The number is `WHATSAPP_NUMBER` in `src/data/site.js`; their
+labels and the greeting are under `shortcuts` in the `common` dictionaries.
 
 ## SEO and deployment
 

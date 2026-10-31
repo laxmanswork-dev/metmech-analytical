@@ -1,46 +1,22 @@
 import { EMAILS, ENQUIRY_API_URL } from '../data/site.js'
+import { ENQUIRY_FIELDS } from './enquiryRules.js'
 
-export const EMPTY_ENQUIRY = {
-  name: '',
-  company: '',
-  email: '',
-  phone: '',
-  requirement: '',
-  material: '',
-  message: '',
-  consent: false,
-}
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
-const PHONE_CHARACTERS = /^[\d\s()+-]+$/
-
-// Returns the names of invalid fields, in form order. Each name is also the
-// key of its message under `contact.form.errors`.
-// The API must repeat these checks: client-side validation can be bypassed.
-export function validateEnquiry(values) {
-  const invalid = []
-  const digits = values.phone.replace(/\D/g, '')
-
-  if (!values.name.trim()) invalid.push('name')
-  if (!EMAIL_PATTERN.test(values.email.trim())) invalid.push('email')
-  if (!PHONE_CHARACTERS.test(values.phone) || digits.length < 7 || digits.length > 15) {
-    invalid.push('phone')
-  }
-  if (!values.requirement.trim()) invalid.push('requirement')
-  if (!values.consent) invalid.push('consent')
-
-  return invalid
-}
+// The API repeats these checks: client-side validation can be bypassed.
+export { EMPTY_ENQUIRY, validateEnquiry } from './enquiryRules.js'
 
 export const isEnquiryApiConfigured = Boolean(ENQUIRY_API_URL)
 
-// Posts the enquiry to the API. Resolves on a 2xx response and rejects on any
-// other response or a network failure.
-export async function submitEnquiry(values, language) {
+// Posts the enquiry to the API. `context` is { about, page, submissionId }:
+// what the enquiry concerns (an instrument or service name, or null), the
+// language-neutral path it was started from, and an id that stays the same
+// when the visitor retries, so the API can ignore repeats.
+// Resolves on a 2xx response and rejects on any other response or a network
+// failure.
+export async function submitEnquiry(values, language, context) {
   const response = await fetch(ENQUIRY_API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-    body: JSON.stringify({ ...values, language }),
+    body: JSON.stringify({ ...values, ...context, language }),
   })
 
   if (!response.ok) {
@@ -48,13 +24,15 @@ export async function submitEnquiry(values, language) {
   }
 }
 
-// Fallback used while no API exists: a mailto link that opens the visitor's
-// email app with the enquiry filled in. `labels` maps field names to their
-// translated labels.
-export function buildEnquiryMailto(values, labels, subject) {
-  const lines = ['name', 'company', 'email', 'phone', 'requirement', 'material', 'message']
-    .filter((field) => values[field].trim())
-    .map((field) => `${labels[field]}: ${values[field].trim()}`)
+// Used while no API exists, and offered when sending fails: a mailto link
+// that opens the visitor's email app with the enquiry filled in. `labels`
+// maps field names to their translated labels; `about` is a line naming the
+// instrument or service, or null.
+export function buildEnquiryMailto(values, labels, subject, about = null) {
+  const lines = ENQUIRY_FIELDS.filter((field) => values[field].trim()).map(
+    (field) => `${labels[field]}: ${values[field].trim()}`,
+  )
+  if (about) lines.unshift(about)
 
   const query = `subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`
   return `mailto:${EMAILS[0]}?${query}`

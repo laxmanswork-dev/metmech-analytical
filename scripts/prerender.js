@@ -148,7 +148,9 @@ for (const file of await htmlFiles(distDir)) {
     scriptHashes.add(`'sha256-${createHash('sha256').update(body).digest('base64')}'`)
   }
 }
-const connectSources = ["'self'", enquiryApiUrl && new URL(enquiryApiUrl).origin].filter(Boolean)
+// A path such as /api/enquiry is on the site's own origin, already 'self'.
+const enquiryOrigin = /^https?:\/\//.test(enquiryApiUrl) ? new URL(enquiryApiUrl).origin : null
+const connectSources = ["'self'", enquiryOrigin].filter(Boolean)
 const policy = [
   "default-src 'self'",
   `script-src 'self' ${[...scriptHashes].join(' ')}`,

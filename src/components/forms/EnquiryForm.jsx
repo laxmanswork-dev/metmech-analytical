@@ -1,7 +1,10 @@
 import { LoaderCircle } from 'lucide-react'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
+import { useLocation } from 'react-router'
 import { EMAILS } from '../../data/site.js'
 import { useLanguage } from '../../hooks/useLanguage.js'
+import { DEFAULT_LANGUAGE } from '../../i18n/config.js'
+import { translate } from '../../i18n/translate.js'
 import { ROUTES } from '../../routes/pages.js'
 import {
   buildEnquiryMailto,
@@ -17,14 +20,27 @@ import FormField from './FormField.jsx'
 
 const fieldId = (name) => `enquiry-${name}`
 
+// Dictionary key of the name of what an enquiry is about.
+const aboutKey = ({ kind, slug }) =>
+  kind === 'instrument' ? `equipment.items.${slug}.name` : `services.items.${slug}.title`
+
 // Testing enquiry form.
 //
 // With VITE_ENQUIRY_API_URL set, it posts the enquiry to that endpoint and
 // reports the real outcome. Without it, there is nothing to submit to, so the
 // form says so and hands the enquiry to the visitor's email app instead of
 // showing a false success message.
+//
+// The enquire buttons on instrument and service pages pass
+// { enquiryAbout: { kind, slug }, from } in the link's state, so the enquiry
+// names the instrument or service and the page it was started from.
 export default function EnquiryForm() {
   const { t, tm, language } = useLanguage()
+  const { state, pathname } = useLocation()
+  const about = state?.enquiryAbout ?? null
+  const aboutLine = about ? t('contact.form.regarding', { name: t(aboutKey(about)) }) : null
+  // One id per enquiry, kept when the visitor retries after a failure.
+  const submissionId = useRef(null)
   const [values, setValues] = useState(EMPTY_ENQUIRY)
   const [invalidFields, setInvalidFields] = useState([])
   // idle | submitting | success | failure | emailOpened
@@ -54,8 +70,7 @@ export default function EnquiryForm() {
     }
 
     if (!isEnquiryApiConfigured) {
-      const subject = t('contact.form.emailSubject', { name: values.name.trim() })
-      window.location.assign(buildEnquiryMailto(values, labels, subject))
+      window.location.assign(enquiryMailto())
       setStatus('emailOpened')
       return
     }
@@ -63,14 +78,25 @@ export default function EnquiryForm() {
     if (website) return
 
     setStatus('submitting')
+    submissionId.current ??= crypto.randomUUID()
     try {
-      await submitEnquiry(values, language)
+      await submitEnquiry(values, language, {
+        about: about ? translate(DEFAULT_LANGUAGE, aboutKey(about)) : null,
+        page: state?.from ?? pathname,
+        submissionId: submissionId.current,
+      })
+      submissionId.current = null
       setValues(EMPTY_ENQUIRY)
       setStatus('success')
     } catch (error) {
       console.error('Enquiry submission failed', error)
       setStatus('failure')
     }
+  }
+
+  const enquiryMailto = () => {
+    const subject = t('contact.form.emailSubject', { name: values.name.trim() })
+    return buildEnquiryMailto(values, labels, subject, aboutLine)
   }
 
   const isSubmitting = status === 'submitting'
@@ -88,6 +114,7 @@ export default function EnquiryForm() {
   return (
     <form className={styles.form} onSubmit={handleSubmit} noValidate>
       <p className={styles.intro}>{t('contact.form.intro')}</p>
+      {aboutLine && <p className={styles.hint}>{aboutLine}</p>}
 
       <div className={styles.row}>
         {textField('name', { required: true, autoComplete: 'name' })}
@@ -166,7 +193,9 @@ export default function EnquiryForm() {
           <p className={`${styles.status} ${styles.statusSuccess}`}>{t('contact.form.success')}</p>
         )}
         {status === 'failure' && (
-          <p className={`${styles.status} ${styles.statusError}`}>{t('contact.form.failure')}</p>
+          <p className={`${styles.status} ${styles.statusError}`}>
+            {t('contact.form.failure')} <a href={enquiryMailto()}>{t('contact.form.emailInstead')}</a>
+          </p>
         )}
         {status === 'emailOpened' && (
           <p className={`${styles.status} ${styles.statusInfo}`}>

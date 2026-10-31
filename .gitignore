@@ -36,3 +36,7 @@ design/instruments-originals/
 # Rendered output of the intro film; design/intro/render.js recreates it.
 # The site uses the compressed copy in src/assets/intro/.
 design/intro/out/
+
+# Local secrets for `wrangler dev` (WhatsApp access token).
+.dev.vars
+.wrangler/

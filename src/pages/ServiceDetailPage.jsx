@@ -97,7 +97,12 @@ export default function ServiceDetailPage() {
             )}
 
             <div className={content.actions}>
-              <Button to={ENQUIRY_PATH}>{labels.enquire}</Button>
+              <Button
+                to={ENQUIRY_PATH}
+                state={{ enquiryAbout: { kind: 'service', slug }, from: servicePath(slug) }}
+              >
+                {labels.enquire}
+              </Button>
             </div>
           </div>
         </div>

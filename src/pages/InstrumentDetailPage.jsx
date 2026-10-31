@@ -96,7 +96,12 @@ export default function InstrumentDetailPage() {
             </div>
 
             <div className={content.actions}>
-              <Button to={ENQUIRY_PATH}>{labels.enquire}</Button>
+              <Button
+                to={ENQUIRY_PATH}
+                state={{ enquiryAbout: { kind: 'instrument', slug }, from: instrumentPath(slug) }}
+              >
+                {labels.enquire}
+              </Button>
             </div>
           </div>
         </div>

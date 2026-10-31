@@ -25,6 +25,8 @@ export default {
     heading: 'Send an Enquiry',
     lead: 'Tell us about your material, sample and what you need to find out.',
     intro: 'Fields marked with an asterisk (*) are required.',
+    // Shown when the visitor came from an instrument or service page.
+    regarding: 'Enquiry about: {name}',
     required: 'required',
     optional: 'optional',
     fields: {
@@ -53,6 +55,7 @@ export default {
     success: 'Thank you. Your enquiry has been sent and our team will contact you.',
     failure:
       'Your enquiry could not be sent. Please try again, or contact us by phone or email using the details on this page.',
+    emailInstead: 'Send it by email instead.',
     // Shown when no enquiry API is configured and the form hands over to email.
     emailNote: 'Sending opens your email app with the enquiry filled in, ready for you to send.',
     emailOpened:
