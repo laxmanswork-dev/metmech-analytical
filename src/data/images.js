@@ -118,11 +118,11 @@ export const HERO_POSTER_MOBILE = Object.values(heroMobilePosters)[0] ?? null
 
 // The photograph at the right of the casting page's hero.
 //
-// ▶ TO ADD THE PHOTO: save it as src/assets/images/casting/casting-hero.webp
+// ▶ TO REPLACE THE PHOTO: save it as src/assets/images/casting/casting-hero.webp
 // (a .jpg works too), a 4:3 casting-process photograph about 1200 x 900
 // pixels, and describe it in `casting.hero.imageAlt` in both dictionaries.
-// Nothing else needs to change. Until the file exists this is null and the
-// hero shows an empty 4:3 frame. Other shapes are cropped to 4:3 to fit.
+// Nothing else needs to change. Without the file this is null and the hero
+// shows an empty 4:3 frame. Other shapes are cropped to 4:3 to fit.
 const castingHero = Object.values(
   import.meta.glob('../assets/images/casting/casting-hero.{webp,jpg,jpeg}', {
     eager: true,

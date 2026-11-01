@@ -12,9 +12,9 @@ export default {
   hero: {
     title: 'Advanced Metal Casting & Material Development',
     lead: 'Exploring advanced casting techniques to develop, process, and evaluate metal alloys for demanding engineering and research applications.',
-    // Describe the hero photograph here once it is added
-    // (src/assets/images/casting/casting-hero.webp).
-    imageAlt: '',
+    // Describes the hero photograph (src/assets/images/casting/casting-hero.webp).
+    imageAlt:
+      'Molten metal being stirred in a crucible inside a top-loading furnace, with tongs held over the opening',
   },
   enquire: 'Discuss Your Casting Project',
   // What a casting enquiry is about when it names no category.
