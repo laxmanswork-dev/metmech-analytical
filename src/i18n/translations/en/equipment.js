@@ -169,7 +169,7 @@ export default {
         'Hardness surveys across welds and case-hardened layers',
         'Coating and surface-layer hardness',
       ],
-      imageAlt: 'Micro Vickers hardness tester with a sample on its stage, in the laboratory',
+      imageAlt: 'Micro Vickers hardness tester beside a monitor showing a diamond-shaped indentation',
     },
     'shore-d-hardness-tester': {
       name: 'Shore D Hardness Tester',
