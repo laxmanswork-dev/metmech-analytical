@@ -409,11 +409,21 @@ html:lang(ta) .brandTag {
     gap: 0.875rem;
   }
 
-  /* Lines up with the home hero's text, which sits left of the content edge
-     by the same amount (HomeHero.module.css). A translate, so the links do
-     not move. */
+  /* The emblem starts 0.125rem right of the home hero's text, which sits 4vw
+     (40-80px) in from the screen's edge (same formula as
+     HomeHero.module.css .content). The links sit at the right end of the
+     menu, which takes up the space the margin frees, so they do not move.
+     cqw is the header's width without the scrollbar, which 100vw would
+     include. */
+  .header {
+    container-type: inline-size;
+  }
+
   .brand {
-    translate: calc(-1 * min(3.75rem, max(0px, (100vw - var(--container-max)) / 2))) 0;
+    margin-left: calc(
+      0.125rem -
+        max(0px, max(0px, (100cqw - var(--container-max)) / 2) + var(--gutter) - clamp(2.5rem, 4vw, 5rem))
+    );
   }
 
   /* The language and request group sits right of the content edge by the

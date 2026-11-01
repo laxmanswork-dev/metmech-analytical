@@ -330,17 +330,34 @@ html:lang(ta) .actions {
      0.5rem sets it 2rem lower than that, as requested. */
   .content {
     padding-bottom: 0.5rem;
-    /* The text sits a little left of the site's content edge: up to 3.75rem,
-       taken from the space beside the centred container, so it tapers to
-       nothing where the container fills the screen. The orbit stays put. */
-    margin-left: calc(-1 * min(3.75rem, max(0px, (100vw - var(--container-max)) / 2)));
+    /* The text sits left of the site's content edge, 4vw (40-80px) in from
+       the screen's edge, mirroring the orbit at the right. The column only
+       widens to the left, so its right edge and the gap to the orbit stay
+       put. Where the gutter is already narrower than that (about 1024px)
+       nothing moves. cqw is the hero's width (see .visual below). */
+    margin-left: calc(
+      -1 * max(0px, max(0px, (100cqw - var(--container-max)) / 2) + var(--gutter) - clamp(2.5rem, 4vw, 5rem))
+    );
   }
 
-  /* The orbit sits right of centre in its column, away from the headline:
-     up to 3.75rem, taken from the space beside the centred container. Where
-     the container fills the screen there is no such space, and a 0.375rem
-     minimum just keeps the widened ring as far from the text as before. */
+  /* The orbit sits at the far right of the hero, its right edge a fixed
+     share of the screen in from the edge (24-56px), leaving the middle of the
+     footage open between it and the text. --orbit-shift is the distance
+     from the container's content edge out to that line: the space beside the
+     centred container plus the gutter, less the padding. The orbit may also
+     grow left by that much (ScientificOrbit.module.css), so it never comes
+     nearer the text column than before. cqw is the hero's width without the
+     scrollbar, which 100vw would include. */
+  .hero {
+    container-type: inline-size;
+  }
+
   .visual {
-    translate: max(0.375rem, min(3.75rem, (100vw - var(--container-max)) / 2)) 0;
+    --orbit-shift: calc(
+      max(0px, (100cqw - var(--container-max)) / 2) + var(--gutter) - clamp(1.5rem, 3vw, 3.5rem)
+    );
+
+    justify-content: flex-end;
+    translate: var(--orbit-shift) 0;
   }
 }

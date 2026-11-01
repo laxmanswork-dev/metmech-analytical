@@ -35,15 +35,16 @@
   color: var(--color-text-inverse);
 }
 
-/* Beside the text, the orbit may take a little more than its column, but
-   never comes within 1rem of the screen's edge (the column's own margin,
-   less the hero's shift of the orbit to the right), and stays short enough
-   that the caption is in the first screen. */
+/* Beside the text, the orbit may take a little more than its column: 2rem of
+   the gap before the text, plus however far the hero shifts it right
+   (--orbit-shift, HomeHero.module.css), since it is right-aligned there and
+   grows to the left. It stays short enough that the caption is in the first
+   screen. */
 @media (min-width: 64rem) {
   .orbit {
     width: min(
       40rem,
-      100% + 2rem + max(0px, 100vw - 82.5rem),
+      100% + 2rem + var(--orbit-shift, 0px),
       100svh - var(--header-height) - 10.5rem
     );
   }
