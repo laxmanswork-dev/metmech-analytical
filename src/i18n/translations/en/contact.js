@@ -56,10 +56,13 @@ export default {
     failure:
       'Your enquiry could not be sent. Please try again, or contact us by phone or email using the details on this page.',
     emailInstead: 'Send it by email instead.',
-    // Shown when no enquiry API is configured and the form hands over to email.
-    emailNote: 'Sending opens your email app with the enquiry filled in, ready for you to send.',
-    emailOpened:
-      'Your email app should now be open with the enquiry ready to send. If it did not open, please email us at {email}.',
+    // Shown when no enquiry API is configured and the form hands over to
+    // WhatsApp. The enquiry only reaches us once the visitor presses Send there.
+    whatsappNote:
+      'Sending opens WhatsApp with your enquiry filled in. Press Send in WhatsApp to deliver it to us.',
+    whatsappOpened:
+      'WhatsApp should now be open with your enquiry ready. Press Send in WhatsApp to deliver it to us.',
+    whatsappRetry: 'WhatsApp did not open? Open it here.',
     emailSubject: 'Testing enquiry from {name}',
   },
 }

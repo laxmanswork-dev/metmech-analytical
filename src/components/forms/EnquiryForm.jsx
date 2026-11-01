@@ -1,13 +1,13 @@
 import { LoaderCircle } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { useLocation } from 'react-router'
-import { EMAILS } from '../../data/site.js'
 import { useLanguage } from '../../hooks/useLanguage.js'
 import { DEFAULT_LANGUAGE } from '../../i18n/config.js'
 import { translate } from '../../i18n/translate.js'
 import { ROUTES } from '../../routes/pages.js'
 import {
   buildEnquiryMailto,
+  buildEnquiryWhatsApp,
   EMPTY_ENQUIRY,
   isEnquiryApiConfigured,
   submitEnquiry,
@@ -20,6 +20,10 @@ import FormField from './FormField.jsx'
 
 const fieldId = (name) => `enquiry-${name}`
 
+// A second press of Send within this time is taken as a double click, not a
+// new enquiry, so WhatsApp does not open twice.
+const REPEAT_GUARD_MS = 3000
+
 // Dictionary key of the name of what an enquiry is about.
 const aboutKey = ({ kind, slug }) =>
   kind === 'instrument' ? `equipment.items.${slug}.name` : `services.items.${slug}.title`
@@ -28,8 +32,9 @@ const aboutKey = ({ kind, slug }) =>
 //
 // With VITE_ENQUIRY_API_URL set, it posts the enquiry to that endpoint and
 // reports the real outcome. Without it, there is nothing to submit to, so the
-// form says so and hands the enquiry to the visitor's email app instead of
-// showing a false success message.
+// form opens WhatsApp with the enquiry typed in, addressed to the company's
+// number, and tells the visitor to press Send there: the enquiry only reaches
+// the company if they do, so the form never claims it was sent.
 //
 // The enquire buttons on instrument and service pages pass
 // { enquiryAbout: { kind, slug }, from } in the link's state, so the enquiry
@@ -43,8 +48,10 @@ export default function EnquiryForm() {
   const submissionId = useRef(null)
   const [values, setValues] = useState(EMPTY_ENQUIRY)
   const [invalidFields, setInvalidFields] = useState([])
-  // idle | submitting | success | failure | emailOpened
+  // idle | submitting | success | failure | whatsappOpened
   const [status, setStatus] = useState('idle')
+  // When WhatsApp was last opened (an event time stamp), for REPEAT_GUARD_MS.
+  const openedAt = useRef(-Infinity)
   // Hidden field that people leave empty and automated form fillers do not.
   const [website, setWebsite] = useState('')
 
@@ -70,8 +77,15 @@ export default function EnquiryForm() {
     }
 
     if (!isEnquiryApiConfigured) {
-      window.location.assign(enquiryMailto())
-      setStatus('emailOpened')
+      if (event.timeStamp - openedAt.current < REPEAT_GUARD_MS) return
+      openedAt.current = event.timeStamp
+      // A new tab on computers; phones hand wa.me links to the WhatsApp app.
+      // If the tab is blocked, open it in this one instead.
+      const url = enquiryWhatsApp()
+      const tab = window.open(url, '_blank')
+      if (tab) tab.opener = null
+      else window.location.assign(url)
+      setStatus('whatsappOpened')
       return
     }
 
@@ -98,6 +112,9 @@ export default function EnquiryForm() {
     const subject = t('contact.form.emailSubject', { name: values.name.trim() })
     return buildEnquiryMailto(values, labels, subject, aboutLine)
   }
+
+  const enquiryWhatsApp = () =>
+    buildEnquiryWhatsApp(values, about ? translate(DEFAULT_LANGUAGE, aboutKey(about)) : null)
 
   const isSubmitting = status === 'submitting'
   const textField = (name, props) => (
@@ -173,7 +190,7 @@ export default function EnquiryForm() {
         )}
       </div>
 
-      {!isEnquiryApiConfigured && <p className={styles.hint}>{t('contact.form.emailNote')}</p>}
+      {!isEnquiryApiConfigured && <p className={styles.hint}>{t('contact.form.whatsappNote')}</p>}
 
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting && (
@@ -197,9 +214,12 @@ export default function EnquiryForm() {
             {t('contact.form.failure')} <a href={enquiryMailto()}>{t('contact.form.emailInstead')}</a>
           </p>
         )}
-        {status === 'emailOpened' && (
+        {status === 'whatsappOpened' && (
           <p className={`${styles.status} ${styles.statusInfo}`}>
-            {t('contact.form.emailOpened', { email: EMAILS[0] })}
+            {t('contact.form.whatsappOpened')}{' '}
+            <a href={enquiryWhatsApp()} target="_blank" rel="noopener noreferrer">
+              {t('contact.form.whatsappRetry')}
+            </a>
           </p>
         )}
       </output>

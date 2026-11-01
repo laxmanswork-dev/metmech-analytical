@@ -164,9 +164,12 @@ the form shows "Enquiry about: …" and includes it with the enquiry.
 
 How the form sends depends on `VITE_ENQUIRY_API_URL`:
 
-- **Empty (the current setting):** the form validates the input and opens the
-  visitor's email app with the enquiry filled in, addressed to the first
-  address in `EMAILS`. It says so on the page. Nothing is sent to a server.
+- **Empty (the current setting):** the form validates the input and opens
+  WhatsApp (click-to-chat, `wa.me/919962034530`, the same number as the
+  floating button) with the enquiry typed in as an English message. The
+  visitor must press Send in WhatsApp; until they do, the business receives
+  nothing, and the page says so rather than claiming it was sent. Nothing is
+  sent to a server. A second press within 3 seconds is ignored.
 - **`/api/enquiry`:** the form posts the enquiry to the site's own enquiry API
   (below), which sends it to the business on WhatsApp. The visitor sees the
   success message only after WhatsApp has accepted the message. If sending
