@@ -2,15 +2,37 @@
 // (worker/index.js). Kept free of browser and build-time imports so the
 // Worker can use the same rules.
 
-export const ENQUIRY_FIELDS = ['name', 'company', 'email', 'phone', 'requirement', 'material', 'message']
+// The text fields, in form order. The testing requirement is not one: it is a
+// list of TESTING_REQUIREMENTS ids.
+export const ENQUIRY_FIELDS = ['name', 'company', 'email', 'phone', 'message']
+
+// What a visitor can ask to have tested, as [id, English name]. The English
+// names are what the company receives, whatever the site language; the form
+// shows translated names (contact.form.requirementOptions).
+export const TESTING_REQUIREMENTS = [
+  ['metal', 'Metal Testing'],
+  ['ceramic', 'Ceramic Testing'],
+  ['polymer', 'Polymer Testing'],
+  ['biofilm', 'Biofilm Testing'],
+  ['dental', 'Dental Applications'],
+]
+
+const REQUIREMENT_NAMES = Object.fromEntries(TESTING_REQUIREMENTS)
+
+// Selected requirement ids as one readable line, in the order the options are
+// listed: "Metal Testing, Polymer Testing". `names` maps ids to names; the
+// default is English.
+export const formatRequirements = (ids, names = REQUIREMENT_NAMES) =>
+  TESTING_REQUIREMENTS.filter(([id]) => ids.includes(id))
+    .map(([id]) => names[id])
+    .join(', ')
 
 export const EMPTY_ENQUIRY = {
   name: '',
   company: '',
   email: '',
   phone: '',
-  requirement: '',
-  material: '',
+  requirement: [],
   message: '',
   consent: false,
 }
@@ -21,8 +43,6 @@ export const FIELD_LIMITS = {
   company: 150,
   email: 254,
   phone: 30,
-  requirement: 2000,
-  material: 1000,
   message: 3000,
 }
 
@@ -40,19 +60,22 @@ export function validateEnquiry(values) {
   if (!PHONE_CHARACTERS.test(values.phone) || digits.length < 7 || digits.length > 15) {
     invalid.push('phone')
   }
-  if (!values.requirement.trim()) invalid.push('requirement')
+  if (values.requirement.length === 0) invalid.push('requirement')
   if (values.consent !== true) invalid.push('consent')
 
   return invalid
 }
 
 // The fields of an untrusted request body as trimmed strings within their
-// limits, with consent as a boolean. Unknown fields are dropped.
+// limits, the requirement as the known ids it lists (each once, in option
+// order) and consent as a boolean. Unknown fields and ids are dropped.
 export function normaliseEnquiry(data) {
   const values = { consent: data?.consent === true }
   for (const field of ENQUIRY_FIELDS) {
     const value = typeof data?.[field] === 'string' ? data[field].trim() : ''
     values[field] = value.slice(0, FIELD_LIMITS[field])
   }
+  const requested = Array.isArray(data?.requirement) ? data.requirement : []
+  values.requirement = TESTING_REQUIREMENTS.map(([id]) => id).filter((id) => requested.includes(id))
   return values
 }

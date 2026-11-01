@@ -1,5 +1,5 @@
 import { EMAILS, ENQUIRY_API_URL, whatsappUrl } from '../data/site.js'
-import { ENQUIRY_FIELDS } from './enquiryRules.js'
+import { formatRequirements } from './enquiryRules.js'
 
 // The API repeats these checks: client-side validation can be bypassed.
 export { EMPTY_ENQUIRY, validateEnquiry } from './enquiryRules.js'
@@ -24,6 +24,15 @@ export async function submitEnquiry(values, language, context) {
   }
 }
 
+const FORM_ORDER = ['name', 'company', 'email', 'phone', 'requirement', 'message']
+
+// A field's value as text: trimmed, or for the requirement the selected
+// options' names (English unless `requirementNames` is given).
+const fieldText = (values, field, requirementNames) =>
+  field === 'requirement'
+    ? formatRequirements(values.requirement, requirementNames)
+    : values[field].trim()
+
 // The labels in the WhatsApp message, in the order the client asked for. The
 // message is for the company, so it is in English whatever the site language.
 const WHATSAPP_LABELS = [
@@ -31,8 +40,7 @@ const WHATSAPP_LABELS = [
   ['company', 'Company / Institution'],
   ['email', 'Email'],
   ['phone', 'Phone'],
-  ['material', 'Material / Sample'],
-  ['requirement', 'Testing Service'],
+  ['requirement', 'Testing Requirements'],
   ['message', 'Message'],
 ]
 
@@ -44,7 +52,7 @@ export function buildEnquiryWhatsApp(values, about = null) {
   const lines = ['New Website Enquiry — Metmech Analytical Engineers', '']
   if (about) lines.push(`Enquiry about: ${about}`)
   for (const [field, label] of WHATSAPP_LABELS) {
-    const value = values[field].trim()
+    const value = fieldText(values, field)
     if (value) lines.push(`${label}: ${value}`)
   }
   lines.push('', 'Please contact me regarding this enquiry.')
@@ -53,11 +61,12 @@ export function buildEnquiryWhatsApp(values, about = null) {
 
 // Offered when sending through the API fails: a mailto link
 // that opens the visitor's email app with the enquiry filled in. `labels`
-// maps field names to their translated labels; `about` is a line naming the
-// instrument or service, or null.
+// maps field names to their translated labels, and requirementOptions to the
+// translated option names; `about` is a line naming the instrument or
+// service, or null.
 export function buildEnquiryMailto(values, labels, subject, about = null) {
-  const lines = ENQUIRY_FIELDS.filter((field) => values[field].trim()).map(
-    (field) => `${labels[field]}: ${values[field].trim()}`,
+  const lines = FORM_ORDER.filter((field) => fieldText(values, field)).map(
+    (field) => `${labels[field]}: ${fieldText(values, field, labels.requirementOptions)}`,
   )
   if (about) lines.unshift(about)
 

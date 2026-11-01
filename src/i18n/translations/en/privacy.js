@@ -20,7 +20,7 @@ export default {
     {
       heading: 'Information we collect',
       paragraphs: [
-        'When you send an enquiry, we receive the details you choose to provide: your name, company or institution, email address, phone number, your testing requirement, and any description of your sample or additional message.',
+        'When you send an enquiry, we receive the details you choose to provide: your name, company or institution, email address, phone number, the testing requirements you select, and any additional message.',
         'We do not ask for sensitive personal information, and you should not include it in your enquiry.',
       ],
     },

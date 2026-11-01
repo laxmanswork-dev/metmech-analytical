@@ -77,6 +77,97 @@ textarea.control {
   outline: 3px solid var(--color-focus);
 }
 
+/* ---- Multiple choice shown as buttons (ChoiceField) ----
+   White with a grey edge and dark text until chosen; chosen ones fill with
+   the brand blue, the colour of the primary button, and their plus turns into
+   a tick. Equal-width tiles: three across on the contact page, two or one on
+   phones. */
+.choiceField {
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* A legend is not a grid item, so it takes the gap below it as a margin. */
+.choiceField legend {
+  margin-bottom: var(--space-2);
+  padding: 0;
+}
+
+.choices {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 10.5rem), 1fr));
+  gap: var(--space-3);
+}
+
+.choice {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--control-height);
+  padding: var(--space-2) var(--space-4);
+  font-weight: var(--weight-medium);
+  line-height: 1.3;
+  color: var(--color-heading);
+  background: var(--color-surface);
+  border: 1px solid var(--control-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition:
+    color var(--transition),
+    background-color var(--transition),
+    border-color var(--transition);
+}
+
+.choice:hover {
+  background: var(--color-surface-tint);
+  border-color: var(--color-primary);
+}
+
+.choice:has(:checked) {
+  color: var(--color-text-inverse);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.choice:has(:checked):hover {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+
+.choice:has(:focus-visible) {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Nothing chosen when the form was sent: red edges, as on the text fields. */
+.choiceField[data-invalid] .choice {
+  border-color: var(--color-error);
+}
+
+/* The checkbox covers the whole button, unseen, so a click anywhere on it
+   toggles the box and the browser's own focus and keyboard handling apply. */
+.choiceInput {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.choiceIcon {
+  flex: none;
+  color: var(--color-primary);
+}
+
+.choice:has(:checked) .choiceIcon {
+  color: currentcolor;
+}
+
 .error {
   font-size: var(--text-sm);
   font-weight: var(--weight-medium);

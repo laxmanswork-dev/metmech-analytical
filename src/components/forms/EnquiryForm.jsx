@@ -13,8 +13,10 @@ import {
   submitEnquiry,
   validateEnquiry,
 } from '../../utils/enquiry.js'
+import { TESTING_REQUIREMENTS } from '../../utils/enquiryRules.js'
 import Button from '../common/Button.jsx'
 import LocalizedLink from '../navigation/LocalizedLink.jsx'
+import ChoiceField from './ChoiceField.jsx'
 import styles from './Form.module.css'
 import FormField from './FormField.jsx'
 
@@ -141,13 +143,19 @@ export default function EnquiryForm() {
         {textField('email', { required: true, type: 'email', autoComplete: 'email' })}
         {textField('phone', { required: true, type: 'tel', autoComplete: 'tel' })}
       </div>
-      {textField('requirement', {
-        required: true,
-        multiline: true,
-        rows: 5,
-        hint: labels.requirementHint,
-      })}
-      {textField('material', {})}
+      <ChoiceField
+        id={fieldId('requirement')}
+        label={labels.requirement}
+        hint={labels.requirementHint}
+        options={TESTING_REQUIREMENTS.map(([value]) => ({
+          value,
+          label: labels.requirementOptions[value],
+        }))}
+        selected={values.requirement}
+        onChange={setField('requirement')}
+        error={errorFor('requirement')}
+        required
+      />
       {textField('message', { multiline: true })}
 
       <div className={styles.honeypot} aria-hidden="true">

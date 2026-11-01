@@ -182,7 +182,8 @@ The form posts:
 POST /api/enquiry
 Content-Type: application/json
 
-{ "name", "company", "email", "phone", "requirement", "material",
+{ "name", "company", "email", "phone",
+  "requirement": ["metal", "ceramic", "polymer", "biofilm", "dental"], // at least one
   "message", "consent": true, "language": "en" | "ta",
   "about": "Salt Spray Test Chamber" | null,   // English name, or null
   "page": "/equipment/salt-spray-test-chamber", // where it was started
@@ -250,11 +251,10 @@ Steps:
    Email: {{3}}
    Company: {{4}}
    Regarding: {{5}}
-   Requirement: {{6}}
-   Sample/material: {{7}}
-   Message: {{8}}
-   Page: {{9}}
-   Received: {{10}}
+   Testing requirements: {{6}}
+   Message: {{7}}
+   Page: {{8}}
+   Received: {{9}}
 
    Please reply to the customer directly.
    ```
@@ -285,7 +285,7 @@ Steps:
    ```
    curl -X POST https://metmechresearch.com/api/enquiry \
      -H "Content-Type: application/json" \
-     -d '{"name":"Test","email":"test@example.com","phone":"9876543210","requirement":"Test enquiry, please ignore","consent":true,"submissionId":"test-0001"}'
+     -d '{"name":"Test","email":"test@example.com","phone":"9876543210","requirement":["metal"],"message":"Test enquiry, please ignore","consent":true,"submissionId":"test-0001"}'
    ```
 
    `{"ok":true}` means WhatsApp accepted the message. `503` means it is not
