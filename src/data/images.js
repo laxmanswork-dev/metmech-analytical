@@ -60,7 +60,7 @@ export const INSTRUMENT_IMAGES = {
 // Photographs for services with no instrument photograph of their own, keyed by
 // service slug. Their alt text is `services.items.<slug>.imageAlt`.
 export const SERVICE_IMAGES = {
-  'mechanical-testing': { src: mechanicalTesting, width: 960, height: 640 },
+  'mechanical-testing': { src: mechanicalTesting, width: 960, height: 720 },
   'sample-preparation': { src: samplePreparation, width: 960, height: 640 },
   'welding-processing': { src: weldingProcessing, width: 480, height: 360 },
 }
