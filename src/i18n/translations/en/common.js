@@ -21,6 +21,7 @@ export default {
     ourServices: 'Our Services',
     about: 'About Us',
     services: 'Testing Services',
+    casting: 'Casting & Material Development',
     equipment: 'Equipment',
     industries: 'Industries',
     contact: 'Contact',

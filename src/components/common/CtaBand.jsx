@@ -4,9 +4,10 @@ import Container from '../layout/Container.jsx'
 import Button from './Button.jsx'
 import styles from './CtaBand.module.css'
 
-// Enquiry call to action. Defaults to the shared wording; pass `heading` and
-// `text` to override it for a specific page.
-export default function CtaBand({ heading, text }) {
+// Enquiry call to action. Defaults to the shared wording; pass `heading`,
+// `text` and `actionLabel` to override it for a specific page, and `state`
+// to pass the enquiry form what the enquiry is about (see EnquiryForm).
+export default function CtaBand({ heading, text, actionLabel, state }) {
   const { t } = useLanguage()
 
   return (
@@ -18,8 +19,8 @@ export default function CtaBand({ heading, text }) {
           </h2>
           <p className={styles.text}>{text ?? t('cta.text')}</p>
         </div>
-        <Button to={ENQUIRY_PATH} shape="cylinder">
-          {t('actions.requestTest')}
+        <Button to={ENQUIRY_PATH} state={state} shape="cylinder">
+          {actionLabel ?? t('actions.requestTest')}
         </Button>
       </Container>
     </section>

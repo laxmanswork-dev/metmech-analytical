@@ -251,7 +251,7 @@ Steps:
    Email: {{3}}
    Company: {{4}}
    Regarding: {{5}}
-   Testing requirements: {{6}}
+   Requirements: {{6}}
    Message: {{7}}
    Page: {{8}}
    Received: {{9}}
@@ -362,6 +362,17 @@ awaiting confirmation on the site.
   supplied. The brief also asked for a separate "vertical mechanical testing
   apparatus", but its photograph shows this press, so no separate entry was
   made.
+- Casting capabilities (page `/casting-services`, added 2026-11-02). The price
+  list confirms only "Aluminum casting" and "Magnesium Casting process
+  (crucible extra)". Zinc alloy casting, stir casting, controlled-atmosphere
+  casting and metal matrix composite development come from the client's brief
+  alone. To confirm: whether each is carried out in-house; the furnace,
+  stirrer and atmosphere set-up (no gas, equipment or capacity is named on
+  the site); whether magnesium casting is routinely offered (the page says it
+  is "arranged project by project"); and photographs of the casting set-up.
+  The page's micrographs are the aluminium alloy and AZ91 specimens from the
+  standard specimen sets, captioned as reference micrographs, not casting
+  results.
 - Business hours (the design mockup shows hours, but no document confirms them).
 - Exact map location. The directions link is a Google Maps search for the
   address, not a pinned point.

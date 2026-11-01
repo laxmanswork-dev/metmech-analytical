@@ -5,7 +5,7 @@
 // so the notification is the template named in WHATSAPP_TEMPLATE_NAME with the
 // enquiry's fields as its nine body parameters, in this order:
 //
-//   {{1}} name           {{6}} testing requirements (English names)
+//   {{1}} name           {{6}} requirements (English names, by group)
 //   {{2}} phone          {{7}} additional message
 //   {{3}} email          {{8}} page the enquiry was started from
 //   {{4}} company        {{9}} date and time received (IST)
@@ -22,7 +22,7 @@ const REQUEST_TIMEOUT_MS = 10_000
 // Parameters may not contain line breaks, tabs or runs of more than four
 // spaces, and may not be empty. Long values are shortened so the whole
 // message stays within WhatsApp's length limit.
-const PARAMETER_LIMITS = [60, 20, 80, 60, 80, 200, 160, 60, 30]
+const PARAMETER_LIMITS = [60, 20, 80, 60, 80, 260, 160, 60, 30]
 const NOT_PROVIDED = 'Not provided'
 
 function parameter(value, limit) {

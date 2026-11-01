@@ -34,8 +34,14 @@ export default {
       company: 'Company or institution',
       email: 'Email',
       phone: 'Phone number',
-      requirement: 'Testing Requirements',
-      requirementHint: 'Select the material or application you need testing for.',
+      requirement: 'Your Requirements',
+      requirementHint:
+        'Select the testing or casting work you need. You can choose more than one, from either group.',
+      // Keys are the group ids in src/utils/enquiryRules.js.
+      requirementGroups: {
+        testing: 'Testing Requirements',
+        casting: 'Casting & Material Development',
+      },
       // One or more can be chosen; keys are the ids in src/utils/enquiryRules.js.
       requirementOptions: {
         metal: 'Metal Testing',
@@ -43,6 +49,14 @@ export default {
         polymer: 'Polymer Testing',
         biofilm: 'Biofilm Testing',
         dental: 'Dental Applications',
+        'aluminium-casting': 'Aluminium Alloy Casting',
+        'magnesium-casting': 'Magnesium Alloy Casting',
+        'zinc-casting': 'Zinc Alloy Casting',
+        'stir-casting': 'Stir Casting',
+        'controlled-atmosphere-casting': 'Controlled-Atmosphere Casting',
+        'mmc-development': 'Metal Matrix Composite Development',
+        'casting-quality': 'Casting Quality Assessment',
+        'casting-other': 'Other Casting Requirements',
       },
       message: 'Additional message',
       consent: 'I agree to my details being used to respond to this enquiry, as described in the',
@@ -53,7 +67,7 @@ export default {
       name: 'Enter your name.',
       email: 'Enter a valid email address, such as name@example.com.',
       phone: 'Enter a valid phone number with 7 to 15 digits.',
-      requirement: 'Select at least one testing requirement.',
+      requirement: 'Select at least one testing or casting requirement.',
       consent: 'Please confirm that you agree before sending.',
     },
     submit: 'Send Enquiry',

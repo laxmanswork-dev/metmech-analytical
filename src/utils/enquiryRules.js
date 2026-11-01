@@ -2,30 +2,72 @@
 // (worker/index.js). Kept free of browser and build-time imports so the
 // Worker can use the same rules.
 
-// The text fields, in form order. The testing requirement is not one: it is a
-// list of TESTING_REQUIREMENTS ids.
+// The text fields, in form order. The requirement is not one: it is a list of
+// REQUIREMENTS ids.
 export const ENQUIRY_FIELDS = ['name', 'company', 'email', 'phone', 'message']
 
-// What a visitor can ask to have tested, as [id, English name]. The English
-// names are what the company receives, whatever the site language; the form
-// shows translated names (contact.form.requirementOptions).
-export const TESTING_REQUIREMENTS = [
-  ['metal', 'Metal Testing'],
-  ['ceramic', 'Ceramic Testing'],
-  ['polymer', 'Polymer Testing'],
-  ['biofilm', 'Biofilm Testing'],
-  ['dental', 'Dental Applications'],
+// What a visitor can ask for, in two groups, each option as [id, English
+// name]. The English names are what the company receives, whatever the site
+// language; the form shows translated names (contact.form.requirementOptions
+// and requirementGroups). The casting ids match the categories on the
+// casting page (src/data/casting.js), whose enquire links preselect them.
+export const REQUIREMENT_GROUPS = [
+  {
+    id: 'testing',
+    name: 'Testing Requirements',
+    options: [
+      ['metal', 'Metal Testing'],
+      ['ceramic', 'Ceramic Testing'],
+      ['polymer', 'Polymer Testing'],
+      ['biofilm', 'Biofilm Testing'],
+      ['dental', 'Dental Applications'],
+    ],
+  },
+  {
+    id: 'casting',
+    name: 'Casting & Material Development',
+    options: [
+      ['aluminium-casting', 'Aluminium Alloy Casting'],
+      ['magnesium-casting', 'Magnesium Alloy Casting'],
+      ['zinc-casting', 'Zinc Alloy Casting'],
+      ['stir-casting', 'Stir Casting'],
+      ['controlled-atmosphere-casting', 'Controlled-Atmosphere Casting'],
+      ['mmc-development', 'Metal Matrix Composite Development'],
+      ['casting-quality', 'Casting Quality Assessment'],
+      ['casting-other', 'Other Casting Requirements'],
+    ],
+  },
 ]
 
-const REQUIREMENT_NAMES = Object.fromEntries(TESTING_REQUIREMENTS)
+// Every option of every group, in form order.
+export const REQUIREMENTS = REQUIREMENT_GROUPS.flatMap(({ options }) => options)
 
-// Selected requirement ids as one readable line, in the order the options are
-// listed: "Metal Testing, Polymer Testing". `names` maps ids to names; the
-// default is English.
-export const formatRequirements = (ids, names = REQUIREMENT_NAMES) =>
-  TESTING_REQUIREMENTS.filter(([id]) => ids.includes(id))
-    .map(([id]) => names[id])
-    .join(', ')
+const REQUIREMENT_IDS = REQUIREMENTS.map(([id]) => id)
+const REQUIREMENT_NAMES = Object.fromEntries(REQUIREMENTS)
+const GROUP_NAMES = Object.fromEntries(REQUIREMENT_GROUPS.map(({ id, name }) => [id, name]))
+
+// The selected options, grouped: [groupName, "Name, Name"] for each group with
+// at least one selected, in form order. `names` maps option ids and
+// `groupNames` group ids to names; the defaults are English.
+export const requirementLines = (ids, names = REQUIREMENT_NAMES, groupNames = GROUP_NAMES) =>
+  REQUIREMENT_GROUPS.map(({ id, options }) => [
+    groupNames[id],
+    options
+      .filter(([option]) => ids.includes(option))
+      .map(([option]) => names[option])
+      .join(', '),
+  ]).filter(([, selected]) => selected)
+
+// The selection as one readable line: "Testing Requirements: Metal Testing;
+// Casting & Material Development: Stir Casting".
+export const formatRequirements = (ids, names, groupNames) =>
+  requirementLines(ids, names, groupNames)
+    .map(([group, selected]) => `${group}: ${selected}`)
+    .join('; ')
+
+// Known requirement ids from an untrusted list, each once, in form order.
+export const knownRequirements = (requested) =>
+  Array.isArray(requested) ? REQUIREMENT_IDS.filter((id) => requested.includes(id)) : []
 
 export const EMPTY_ENQUIRY = {
   name: '',
@@ -75,7 +117,6 @@ export function normaliseEnquiry(data) {
     const value = typeof data?.[field] === 'string' ? data[field].trim() : ''
     values[field] = value.slice(0, FIELD_LIMITS[field])
   }
-  const requested = Array.isArray(data?.requirement) ? data.requirement : []
-  values.requirement = TESTING_REQUIREMENTS.map(([id]) => id).filter((id) => requested.includes(id))
+  values.requirement = knownRequirements(data?.requirement)
   return values
 }

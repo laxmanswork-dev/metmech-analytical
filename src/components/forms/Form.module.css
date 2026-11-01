@@ -90,9 +90,46 @@ textarea.control {
 }
 
 /* A legend is not a grid item, so it takes the gap below it as a margin. */
-.choiceField legend {
+.choiceField > legend {
   margin-bottom: var(--space-2);
   padding: 0;
+}
+
+/* A group of options under its own small heading, set apart from the group
+   above by a hairline. */
+.choiceGroup {
+  min-width: 0;
+  margin: var(--space-2) 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.choiceGroup + .choiceGroup {
+  margin-top: var(--space-3);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+/* Floated, a legend leaves the fieldset's top border whole instead of
+   sitting in it. The choices clear it. */
+.choiceGroupLabel {
+  float: left;
+  width: 100%;
+  margin-bottom: var(--space-3);
+  padding: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+}
+
+html:lang(ta) .choiceGroupLabel {
+  letter-spacing: 0;
+}
+
+.choiceGroup .choices {
+  clear: both;
 }
 
 .choices {

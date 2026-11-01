@@ -5,6 +5,7 @@ import { SERVICES } from '../data/services.js'
 export const ROUTES = {
   home: '/',
   services: '/testing-services',
+  casting: '/casting-services',
   equipment: '/equipment',
   industries: '/industries',
   research: '/research-capabilities',
@@ -36,6 +37,7 @@ export const NAV_ITEMS = [
   { key: 'home', path: ROUTES.home },
   { key: 'about', path: HOME_SECTIONS.about },
   { key: 'services', path: ROUTES.services },
+  { key: 'casting', path: ROUTES.casting },
   { key: 'equipment', path: ROUTES.equipment },
   { key: 'industries', path: ROUTES.industries },
   { key: 'contact', path: HOME_SECTIONS.contact },
@@ -48,7 +50,10 @@ export const HEADER_NAV = [
   { key: 'home', path: ROUTES.home },
   {
     key: 'ourServices',
-    children: ['services', 'equipment', 'industries'].map((key) => ({ key, path: ROUTES[key] })),
+    children: ['services', 'casting', 'equipment', 'industries'].map((key) => ({
+      key,
+      path: ROUTES[key],
+    })),
   },
   { key: 'about', path: HOME_SECTIONS.about },
   { key: 'contact', path: HOME_SECTIONS.contact },

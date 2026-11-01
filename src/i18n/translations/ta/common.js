@@ -20,6 +20,7 @@ export default {
     ourServices: 'எங்கள் சேவைகள்',
     about: 'எங்களைப் பற்றி',
     services: 'சோதனைச் சேவைகள்',
+    casting: 'வார்ப்பு & பொருள் மேம்பாடு',
     equipment: 'உபகரணங்கள்',
     industries: 'தொழில்துறைகள்',
     contact: 'தொடர்பு',

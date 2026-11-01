@@ -1,5 +1,5 @@
 import { EMAILS, ENQUIRY_API_URL, whatsappUrl } from '../data/site.js'
-import { formatRequirements } from './enquiryRules.js'
+import { requirementLines } from './enquiryRules.js'
 
 // The API repeats these checks: client-side validation can be bypassed.
 export { EMPTY_ENQUIRY, validateEnquiry } from './enquiryRules.js'
@@ -26,21 +26,26 @@ export async function submitEnquiry(values, language, context) {
 
 const FORM_ORDER = ['name', 'company', 'email', 'phone', 'requirement', 'message']
 
-// A field's value as text: trimmed, or for the requirement the selected
-// options' names (English unless `requirementNames` is given).
-const fieldText = (values, field, requirementNames) =>
-  field === 'requirement'
-    ? formatRequirements(values.requirement, requirementNames)
-    : values[field].trim()
+// A field as [label, text] lines, leaving out an empty one. The requirement
+// gives one line per group with a selection, labelled with the group's name
+// (English unless `requirementNames` and `groupNames` are given).
+const fieldLines = (values, field, label, requirementNames, groupNames) => {
+  if (field === 'requirement') {
+    return requirementLines(values.requirement, requirementNames, groupNames)
+  }
+  const text = values[field].trim()
+  return text ? [[label, text]] : []
+}
 
 // The labels in the WhatsApp message, in the order the client asked for. The
 // message is for the company, so it is in English whatever the site language.
+// The requirement lines carry their group names instead.
 const WHATSAPP_LABELS = [
   ['name', 'Name'],
   ['company', 'Company / Institution'],
   ['email', 'Email'],
   ['phone', 'Phone'],
-  ['requirement', 'Testing Requirements'],
+  ['requirement', null],
   ['message', 'Message'],
 ]
 
@@ -52,8 +57,7 @@ export function buildEnquiryWhatsApp(values, about = null) {
   const lines = ['New Website Enquiry — Metmech Analytical Engineers', '']
   if (about) lines.push(`Enquiry about: ${about}`)
   for (const [field, label] of WHATSAPP_LABELS) {
-    const value = fieldText(values, field)
-    if (value) lines.push(`${label}: ${value}`)
+    for (const [name, text] of fieldLines(values, field, label)) lines.push(`${name}: ${text}`)
   }
   lines.push('', 'Please contact me regarding this enquiry.')
   return whatsappUrl(lines.join('\n'))
@@ -61,13 +65,13 @@ export function buildEnquiryWhatsApp(values, about = null) {
 
 // Offered when sending through the API fails: a mailto link
 // that opens the visitor's email app with the enquiry filled in. `labels`
-// maps field names to their translated labels, and requirementOptions to the
-// translated option names; `about` is a line naming the instrument or
-// service, or null.
+// maps field names to their translated labels, requirementOptions to the
+// translated option names and requirementGroups to the group names; `about`
+// is a line naming the instrument or service, or null.
 export function buildEnquiryMailto(values, labels, subject, about = null) {
-  const lines = FORM_ORDER.filter((field) => fieldText(values, field)).map(
-    (field) => `${labels[field]}: ${fieldText(values, field, labels.requirementOptions)}`,
-  )
+  const lines = FORM_ORDER.flatMap((field) =>
+    fieldLines(values, field, labels[field], labels.requirementOptions, labels.requirementGroups),
+  ).map(([name, text]) => `${name}: ${text}`)
   if (about) lines.unshift(about)
 
   const query = `subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(lines.join('\n'))}`

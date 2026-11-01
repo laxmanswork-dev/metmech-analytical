@@ -17,6 +17,13 @@
   font-size: var(--text-lg);
 }
 
+.action {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
 .image {
   position: relative;
   width: 100%;
@@ -27,6 +34,30 @@
   display: block;
   width: 100%;
   border-radius: var(--radius-md);
+}
+
+/* A fixed 4:3 frame (imageSlot): a faint panel on the navy while empty, and
+   the photo cropped to fill it once added. It has a set width on desktop,
+   where an empty box in the grid's auto column would otherwise collapse. */
+.slot {
+  max-width: 32rem;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: rgb(255 255 255 / 0.04);
+  border: 1px solid rgb(255 255 255 / 0.12);
+  border-radius: var(--radius-md);
+}
+
+.slot > img {
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+@media (min-width: 64rem) {
+  .slot {
+    width: clamp(22rem, 30vw, 30rem);
+  }
 }
 
 .withImage {

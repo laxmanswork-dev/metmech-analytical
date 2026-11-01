@@ -116,5 +116,20 @@ const heroMobilePosters = import.meta.glob('../assets/video/web/lab-mobile-poste
 })
 export const HERO_POSTER_MOBILE = Object.values(heroMobilePosters)[0] ?? null
 
+// The photograph at the right of the casting page's hero.
+//
+// ▶ TO ADD THE PHOTO: save it as src/assets/images/casting/casting-hero.webp
+// (a .jpg works too), a 4:3 casting-process photograph about 1200 x 900
+// pixels, and describe it in `casting.hero.imageAlt` in both dictionaries.
+// Nothing else needs to change. Until the file exists this is null and the
+// hero shows an empty 4:3 frame. Other shapes are cropped to 4:3 to fit.
+const castingHero = Object.values(
+  import.meta.glob('../assets/images/casting/casting-hero.{webp,jpg,jpeg}', {
+    eager: true,
+    import: 'default',
+  }),
+)[0]
+export const CASTING_HERO_IMAGE = castingHero ? { src: castingHero, width: 1200, height: 900 } : null
+
 // The lab photograph used for link previews.
 export const HERO_IMAGE = INSTRUMENT_IMAGES['metallurgical-microscope']

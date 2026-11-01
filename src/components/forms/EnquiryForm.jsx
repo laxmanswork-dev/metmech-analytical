@@ -13,7 +13,7 @@ import {
   submitEnquiry,
   validateEnquiry,
 } from '../../utils/enquiry.js'
-import { TESTING_REQUIREMENTS } from '../../utils/enquiryRules.js'
+import { knownRequirements, REQUIREMENT_GROUPS } from '../../utils/enquiryRules.js'
 import Button from '../common/Button.jsx'
 import LocalizedLink from '../navigation/LocalizedLink.jsx'
 import ChoiceField from './ChoiceField.jsx'
@@ -26,9 +26,13 @@ const fieldId = (name) => `enquiry-${name}`
 // new enquiry, so WhatsApp does not open twice.
 const REPEAT_GUARD_MS = 3000
 
-// Dictionary key of the name of what an enquiry is about.
-const aboutKey = ({ kind, slug }) =>
-  kind === 'instrument' ? `equipment.items.${slug}.name` : `services.items.${slug}.title`
+// Dictionary key of the name of what an enquiry is about. A casting enquiry
+// names its category, or casting work in general without one.
+const aboutKey = ({ kind, slug }) => {
+  if (kind === 'instrument') return `equipment.items.${slug}.name`
+  if (kind === 'casting') return slug ? `casting.categories.${slug}.title` : 'casting.enquiryName'
+  return `services.items.${slug}.title`
+}
 
 // Testing enquiry form.
 //
@@ -38,9 +42,10 @@ const aboutKey = ({ kind, slug }) =>
 // number, and tells the visitor to press Send there: the enquiry only reaches
 // the company if they do, so the form never claims it was sent.
 //
-// The enquire buttons on instrument and service pages pass
+// The enquire buttons on instrument, service and casting pages pass
 // { enquiryAbout: { kind, slug }, from } in the link's state, so the enquiry
-// names the instrument or service and the page it was started from.
+// names the instrument or service and the page it was started from. They may
+// also pass `requirement`, a list of requirement ids to select at the start.
 export default function EnquiryForm() {
   const { t, tm, language } = useLanguage()
   const { state, pathname } = useLocation()
@@ -48,7 +53,10 @@ export default function EnquiryForm() {
   const aboutLine = about ? t('contact.form.regarding', { name: t(aboutKey(about)) }) : null
   // One id per enquiry, kept when the visitor retries after a failure.
   const submissionId = useRef(null)
-  const [values, setValues] = useState(EMPTY_ENQUIRY)
+  const [values, setValues] = useState(() => ({
+    ...EMPTY_ENQUIRY,
+    requirement: knownRequirements(state?.requirement),
+  }))
   const [invalidFields, setInvalidFields] = useState([])
   // idle | submitting | success | failure | whatsappOpened
   const [status, setStatus] = useState('idle')
@@ -147,9 +155,10 @@ export default function EnquiryForm() {
         id={fieldId('requirement')}
         label={labels.requirement}
         hint={labels.requirementHint}
-        options={TESTING_REQUIREMENTS.map(([value]) => ({
-          value,
-          label: labels.requirementOptions[value],
+        groups={REQUIREMENT_GROUPS.map(({ id, options }) => ({
+          id,
+          label: labels.requirementGroups[id],
+          options: options.map(([value]) => ({ value, label: labels.requirementOptions[value] })),
         }))}
         selected={values.requirement}
         onChange={setField('requirement')}
