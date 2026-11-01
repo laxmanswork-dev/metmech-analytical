@@ -25,6 +25,9 @@ export const whatsappUrl = (message) =>
 
 export const EMAILS = ['metmech2005@yahoo.co.in', 'metmechanalyticalengineers@gmail.com']
 
+// GST registration number, shown in the footer.
+export const GSTIN = '33AXPJ1190J1ZD'
+
 // Used for structured data. The displayed address comes from the dictionaries.
 export const ADDRESS = {
   streetAddress: '#131/7, Block No. 1, 2nd Floor, Balaji Nagar, 1st Street, Ekkattuthangal',

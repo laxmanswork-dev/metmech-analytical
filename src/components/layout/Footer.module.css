@@ -53,6 +53,14 @@
   color: var(--color-text-inverse);
 }
 
+/* Same row height as the links above it; the number never breaks. */
+.gstin {
+  display: flex;
+  align-items: center;
+  min-height: 2.25rem;
+  white-space: nowrap;
+}
+
 .address {
   display: grid;
   margin-top: var(--space-3);

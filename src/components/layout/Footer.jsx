@@ -1,4 +1,4 @@
-import { EMAILS, OFFICIAL_NAME, PHONES } from '../../data/site.js'
+import { EMAILS, GSTIN, OFFICIAL_NAME, PHONES } from '../../data/site.js'
 import { SERVICE_CATEGORIES } from '../../data/services.js'
 import { useLanguage } from '../../hooks/useLanguage.js'
 import { NAV_ITEMS, ROUTES, servicePath } from '../../routes/pages.js'
@@ -66,6 +66,7 @@ export default function Footer() {
                 </a>
               </li>
             ))}
+            <li className={styles.gstin}>GSTIN: {GSTIN}</li>
           </ul>
           <address className={styles.address}>
             {tm('contact.info.addressLines').map((line) => (
