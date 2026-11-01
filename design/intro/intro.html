@@ -143,6 +143,18 @@
     left: 0; top: 0; width: 100%; height: 100%; opacity: 0;
     background: radial-gradient(ellipse 70% 60% at 0% 50%, rgb(255 236 190 / 0.9), transparent 70%);
   }
+  /* Printed on the open spread: the emblem on the left page (on the back of
+     the last turning page, see buildFlip) and MMAE on the right. */
+  .mmae {
+    left: 0; top: 0; width: 100%; height: 100%;
+    display: flex; align-items: center; justify-content: center;
+    /* Small optical size: sturdier hairlines, which the finale shrinks to
+       about 25 px and foreshortens. */
+    font-family: 'Bodoni Moda', serif; font-size: 62px; line-height: 1;
+    font-weight: 650; font-variation-settings: 'opsz' 11;
+    letter-spacing: 0.1em; text-indent: 0.1em;
+    color: var(--navy-800);
+  }
   .page-edge {
     background: repeating-linear-gradient(180deg, #f3ecdb 0 1px, #d9cfb8 1px 2px);
   }
@@ -211,7 +223,7 @@
           <!-- back board and the right half of the page block (static) -->
           <div class="board back face"></div>
           <div class="face board-edge" style="left:0; top:calc(var(--H)/2); width:var(--W); height:3px; transform-origin:top; transform:translateZ(-2px) rotateX(90deg)"></div>
-          <div class="face paper" id="page-r" style="left:0; top:calc(var(--H)/-2 + 6px); width:calc(var(--W) - 8px); height:calc(var(--H) - 12px); transform:translateZ(var(--T))"><div class="paper-glow" id="glow-r"></div></div>
+          <div class="face paper" id="page-r" style="left:0; top:calc(var(--H)/-2 + 6px); width:calc(var(--W) - 8px); height:calc(var(--H) - 12px); transform:translateZ(var(--T))"><div class="paper-glow" id="glow-r"></div><div class="mmae">MMAE</div></div>
           <div class="face page-edge" style="left:0; top:calc(var(--H)/2 - 6px); width:calc(var(--W) - 8px); height:var(--T); transform-origin:top; transform:rotateX(90deg)"></div>
           <div class="face page-edge side" style="left:calc(var(--W) - 8px); top:calc(var(--H)/-2 + 6px); width:var(--T); height:calc(var(--H) - 12px); transform-origin:left; transform:rotateY(-90deg)"></div>
           <div id="spine-mark" style="left:-2px; top:-2px; width:4px; height:4px; transform:translateZ(var(--T))"></div>
@@ -256,8 +268,12 @@
             </linearGradient>
           </defs>
           <g mask="url(#vanakkamMask)">
-            <rect id="handsInk" width="1254" height="1254" fill="#f3eee2"/>
-            <rect id="handSweep" x="-600" y="0" width="420" height="1254" fill="url(#sweepGrad)" transform="skewX(-14)"/>
+            <!-- Both stop 4 units inside the drawing's edge (its lines are far
+                 from it): a fill ending exactly on the mask image's edge left
+                 a 1px line along the box whenever the scene landed on a
+                 fractional pixel. -->
+            <rect id="handsInk" x="4" y="4" width="1246" height="1246" fill="#f3eee2"/>
+            <rect id="handSweep" x="-600" y="4" width="420" height="1246" fill="url(#sweepGrad)" transform="skewX(-14)"/>
           </g>
         </svg>
       </div>
@@ -337,7 +353,26 @@ function calibrate() {
 
 // Flipping pages: a strip chain so each page curls as it turns.
 const STRIPS = 10
-function buildFlip(el) {
+// The emblem printed on the back of the last page to turn, so it lands face
+// up on the left of the spread. Each strip carries its own slice, facing the
+// strip's back, so the print bends with the paper.
+const PW = W - 8, PH = H - 12
+const EMBLEM = { w: 184, h: 181, src: '../../src/assets/brand/metmech-emblem.webp' }
+function printSlice(i, sw) {
+  const ink = document.createElement('div')
+  ink.className = 'face'
+  // Seen from behind, the strip shows the page's columns in reverse: strip i
+  // carries the left page's columns PW - (i + 1) * sw to PW - i * sw.
+  const x = (PW - EMBLEM.w) / 2 - (PW - (i + 1) * sw)
+  ink.style.cssText = `left:0; top:0; width:${sw}px; height:${PH}px; backface-visibility:hidden;` +
+    `transform:translateZ(-0.2px) rotateY(180deg);` +
+    `background:url('${EMBLEM.src}') ${x}px ${(PH - EMBLEM.h) / 2}px / ${EMBLEM.w}px ${EMBLEM.h}px no-repeat;`
+  const shade = document.createElement('div')
+  shade.style.cssText = 'position:absolute; inset:0; background:#000; opacity:0'
+  ink.appendChild(shade)
+  return { ink, shade }
+}
+function buildFlip(el, printed = false) {
   let parent = el
   const strips = []
   const sw = (W - 8) / STRIPS
@@ -354,13 +389,15 @@ function buildFlip(el) {
     const shade = document.createElement('div')
     shade.style.cssText = 'position:absolute; inset:0; background:#000; opacity:0'
     s.appendChild(shade)
+    const print = printed ? printSlice(i, sw) : null
+    if (print) s.appendChild(print.ink)
     parent.appendChild(s)
-    strips.push({ el: s, shade })
+    strips.push({ el: s, shade, printShade: print?.shade })
     parent = s
   }
   return strips
 }
-const flips = [buildFlip($('flip1')), buildFlip($('flip2'))]
+const flips = [buildFlip($('flip1')), buildFlip($('flip2'), true)]
 
 function setFlip(strips, root, p, lift) {
   // p: 0 lying on the right, 1 lying on the left.
@@ -372,6 +409,7 @@ function setFlip(strips, root, p, lift) {
     s.el.style.transform = `rotateY(${bend}deg)`
     const a = angle - curl * i * 0.6
     s.shade.style.opacity = (0.22 * Math.sin((a * Math.PI) / 180) ** 2).toFixed(3)
+    if (s.printShade) s.printShade.style.opacity = s.shade.style.opacity
   })
   root.style.visibility = p <= 0 ? 'hidden' : 'visible'
 }
@@ -479,8 +517,12 @@ function seek(t) {
   hands.style.filter = `blur(${((1 - hIn) * 6).toFixed(2)}px) drop-shadow(0 0 ${mix(26, 10, glowHands)}px rgba(255,214,150,${(0.4 * hIn * darkFade).toFixed(3)})) drop-shadow(0 10px 18px rgba(10,31,61,${(0.28 * glowHands).toFixed(3)}))`
   const hs = easeInOut(seg(t, 2.25, 2.95))
   $('handSweep').setAttribute('x', mix(-500, 1700, hs).toFixed(1))
-  // Warm white over navy, settling to the brand navy as the frame turns ivory.
-  const ink = [[243, 18], [238, 48], [226, 90]].map(([from, to]) => Math.round(mix(from, to, glowHands)))
+  // Warm white over navy, turning brand navy as the frame turns ivory. Timed
+  // to the bloom, which brightens the ground behind the hands from 2.82 s to
+  // 2.95 s: following the slower ivory fade instead left warm-white hands on
+  // ivory, nearly invisible, until about 3.15 s.
+  const inkP = easeInOut(seg(t, 2.82, 2.98))
+  const ink = [[243, 18], [238, 48], [226, 90]].map(([from, to]) => Math.round(mix(from, to, inkP)))
   $('handsInk').setAttribute('fill', `rgb(${ink.join(',')})`)
 
   // ---- company name
