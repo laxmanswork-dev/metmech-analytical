@@ -233,16 +233,14 @@ export const INSTRUMENTS = [
     specs: [],
   },
   {
-    // Capacity, sample diameters and load cell as stated by the client; make
-    // and model await confirmation.
-    slug: 'powder-metallurgy-press',
-    category: 'other',
-    services: ['welding-processing'],
-    specs: [
-      { label: 'capacity', value: '20 tons' },
-      { label: 'sampleDiameters', value: '10 mm, 12.5 mm and 25 mm' },
-      { label: 'features', value: 'Electronic load cell' },
-    ],
+    // Confirmed by the client as a micro UTM (2026-11-01); it was listed as a
+    // 20-ton powder compaction press. That capacity and the die diameters
+    // were dropped as they describe the press; the micro UTM's load capacity,
+    // make and model await the client.
+    slug: 'micro-utm',
+    category: 'mechanical',
+    services: ['mechanical-testing'],
+    specs: [{ label: 'features', value: 'Electronic load cell' }],
   },
 ]
 

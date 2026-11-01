@@ -27,7 +27,7 @@ export const pages = ALL_PATHS.map((path) => ({
   })),
 }))
 
-// Old addresses that now point at a home-page section, in every language.
+// Old addresses and where they now lead, in every language.
 export const redirects = LEGACY_REDIRECTS.flatMap(({ from, to }) =>
   LANGUAGE_CODES.map((language) => ({
     from: localizePath(from, language),

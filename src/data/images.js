@@ -17,7 +17,7 @@ import samplePreparation from '../assets/images/services/sample-preparation.webp
 // From the 240px orbit thumbnail, the only welding photograph supplied; a
 // larger original would be sharper.
 import weldingProcessing from '../assets/images/services/welding-processing.webp'
-import powderMetallurgyPress from '../assets/images/instruments/powder-metallurgy-press.webp'
+import microUtm from '../assets/images/instruments/micro-utm.webp'
 import rockwellHardnessTester from '../assets/images/instruments/rockwell-hardness-tester.webp'
 import saltSprayTestChamber from '../assets/images/instruments/salt-spray-test-chamber.webp'
 import semEds from '../assets/images/instruments/sem-eds.webp'
@@ -46,9 +46,9 @@ export const INSTRUMENT_IMAGES = {
   'surface-roughness-tester': { src: surfaceRoughness, width: 960, height: 720 },
   'wear-test-machine': { src: wearTestMachine, width: 960, height: 720 },
   'xrd-system': { src: xrdSystem, width: 960, height: 720 },
-  // Shows a different machine from the client's photograph of the press (green
-  // frame, hydraulic jack, load cell); awaiting the client's confirmation.
-  'powder-metallurgy-press': { src: powderMetallurgyPress, width: 960, height: 720 },
+  // Listed as a powder metallurgy press until the client confirmed it is a
+  // micro UTM (2026-11-01).
+  'micro-utm': { src: microUtm, width: 960, height: 720 },
 }
 
 // An instrument with no entry above shows the emblem tile (see MediaFrame).

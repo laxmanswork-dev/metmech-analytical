@@ -9,7 +9,7 @@ export const SERVICES = [
   {
     slug: 'mechanical-testing',
     image: null,
-    instruments: ['universal-testing-machine', 'impact-testing-machine'],
+    instruments: ['universal-testing-machine', 'micro-utm', 'impact-testing-machine'],
     related: ['hardness-testing', 'sample-preparation', 'material-characterization'],
   },
   {
@@ -50,7 +50,7 @@ export const SERVICES = [
   {
     slug: 'welding-processing',
     image: null,
-    instruments: ['powder-metallurgy-press'],
+    instruments: [],
     related: ['mechanical-testing', 'hardness-testing', 'material-characterization'],
   },
   {

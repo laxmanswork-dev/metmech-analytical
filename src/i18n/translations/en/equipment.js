@@ -94,7 +94,6 @@ export default {
     rotationalSpeed: 'Rotational speed',
     wearRange: 'Wear measurement range',
     capacity: 'Capacity',
-    sampleDiameters: 'Sample diameters',
     instrumentType: 'Instrument type',
     hardnessScale: 'Hardness scale',
     measurementMethod: 'Measurement method',
@@ -313,17 +312,20 @@ export default {
       ],
       imageAlt: 'X-ray diffraction system with the enclosure door open',
     },
-    'powder-metallurgy-press': {
-      name: 'Powder Metallurgy Compaction Press',
-      short: '20-ton press with electronic load cell',
-      purpose: 'Compacts metal powders into samples for powder metallurgy work.',
+    'micro-utm': {
+      name: 'Micro UTM',
+      short: 'Micro universal testing machine',
+      purpose:
+        'Applies small, controlled loads to test small and thin specimens in tension, compression and bending.',
       overview:
-        'Metal powder is pressed in a die to form a compact 10 mm, 12.5 mm or 25 mm in diameter. The press has a capacity of 20 tons, and an electronic load cell measures the applied load.',
+        'A micro universal testing machine works like a full-size UTM on a smaller scale. It pulls, compresses or bends a specimen at a controlled rate while an electronic load cell records the force. Its low load range suits small specimens, thin sheets and films, wires, fibres and polymers.',
       applications: [
-        'Compacting metal powders for research and development work',
-        'Preparing compacts for sintering and later testing',
+        'Tensile and compression tests on small specimens',
+        'Testing thin sheets, films, wires and fibres',
+        'Flexural tests on small polymer and composite samples',
       ],
-      imageAlt: 'Powder metallurgy compaction press with electronic load cell',
+      imageAlt:
+        'Micro universal testing machine with two threaded columns, a load cell and a handwheel on its base',
     },
   },
 }

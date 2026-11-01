@@ -23,10 +23,12 @@ export const HOME_SECTIONS = {
 export const ENQUIRY_PATH = '/#enquiry'
 
 // About and Contact used to be pages of their own. Their old addresses send
-// visitors to the matching home section instead of a missing page.
+// visitors to the matching home section instead of a missing page. The micro
+// UTM was listed as a powder metallurgy press until the client corrected it.
 export const LEGACY_REDIRECTS = [
   { from: '/about', to: HOME_SECTIONS.about },
   { from: '/contact', to: HOME_SECTIONS.contact },
+  { from: '/equipment/powder-metallurgy-press', to: '/equipment/micro-utm' },
 ]
 
 // Footer navigation, in display order. `key` maps to `nav.<key>` in the dictionaries.
