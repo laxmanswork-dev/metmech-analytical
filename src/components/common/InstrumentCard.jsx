@@ -7,8 +7,9 @@ import LocalizedLink from '../navigation/LocalizedLink.jsx'
 import styles from './Card.module.css'
 import MediaFrame from './MediaFrame.jsx'
 
-// Card linking to an instrument detail page.
-export default function InstrumentCard({ slug }) {
+// Card linking to an instrument detail page. `eager` for a card in view when
+// the page loads (see MediaFrame).
+export default function InstrumentCard({ slug, eager = false }) {
   const { t } = useLanguage()
   const { category } = getInstrument(slug)
   const item = `equipment.items.${slug}`
@@ -16,7 +17,7 @@ export default function InstrumentCard({ slug }) {
   return (
     <article className={`${styles.card} ${styles.linked}`}>
       <div className={styles.media}>
-        <MediaFrame image={INSTRUMENT_IMAGES[slug]} alt={t(`${item}.imageAlt`)} />
+        <MediaFrame image={INSTRUMENT_IMAGES[slug]} alt={t(`${item}.imageAlt`)} eager={eager} />
       </div>
       <div className={styles.body}>
         <p className={styles.eyebrow}>{t(`equipment.categories.${category}`)}</p>

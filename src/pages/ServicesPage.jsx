@@ -35,8 +35,9 @@ export default function ServicesPage() {
           lead={t('services.overview.lead')}
         />
         <Grid min="lg">
-          {SERVICE_CATEGORIES.map((slug) => (
-            <ServiceCard key={slug} slug={slug} />
+          {/* The first card is in view on load, often the largest image. */}
+          {SERVICE_CATEGORIES.map((slug, index) => (
+            <ServiceCard key={slug} slug={slug} eager={index === 0} />
           ))}
         </Grid>
       </Section>

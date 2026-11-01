@@ -91,8 +91,9 @@ export default function EquipmentPage() {
 
         {visible.length > 0 ? (
           <Grid>
-            {visible.map(({ slug }) => (
-              <InstrumentCard key={slug} slug={slug} />
+            {/* The first card is in view on load, often the largest image. */}
+            {visible.map(({ slug }, index) => (
+              <InstrumentCard key={slug} slug={slug} eager={index === 0} />
             ))}
           </Grid>
         ) : (

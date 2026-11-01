@@ -54,7 +54,7 @@
 
   /* Typography */
   --font-sans:
-    'Inter Variable', 'Noto Sans Tamil Variable', system-ui, -apple-system, 'Segoe UI',
+    'Inter Variable', 'Inter Fallback', 'Inter Fallback Android', 'Noto Sans Tamil Variable', system-ui, -apple-system, 'Segoe UI',
     'Nirmala UI', sans-serif;
   /* The company name in the header lockup only, Latin only. "METMECH" and
      "ANALYTICAL" are set in Bodoni Moda, an Italian editorial face whose
@@ -95,6 +95,10 @@
   --target-size: 2.75rem;
   /* Total height of the site header, kept in step with Header.module.css. */
   --header-height: 5.0625rem;
+  /* Room the floating call and WhatsApp buttons take at the bottom of the
+     screen, with a small margin (FloatingContact.module.css). Content that
+     must never sit under them ends this far above the bottom. */
+  --dock-clearance: 4.5rem;
 
   /* Shape and elevation */
   --radius-sm: 0.25rem;

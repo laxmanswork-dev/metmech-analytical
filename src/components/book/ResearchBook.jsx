@@ -440,8 +440,11 @@ export default function ResearchBook() {
 function Strip({ index, leaf, t, tm, onMount }) {
   const face = (pageIndex) => (
     <div className={styles.leafPage}>
+      {/* Keyed by page so a new page gets new elements. Reused ones would
+          reflow from the old page's layout (the title page has no running
+          head), which browsers count as layout shift. */}
       {pageIndex !== null && (
-        <BookPage page={BOOK_PAGES[pageIndex]} index={pageIndex} t={t} tm={tm} eager />
+        <BookPage key={pageIndex} page={BOOK_PAGES[pageIndex]} index={pageIndex} t={t} tm={tm} eager />
       )}
       <span className={styles.shade} data-shade="" />
     </div>

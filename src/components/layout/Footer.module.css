@@ -68,7 +68,7 @@
   padding-top: var(--space-5);
   /* Room for the floating call and WhatsApp buttons (FloatingContact), so
      they do not cover the language switch at the end of the page. */
-  padding-bottom: 4rem;
+  padding-bottom: var(--dock-clearance);
   border-top: 1px solid rgb(255 255 255 / 0.16);
 }
 

@@ -9,14 +9,15 @@ import MediaFrame from './MediaFrame.jsx'
 
 // Card linking to a service detail page. The whole card is clickable through
 // its title link; "View Details" is a visual cue, not a second link.
-export default function ServiceCard({ slug }) {
+// `eager` for a card in view when the page loads (see MediaFrame).
+export default function ServiceCard({ slug, eager = false }) {
   const { t } = useLanguage()
   const { image, alt } = getServiceImage(getService(slug), t)
 
   return (
     <article className={`${styles.card} ${styles.linked}`}>
       <div className={styles.media}>
-        <MediaFrame image={image} alt={alt} />
+        <MediaFrame image={image} alt={alt} eager={eager} />
       </div>
       <div className={styles.body}>
         <h3 className={styles.title}>

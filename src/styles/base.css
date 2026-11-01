@@ -1,3 +1,30 @@
+/* Stand-ins for Inter while it downloads, scaled so text takes the same width
+   and wraps at the same words: without them a heading that fits on one line
+   in Arial takes two in Inter, and the page jumps when Inter arrives. The
+   scale factors are measured from the site's own text: Inter is 6.3% wider
+   than Arial at regular weight and 1.4% wider than Arial Bold (which the
+   browser uses for semibold); Android has no Arial, and Inter is about 7%
+   wider than Roboto. */
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial'), local('ArialMT');
+  font-weight: 100 549;
+  size-adjust: 106.3%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT');
+  font-weight: 550 900;
+  size-adjust: 101.4%;
+}
+
+@font-face {
+  font-family: 'Inter Fallback Android';
+  src: local('Roboto');
+  size-adjust: 107%;
+}
+
 *,
 *::before,
 *::after {

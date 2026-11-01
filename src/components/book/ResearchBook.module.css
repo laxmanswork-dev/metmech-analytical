@@ -66,6 +66,21 @@
   }
 }
 
+/* Narrow screens: the controls span most of the width, so they are lifted
+   clear of the floating call and WhatsApp buttons in the bottom corner, and
+   the page is sized for the height that leaves. */
+@media (max-width: 40rem) {
+  .stage {
+    --page-w: min(
+      100vw - 2rem,
+      34rem,
+      (100svh - var(--header-height) - 7.75rem - var(--dock-clearance)) * 0.6
+    );
+
+    padding-bottom: calc(var(--space-4) + var(--dock-clearance));
+  }
+}
+
 .viewport {
   perspective: calc(var(--page-w) * 5);
   perspective-origin: 50% 30%;
