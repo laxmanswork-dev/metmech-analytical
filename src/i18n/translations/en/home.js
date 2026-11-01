@@ -8,7 +8,7 @@ export default {
     eyebrow: 'Material Testing & Research Laboratory',
     // The heading, one entry per line. Shown in uppercase.
     titleLines: ['Advanced', 'Engineering', 'Solutions'],
-    text: 'We test metals, polymers and composites to support industrial and research needs, including failure analysis.',
+    text: 'We test metals, composites, polymers, and failure analysis for industrial and research needs.',
     // The link to the business's Google profile under the buttons: a title
     // over a line of detail. With a rating set in src/data/site.js the
     // rating versions are used instead.
