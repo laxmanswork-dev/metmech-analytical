@@ -8,7 +8,7 @@ export default {
   },
   hero: {
     title: 'Industries We Support',
-    lead: 'Testing solutions for a range of industrial and research applications.',
+    lead: 'Failure Analysis & Root Cause Investigation',
   },
   labels: {
     challenge: 'Typical material challenges',
