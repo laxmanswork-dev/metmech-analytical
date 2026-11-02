@@ -22,6 +22,7 @@ export default {
     about: 'About Us',
     services: 'Testing Services',
     casting: 'Casting & Material Development',
+    heatTreatment: 'Heat Treatment',
     equipment: 'Equipment',
     industries: 'Industries',
     contact: 'Contact',

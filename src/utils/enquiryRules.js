@@ -10,7 +10,8 @@ export const ENQUIRY_FIELDS = ['name', 'company', 'email', 'phone', 'message']
 // name]. The English names are what the company receives, whatever the site
 // language; the form shows translated names (contact.form.requirementOptions
 // and requirementGroups). The casting ids match the categories on the
-// casting page (src/data/casting.js), whose enquire links preselect them.
+// casting page (src/data/casting.js), whose enquire links preselect them;
+// the heat treatment page's enquire links preselect 'heat-treatment'.
 export const REQUIREMENT_GROUPS = [
   {
     id: 'testing',
@@ -34,6 +35,7 @@ export const REQUIREMENT_GROUPS = [
       ['controlled-atmosphere-casting', 'Controlled-Atmosphere Casting'],
       ['mmc-development', 'Metal Matrix Composite Development'],
       ['casting-quality', 'Casting Quality Assessment'],
+      ['heat-treatment', 'Heat Treatment'],
       ['casting-other', 'Other Casting Requirements'],
     ],
   },

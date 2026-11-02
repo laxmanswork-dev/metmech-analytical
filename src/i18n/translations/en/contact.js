@@ -56,6 +56,7 @@ export default {
         'controlled-atmosphere-casting': 'Controlled-Atmosphere Casting',
         'mmc-development': 'Metal Matrix Composite Development',
         'casting-quality': 'Casting Quality Assessment',
+        'heat-treatment': 'Heat Treatment',
         'casting-other': 'Other Casting Requirements',
       },
       message: 'Additional message',

@@ -21,6 +21,7 @@ export default {
     about: 'எங்களைப் பற்றி',
     services: 'சோதனைச் சேவைகள்',
     casting: 'வார்ப்பு & பொருள் மேம்பாடு',
+    heatTreatment: 'வெப்பப் பதனிடல்',
     equipment: 'உபகரணங்கள்',
     industries: 'தொழில்துறைகள்',
     contact: 'தொடர்பு',

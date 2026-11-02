@@ -31,6 +31,7 @@ const REPEAT_GUARD_MS = 3000
 const aboutKey = ({ kind, slug }) => {
   if (kind === 'instrument') return `equipment.items.${slug}.name`
   if (kind === 'casting') return slug ? `casting.categories.${slug}.title` : 'casting.enquiryName'
+  if (kind === 'heatTreatment') return 'nav.heatTreatment'
   return `services.items.${slug}.title`
 }
 
@@ -42,7 +43,7 @@ const aboutKey = ({ kind, slug }) => {
 // number, and tells the visitor to press Send there: the enquiry only reaches
 // the company if they do, so the form never claims it was sent.
 //
-// The enquire buttons on instrument, service and casting pages pass
+// The enquire buttons on instrument, service, casting and heat treatment pages pass
 // { enquiryAbout: { kind, slug }, from } in the link's state, so the enquiry
 // names the instrument or service and the page it was started from. They may
 // also pass `requirement`, a list of requirement ids to select at the start.

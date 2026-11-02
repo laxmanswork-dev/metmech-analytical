@@ -1,0 +1,8 @@
+/* What the heat treatment page adds to the casting page's styles. */
+.figure {
+  margin: var(--space-2) 0 0;
+}
+
+.specimensLink {
+  margin-top: var(--space-4);
+}

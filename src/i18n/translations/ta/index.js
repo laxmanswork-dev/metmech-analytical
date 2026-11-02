@@ -7,6 +7,7 @@ import casting from './casting.js'
 import common from './common.js'
 import contact from './contact.js'
 import equipment from './equipment.js'
+import heatTreatment from './heatTreatment.js'
 import home from './home.js'
 import industries from './industries.js'
 import privacy from './privacy.js'
@@ -19,6 +20,7 @@ export default {
   about,
   services,
   casting,
+  heatTreatment,
   equipment,
   industries,
   research,

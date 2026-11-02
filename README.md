@@ -25,6 +25,7 @@ Requires Node.js 20.19+ (developed on Node 24).
 | `npm run build`   | Client build, server build, then prerender every page into `dist/` |
 | `npm run preview` | Serve the production build locally                                 |
 | `npm run lint`    | Lint the project                                                   |
+| `npm run test:e2e` | Browser regression tests, see `tests/e2e/regression.mjs`        |
 
 `npm run preview` serves a page's own HTML file only when the URL ends in a
 slash (`/about/`). Without it, the preview server sends the home page file and
@@ -46,6 +47,8 @@ the app re-renders in the browser. Real static hosts do not have this quirk.
 | Home                 | `/`                           |
 | About Us             | `/about`                      |
 | Testing Services     | `/testing-services`           |
+| Casting              | `/casting-services`           |
+| Heat Treatment       | `/heat-treatment-services`    |
 | Service detail (8)   | `/testing-services/<slug>`    |
 | Equipment            | `/equipment`                  |
 | Instrument detail (13) | `/equipment/<slug>`         |
@@ -129,10 +132,10 @@ six testing categories circling a central instrument.
   emphasis and caption share its duration, offset by the category's position,
   so image, label and caption cannot fall out of step. Change the speed with
   `--duration` in `ScientificOrbit.module.css` (30s per revolution).
-- **Interaction.** Hover or keyboard focus highlights a category; click or tap
-  pins it; the pause button, a second click or Escape releases it. The orbit
-  also pauses when scrolled out of view.
-- **Reduced motion** shows a still composition; categories can still be selected.
+- **Interaction.** Hover or keyboard focus highlights a category and pauses the
+  orbit; click or tap opens that service's page. The pause button stops the
+  orbit, which also pauses when scrolled out of view.
+- **Reduced motion** shows a still composition; categories can still be opened.
 - **Small screens** (under 640px) hide the names inside the circles, which
   are too small there to carry readable text, and rely on the caption below.
 
@@ -373,6 +376,14 @@ awaiting confirmation on the site.
   The page's micrographs are the aluminium alloy and AZ91 specimens from the
   standard specimen sets, captioned as reference micrographs, not casting
   results.
+- Heat treatment (page `/heat-treatment-services`, added 2026-11-02). The price
+  list confirms only "Heat treatment charges/ set". To confirm: which treatments
+  are offered, the furnaces, temperature limits and capacities (none is named on
+  the site), and photographs. The page's four treatments are those shown by the
+  standard specimens, and it says so.
+- Casting and heat treatment equipment. The client's 2026-11-02 message can be
+  read as these being missing from "all the equipment". No document describes
+  this equipment, so `/equipment` lists none until details are supplied.
 - Business hours (the design mockup shows hours, but no document confirms them).
 - Exact map location. The directions link is a Google Maps search for the
   address, not a pinned point.

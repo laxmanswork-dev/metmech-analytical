@@ -53,6 +53,7 @@ export default {
         'controlled-atmosphere-casting': 'கட்டுப்படுத்தப்பட்ட வளிமண்டல வார்ப்பு',
         'mmc-development': 'உலோக அணிக் கூட்டுப்பொருள் மேம்பாடு',
         'casting-quality': 'வார்ப்புத் தர மதிப்பீடு',
+        'heat-treatment': 'வெப்பப் பதனிடல்',
         'casting-other': 'பிற வார்ப்புத் தேவைகள்',
       },
       message: 'கூடுதல் செய்தி',

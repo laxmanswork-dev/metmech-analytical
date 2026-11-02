@@ -6,6 +6,7 @@ export const ROUTES = {
   home: '/',
   services: '/testing-services',
   casting: '/casting-services',
+  heatTreatment: '/heat-treatment-services',
   equipment: '/equipment',
   industries: '/industries',
   research: '/research-capabilities',
@@ -30,6 +31,9 @@ export const LEGACY_REDIRECTS = [
   { from: '/about', to: HOME_SECTIONS.about },
   { from: '/contact', to: HOME_SECTIONS.contact },
   { from: '/equipment/powder-metallurgy-press', to: '/equipment/micro-utm' },
+  // The addresses people try for these two pages.
+  { from: '/casting', to: ROUTES.casting },
+  { from: '/heat-treatment', to: ROUTES.heatTreatment },
 ]
 
 // Footer navigation, in display order. `key` maps to `nav.<key>` in the dictionaries.
@@ -38,6 +42,7 @@ export const NAV_ITEMS = [
   { key: 'about', path: HOME_SECTIONS.about },
   { key: 'services', path: ROUTES.services },
   { key: 'casting', path: ROUTES.casting },
+  { key: 'heatTreatment', path: ROUTES.heatTreatment },
   { key: 'equipment', path: ROUTES.equipment },
   { key: 'industries', path: ROUTES.industries },
   { key: 'contact', path: HOME_SECTIONS.contact },
@@ -50,7 +55,7 @@ export const HEADER_NAV = [
   { key: 'home', path: ROUTES.home },
   {
     key: 'ourServices',
-    children: ['services', 'casting', 'equipment', 'industries'].map((key) => ({
+    children: ['services', 'casting', 'heatTreatment', 'equipment', 'industries'].map((key) => ({
       key,
       path: ROUTES[key],
     })),
