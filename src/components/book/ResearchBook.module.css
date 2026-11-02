@@ -34,14 +34,14 @@
    (BookPage), so the type is scaled to 0.78 of those units for the same fit
    within the squarer page; on screen it is about the size it was. Up to
    56rem tall on very large screens. */
-@media (min-width: 56rem) and (min-aspect-ratio: 1/1) {
+@media (min-width: 56rem) and (orientation: landscape) {
   .stage {
     --type: 0.78;
     /* Micrographs fill most of a plate page's width, which keeps the plate
        and its details within the page's height. */
     --plate-width: 84%;
     --page-h: min(
-      100svh - var(--header-height) - 7.25rem,
+      var(--screen-h) - var(--header-height) - 7.25rem,
       56rem,
       (100vw - 2 * clamp(1.5rem, 5vw, 5rem)) / 2.044 / 0.92
     );
@@ -58,10 +58,10 @@
 /* One page at a time. Keyed to the screen, not to the script's choice, so
    the prerendered page (always a spread) shows a narrow screen the first
    spread's left page alone, which is the first page. */
-@media not ((min-width: 56rem) and (min-aspect-ratio: 1/1)) {
+@media not ((min-width: 56rem) and (orientation: landscape)) {
   .stage {
     --type: 1.12;
-    --page-w: min(100vw - 2rem, 34rem, (100svh - var(--header-height) - 7.75rem) * 0.6);
+    --page-w: min(100vw - 2rem, 34rem, (var(--screen-h) - var(--header-height) - 7.75rem) * 0.6);
     --page-h: calc(var(--page-w) / 0.6);
   }
 }
@@ -74,7 +74,7 @@
     --page-w: min(
       100vw - 2rem,
       34rem,
-      (100svh - var(--header-height) - 7.75rem - var(--dock-clearance)) * 0.6
+      (var(--screen-h) - var(--header-height) - 7.75rem - var(--dock-clearance)) * 0.6
     );
 
     padding-bottom: calc(var(--space-4) + var(--dock-clearance));
@@ -348,7 +348,7 @@
 
 /* ---- One page at a time ---- */
 
-@media not ((min-width: 56rem) and (min-aspect-ratio: 1/1)) {
+@media not ((min-width: 56rem) and (orientation: landscape)) {
   .book {
     width: calc(var(--page-w) + var(--margin) * 2);
     transform: rotateX(4deg);

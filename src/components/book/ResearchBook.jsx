@@ -36,7 +36,7 @@ import styles from './ResearchBook.module.css'
 // With reduced motion they change in place and do not turn by themselves.
 
 const TOTAL = BOOK_PAGES.length
-const SPREAD_MEDIA = '(min-width: 56rem) and (min-aspect-ratio: 1/1)'
+const SPREAD_MEDIA = '(min-width: 56rem) and (orientation: landscape)'
 const STILL_MEDIA = '(prefers-reduced-motion: reduce)'
 
 // Strips per leaf: enough for a smooth curve; more make a large spread

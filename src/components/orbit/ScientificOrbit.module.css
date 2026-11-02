@@ -45,7 +45,7 @@
     width: min(
       40rem,
       100% + 2rem + var(--orbit-shift, 0px),
-      100svh - var(--header-height) - 10.5rem
+      var(--screen-h) - var(--header-height) - 10.5rem
     );
   }
 }
