@@ -2,8 +2,10 @@ import { Flame, Pause, Play } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import { ORBIT_ITEMS, ORBIT_THUMBNAIL_SIZE } from '../../data/orbit.js'
 import { useLanguage } from '../../hooks/useLanguage.js'
+import { servicePath } from '../../routes/pages.js'
 import { announceHeroMotion } from '../../utils/heroMotion.js'
 import Watermark from '../common/Watermark.jsx'
+import LocalizedLink from '../navigation/LocalizedLink.jsx'
 import CircleFrame from './CircleFrame.jsx'
 import HexRing from './HexRing.jsx'
 import styles from './ScientificOrbit.module.css'
@@ -21,15 +23,14 @@ import styles from './ScientificOrbit.module.css'
 // re-renders while the orbit runs.
 //
 // React state changes only on interaction: hovering or focusing a category
-// highlights it for the moment, clicking or tapping pins it, and either one
-// pauses the orbit so the target does not move away.
+// highlights it and pauses the orbit so the target does not move away, and
+// clicking or tapping it opens that service's page.
 export default function ScientificOrbit() {
   const { t, tm } = useLanguage()
   // The lines each name is set on inside its circle in the current language.
   const labelLines = tm('home.orbit.labelLines')
   const raisedLabels = tm('home.orbit.labelRaised')
   const rootRef = useRef(null)
-  const [pinned, setPinned] = useState(null)
   const [hovered, setHovered] = useState(null)
   const [isUserPaused, setIsUserPaused] = useState(false)
   const [isInView, setIsInView] = useState(true)
@@ -42,12 +43,10 @@ export default function ScientificOrbit() {
     return () => observer.disconnect()
   }, [])
 
-  const highlighted = pinned ?? hovered
-  const isHeld = isUserPaused || pinned !== null
-  const isPaused = isHeld || hovered !== null || !isInView
+  const isPaused = isUserPaused || hovered !== null || !isInView
 
   // The pause button stops the hero's background video too (see heroMotion.js).
-  // Only the visitor's own choice is passed on, not a hover or a pinned category.
+  // Only the visitor's own choice is passed on, not a hover.
   const isFirstRender = useRef(true)
   useEffect(() => {
     if (isFirstRender.current) {
@@ -57,21 +56,12 @@ export default function ScientificOrbit() {
     announceHeroMotion(isUserPaused)
   }, [isUserPaused])
 
-  const togglePlayback = () => {
-    if (isHeld) {
-      setPinned(null)
-      setIsUserPaused(false)
-    } else {
-      setIsUserPaused(true)
-    }
-  }
-
   return (
     <div
       ref={rootRef}
       className={styles.orbit}
       data-paused={isPaused ? '' : undefined}
-      data-override={highlighted ? '' : undefined}
+      data-override={hovered ? '' : undefined}
     >
       <div className={styles.stage}>
         <HexRing paused={isPaused} />
@@ -92,19 +82,14 @@ export default function ScientificOrbit() {
                 <li key={slug} className={styles.arm} style={{ '--i': index }}>
                   <div className={styles.upright}>
                     <div className={styles.counter}>
-                      <button
-                        type="button"
+                      <LocalizedLink
+                        to={servicePath(slug)}
                         className={styles.item}
                         data-first={index === 0 ? '' : undefined}
-                        data-active={highlighted === slug ? '' : undefined}
+                        data-active={hovered === slug ? '' : undefined}
                         aria-label={title}
-                        aria-pressed={pinned === slug}
                         aria-describedby={`orbit-description-${slug}`}
-                        onClick={() => setPinned((current) => (current === slug ? null : slug))}
-                        onKeyDown={(event) => {
-                          if (event.key === 'Escape') setPinned(null)
-                        }}
-                        // Touch has no hover: a tap pins instead.
+                        // Touch has no hover: a tap goes straight to the page.
                         onPointerEnter={(event) => {
                           if (event.pointerType !== 'mouse') return
                           setHovered(slug)
@@ -140,7 +125,7 @@ export default function ScientificOrbit() {
                           </span>
                           {image && <Watermark className={styles.watermark} />}
                         </span>
-                      </button>
+                      </LocalizedLink>
                     </div>
                   </div>
                 </li>
@@ -152,15 +137,15 @@ export default function ScientificOrbit() {
         <button
           type="button"
           className={styles.toggle}
-          aria-label={t(isHeld ? 'home.orbit.play' : 'home.orbit.pause')}
-          onClick={togglePlayback}
+          aria-label={t(isUserPaused ? 'home.orbit.play' : 'home.orbit.pause')}
+          onClick={() => setIsUserPaused((current) => !current)}
         >
-          {isHeld ? <Play aria-hidden="true" size={16} /> : <Pause aria-hidden="true" size={16} />}
+          {isUserPaused ? <Play aria-hidden="true" size={16} /> : <Pause aria-hidden="true" size={16} />}
         </button>
       </div>
 
       {/* Visual captions. Assistive technology gets each description from its
-          button through aria-describedby, so this block is not read twice. */}
+          link through aria-describedby, so this block is not read twice. */}
       <div className={styles.captions} aria-hidden="true">
         {ORBIT_ITEMS.map(({ slug }, index) => (
           <div
@@ -168,7 +153,7 @@ export default function ScientificOrbit() {
             className={styles.caption}
             style={{ '--i': index }}
             data-first={index === 0 ? '' : undefined}
-            data-active={highlighted === slug ? '' : undefined}
+            data-active={hovered === slug ? '' : undefined}
           >
             <p className={styles.captionTitle}>{t(`services.items.${slug}.title`)}</p>
             <p id={`orbit-description-${slug}`}>{t(`home.orbit.items.${slug}`)}</p>
